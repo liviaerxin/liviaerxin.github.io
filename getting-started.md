@@ -14,7 +14,7 @@ Let's go through this to set up your repo:
 
 - [ ] #tags can be used to further organize your content. Look at the `Tag Explorer` view on the left panel to find and navigate the tags in your knowledge base. See [[tags-and-tag-explorer]].
 
-- [ ] Foam supports [[spell-checking]] via VS Code.
+- [ ] Foam supports [[spell-checking]].
 
 - [ ] You can also paste images in your Foam, just press `cmd+alt+v` to create the image file and link to it from your note. See [[paste-images-from-clipboard]].
 
@@ -26,7 +26,7 @@ Let's go through this to set up your repo:
 
 - [ ] To explore all the Foam settings, press `cmd+,`, then `Extensions > Foam`
 
-- [ ] Living within VS Code, Foam can be customized in many ways! Look at the [Foam Recipes](https://foambubble.github.io/foam/user/recipes/recipes) for ideas!
+- [ ] Living within VS Code, Foam can be customized in many ways! Look at the [Foam Recipes](https://foambubble.github.io/foam/recipes/recipes) for ideas!
 
 - [ ] Join the [Foam community on Discord](https://foambubble.github.io/join-discord/e), introduce yourself and leave a message on how you found Foam and how the onboarding went :) We are always keen to do better
 
@@ -44,6 +44,7 @@ Here they are:
 
 - [Markdown All In One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 - [vscode-paste-image](https://github.com/mushanshitiancai/vscode-paste-image)
+- [spellright](https://marketplace.visualstudio.com/items?itemName=ban.spellright)
 
 A special mention goes to [Markdown Links](https://marketplace.visualstudio.com/items?itemName=tchayen.markdown-links) and [Markdown Notes](https://marketplace.visualstudio.com/items?itemName=kortina.vscode-markdown-notes) which have now been replaced by our own implementation but were foundational to Foam's beginnings.
 

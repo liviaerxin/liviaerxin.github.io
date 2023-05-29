@@ -1,12 +1,20 @@
 # Inbox
 
-- Here you can write disorganised notes to be categorised later
-- Bullet points are useful, but it could be free form text as well
-- Sometimes it's better to just get things off your mind quickly, rather than stop to think where it belongs
-- But don't let this list get too long
-- Move information to more specific documents and link to them.
-  - This helps you navigate between documents quickly
-  - For example, you can `Cmd`+`Click` (`Ctrl`+`Click` in Windows) this: [[todo]]
-- Some notes don't end up making sense the next day
-- That's ok, you can just delete them!
-  - You can always find them in your git history, if you really need it!
+## Build System thoughts and knowledge
+
+[Build Automation Softwares](https://en.wikipedia.org/wiki/List_of_build_automation_software)
+> generate build scripts(CMake, Meson) -> compile source code(make, ninja invoking clang, gcc) -> binary code -> package binary code and run automated test(CMake, Meson)Build System thoughts and knowledge
+
+## Build Personal Wiki Work Station
+
+### Personal Knowledge Management System
+
+[Foam](https://github.com/foambubble/foam)
+
+[GistPad](https://github.com/lostintangent/gistpad)
+
+### Host Project Hosted by Github Pages and Powered by Jekyll
+
+[setting up a GitHub Pages site with Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll)
+
+[How I created a beatiful and mini](http://joshualande.com/jekyll-github-pages-poole)
