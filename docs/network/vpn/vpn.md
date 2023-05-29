@@ -1,6 +1,10 @@
 ---
-keywords: vpn
-tags: network network/vpn network/router
+keywords: [vpn]
+tags: [network, network/vpn, network/router]
+more_data:
+  - Can be provided
+  - as: objects
+    or: arrays
 ---
 
 # VPN

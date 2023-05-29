@@ -1,5 +1,5 @@
 ---
-tags: circular-dependencies inversion-of-control dependency-injection
+tags: [circular-dependencies, inversion-of-control, dependency-injection]
 ---
 
 # IoC

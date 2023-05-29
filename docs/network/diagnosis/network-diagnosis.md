@@ -1,5 +1,5 @@
 ---
-tags: network network/diagnosis netstat route traceroute
+tags: [network, network/diagnosis, netstat, route, traceroute]
 ---
 
 # Network Diagnosis

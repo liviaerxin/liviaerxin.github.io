@@ -1,6 +1,6 @@
 ---
-keywords: KillSwitch
-tags: network network/vpn KillSwitch
+keywords: [KillSwitch]
+tags: [network, network/vpn, KillSwitch]
 ---
 
 # KillSwitch
