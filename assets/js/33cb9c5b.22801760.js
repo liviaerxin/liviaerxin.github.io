@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[3331],{6474:e=>{e.exports=JSON.parse('{"label":"CMake","permalink":"/blog/tags/c-make","allTagsPath":"/blog/tags","count":1}')}}]);
