@@ -20,7 +20,9 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-
+          cache-dependency-path: |
+            ./_ssg/docusaurus/package-lock.json
+      
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         working-directory: ./_ssg/docusaurus
