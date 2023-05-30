@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>My Site Blog</title>
+        <link>https://liviaerxin.github.io/journal</link>
+        <description>My Site Blog</description>
+        <lastBuildDate>Mon, 18 Apr 2022 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <link>https://liviaerxin.github.io/journal/2022/04/18/</link>
+            <guid>https://liviaerxin.github.io/journal/2022/04/18/</guid>
+            <pubDate>Mon, 18 Apr 2022 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
