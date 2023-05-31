@@ -1,12 +1,23 @@
 ---
-title: ${1:$TM_FILENAME_BASE}
-description: ""
-created: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}
+foam_template:
+  name: Docs Docusaurus Template
+  description: Creates Docusaurus docs/slip
+  filepath: docs/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md
+sidebar_label: ${FOAM_TITLE}
+description: ${FOAM_TITLE}
+keywords:
+  - docs
+  - docusaurus
+image: https://i.imgur.com/mErPwqL.png
 tags:
-  - ""
+  - blog
+  - docusaurus
+last_update:
+  date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}
+  author: frank
 ---
 
-# Foam Note Templates
+# ${FOAM_TITLE}
 
 Foam includes note templates!
 This allows you to easily create notes that have similar structure without having to use copy/paste :)
