@@ -1,0 +1,5 @@
+### VisualStudioCode ###
+/.vscode
+!.vscode/settings.json
+!.vscode/foam.json
+!.vscode/extensions.json
