@@ -26,4 +26,5 @@
   "pasteImage.path": "${projectRoot}/attachments",
   "pasteImage.showFilePathConfirmInputBox": true,
   "prettier.singleQuote": false,
+  "workbench.colorTheme": "Default Dark Modern",
 }
