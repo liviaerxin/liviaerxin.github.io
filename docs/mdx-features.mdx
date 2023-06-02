@@ -8,14 +8,36 @@ image: https://i.imgur.com/mErPwqL.png
 tags:
   - mdx
   - docusaurus
+  - react
+  - test
 last_update:
   date: 2023-05-31
   author: frank
 ---
 
-# MDX Features
+# MDX Features of Docusaurus
 
 ## React Component
+
+Code as:
+
+```jsx title="docs/mdx-features.mdx"
+export const Highlight = ({children, color}) => (
+  <span
+    style={{
+      backgroundColor: color,
+      borderRadius: '2px',
+      color: '#fff',
+      padding: '0.2rem',
+    }}>
+    {children}
+  </span>
+);
+
+<Highlight color="#25c2a0">Docusaurus green</Highlight> and <Highlight color="#1877F2">Facebook blue</Highlight> are my favorite colors.
+```
+
+Render as:
 
 export const Highlight = ({children, color}) => (
   <span
@@ -31,15 +53,65 @@ export const Highlight = ({children, color}) => (
 
 <Highlight color="#25c2a0">Docusaurus green</Highlight> and <Highlight color="#1877F2">Facebook blue</Highlight> are my favorite colors.
 
+<br/><br/><br/>
+
+Code as:
+
+```jsx title="src/components/Highlight"
+import React from 'react';
+
+export default function SharedHighlight({children, color}) {
+  return (
+    <span
+      style={{
+        backgroundColor: color,
+        borderRadius: '2px',
+        color: '#fff',
+        padding: '0.2rem',
+      }}>
+      {children}
+    </span>
+  );
+}
+```
+With:
+```jsx title="docs/mdx-features.mdx"
 import SharedHighlight from '@site/src/components/Highlight';
 
-&#8203;
+<SharedHighlight color="#25c2a0">Docusaurus green</SharedHighlight>
+I can write **Markdown** alongside my _JSX_!
+```
+
+Render as:
+
+import SharedHighlight from '@site/src/components/Highlight';
 
 <SharedHighlight color="#25c2a0">Docusaurus green</SharedHighlight>
 
 I can write **Markdown** alongside my _JSX_!
 
 ## Tabs
+
+Code as:
+
+```jsx title="docs/mdx-features.mdx"
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="apple" label="Apple" default>
+    This is an apple 🍎
+  </TabItem>
+  <TabItem value="orange" label="Orange">
+    This is an orange 🍊
+  </TabItem>
+  <TabItem value="banana" label="Banana">
+    This is a banana 🍌
+  </TabItem>
+</Tabs>
+```
+
+Render as:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -58,21 +130,40 @@ import TabItem from '@theme/TabItem';
 
 ## NOTES
 
+```mdx title="docs/mdx-features.mdx"
 <!-- Prettier doesn't change this -->
 :::note
 
 Hello world
 
 :::
+```
 
+:::note
+
+Hello world
+
+:::
+
+```md
 <!-- Prettier changes this -->
 :::note
 Hello world
 :::
+```
 
+```md
 <!-- to this -->
 ::: note Hello world:::
+```
 
+```md title="docs/mdx-features.mdx"
+:::note Your Title
+
+Some **content** with _Markdown_ `syntax`.
+
+:::
+```
 
 :::note Your Title
 
@@ -80,6 +171,18 @@ Some **content** with _Markdown_ `syntax`.
 
 :::
 
+
+```md title="docs/mdx-features.mdx"
+:::tip Use tabs in admonitions
+
+<Tabs>
+  <TabItem value="apple" label="Apple">This is an apple 🍎</TabItem>
+  <TabItem value="orange" label="Orange">This is an orange 🍊</TabItem>
+  <TabItem value="banana" label="Banana">This is a banana 🍌</TabItem>
+</Tabs>
+
+:::
+```
 
 :::tip Use tabs in admonitions
 
@@ -91,21 +194,40 @@ Some **content** with _Markdown_ `syntax`.
 
 :::
 
-
 ## Math
 
+
+```mdx title="docs/mdx-features.mdx"
+Let $f\colon[a,b]\to\R$ be Riemann integrable. Let $F\colon[a,b]\to\R$ be
+$F(x)=\int_{a}^{x} f(t)\,dt$. Then $F$ is continuous, and at all $x$ such that
+$f$ is continuous at $x$, $F$ is differentiable at $x$ with $F'(x)=f(x)$.
+```
 
 Let $f\colon[a,b]\to\R$ be Riemann integrable. Let $F\colon[a,b]\to\R$ be
 $F(x)=\int_{a}^{x} f(t)\,dt$. Then $F$ is continuous, and at all $x$ such that
 $f$ is continuous at $x$, $F$ is differentiable at $x$ with $F'(x)=f(x)$.
 
+```mdx title="docs/mdx-features.mdx"
+$$
+I = \int_0^{2\pi} \sin(x)\,dx
+$$
+```
 
 $$
 I = \int_0^{2\pi} \sin(x)\,dx
 $$
 
-
 ## Diagrams
+
+````md title="Example Mermaid diagram"
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+````
 
 ```mermaid
 graph TD;
@@ -117,15 +239,42 @@ graph TD;
 
 ## Code Block
 
+````md
+```jsx title="/src/components/HelloCodeTitle.js"
+function HelloCodeTitle(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+```
+````
+
 ```jsx title="/src/components/HelloCodeTitle.js"
 function HelloCodeTitle(props) {
   return <h1>Hello, {props.name}</h1>;
 }
 ```
 
+````md
 ```js
-console.log('Every repo must come with a mascot.');
+function HighlightSomeText(highlight) {
+  if (highlight) {
+    // highlight-next-line
+    return 'This text is highlighted!';
+  }
+
+  return 'Nothing highlighted';
+}
+
+function HighlightMoreText(highlight) {
+  // highlight-start
+  if (highlight) {
+    return 'This range is highlighted!';
+  }
+  // highlight-end
+
+  return 'Nothing highlighted';
+}
 ```
+````
 
 ```js
 function HighlightSomeText(highlight) {
@@ -148,6 +297,7 @@ function HighlightMoreText(highlight) {
 }
 ```
 
+````md
 ```jsx {1,4-6,11}
 import React from 'react';
 
@@ -161,6 +311,39 @@ function MyComponent(props) {
 
 export default MyComponent;
 ```
+````
+
+
+```jsx {1,4-6,11}
+import React from 'react';
+
+function MyComponent(props) {
+  if (props.isBar) {
+    return <div>Bar</div>;
+  }
+
+  return <div>Foo</div>;
+}
+
+export default MyComponent;
+```
+
+
+````md
+```jsx {1,4-6,11} showLineNumbers
+import React from 'react';
+
+function MyComponent(props) {
+  if (props.isBar) {
+    return <div>Bar</div>;
+  }
+
+  return <div>Foo</div>;
+}
+
+export default MyComponent;
+```
+````
 
 ```jsx {1,4-6,11} showLineNumbers
 import React from 'react';
@@ -210,6 +393,17 @@ class HelloWorld {
 
 ## Importing Code 
 
+```sh
+npm install --save raw-loader
+```
+
+```mdx title="docs/mdx-features.mdx"
+import CodeBlock from '@theme/CodeBlock';
+import MyComponentSource from '!!raw-loader!./myComponent';
+
+<CodeBlock language="jsx">{MyComponentSource}</CodeBlock>
+```
+
 import CodeBlock from '@theme/CodeBlock';
 import MyComponentSource from '!!raw-loader!./myComponent';
 
@@ -217,10 +411,23 @@ import MyComponentSource from '!!raw-loader!./myComponent';
 
 ## Importing Markdown
 
+```mdx title="docs/mdx-features.mdx"
+import PartialExample from './_markdown-partial-example.mdx';
+
+<PartialExample name="Sebastien" />
+```
+
 import PartialExample from './_markdown-partial-example.mdx';
 
 <PartialExample name="Sebastien" />
 
+```mdx title="docs/mdx-features.mdx"
+import PartialExample1 from './skia.md';
+
+<PartialExample1 />
+```
+
+It imports file from [skia.md](./skia.md):
 
 import PartialExample1 from './skia.md';
 
