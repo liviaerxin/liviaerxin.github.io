@@ -17,6 +17,35 @@ Tech Stacks behind:
   - Internationalization (i18n)
 - `GitHub Actions`: deploy to GitHub Pages.
 
+Project Structure:
+
+```sh
+❯ tree -L 3
+.
+├── README.md
+├── _layouts
+├── _ssg
+│   └── docusaurus
+│       ├── babel.config.js
+│       ├── build
+│       ├── docusaurus.config.js
+│       ├── package-lock.json
+│       ├── package.json
+│       ├── sidebars.js
+│       ├── src
+│       └── static
+├── assets
+├── attachments
+├── blog
+└── docs
+```
+
+Local test:
+
+```sh
+npm run start --prefix _ssg/docusaurus
+npm run build --prefix _ssg/docusaurus
+```
 
 [Foam: A personal knowledge management and sharing system for VSCode](https://github.com/foambubble/foam)
 

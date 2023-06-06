@@ -5,6 +5,7 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const math = require('remark-math');
 const katex = require('rehype-katex');
+const simplePlantUML = require("@akebifiky/remark-simple-plantuml");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -52,7 +53,7 @@ const config = {
           path: '../../docs',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
-          remarkPlugins: [math],
+          remarkPlugins: [math, simplePlantUML],
           rehypePlugins: [katex],
         },
         blog: {
