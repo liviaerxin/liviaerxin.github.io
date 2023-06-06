@@ -5,7 +5,7 @@ foam_template:
   filepath: blog/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md
 authors:
   - frank
-description: ${1:$FOAM_TITLE}
+description: ${FOAM_TITLE}
 keywords:
   - docs
   - docusaurus
@@ -17,7 +17,7 @@ date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}
 draft: false
 ---
 
-# ${1:$FOAM_TITLE}
+# ${FOAM_TITLE}
 
 Foam includes note templates!
 This allows you to easily create notes that have similar structure without having to use copy/paste :)
