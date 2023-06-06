@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[5615],{4380:a=>{a.exports=JSON.parse('{"label":"dynamic library","permalink":"/blog/tags/dynamic-library","allTagsPath":"/blog/tags","count":1}')}}]);
