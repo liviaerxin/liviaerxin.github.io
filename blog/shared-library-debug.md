@@ -140,8 +140,27 @@ ctypes.CDLL("libOpenCvSharpExtern.so")
 
 ```c
 dlopen()
+DYLD_PRINT_LIBRARIES=1 dlopen_test.out /opt/vcpkg/installed/arm64-osx-dynamic/lib/libpng16.dylib
 ```
 
 ```sh
 objdump -p /usr/local/lib/libOpenCvSharpExtern.so
+```
+
+### Using `nm`
+
+Show list of symbols:
+
+```sh
+❯ nm -g /opt/vcpkg/installed/arm64-osx-dynamic/lib/libintl.8.dylib
+                 U _CFArrayGetCount
+                 U _CFArrayGetValueAtIndex
+                 U _CFGetTypeID
+                 U _CFLocaleCopyPreferredLanguages
+                 U _CFPreferencesCopyAppValue
+                 U _CFRelease
+                 U _CFStringGetCString
+                 U _CFStringGetTypeID
+                 U __DefaultRuneLocale
+                 U ___CFConstantStringClassReference
 ```

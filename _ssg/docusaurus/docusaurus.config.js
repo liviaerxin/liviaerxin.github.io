@@ -49,7 +49,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
           path: '../../docs',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
@@ -60,11 +60,15 @@ const config = {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
           path: '../../blog', // './blog' for local test
           blogTitle: 'Docusaurus blog!',
           blogDescription: 'A Docusaurus powered blog!',
-          postsPerPage: 'ALL',
+          postsPerPage: 5,
+          blogSidebarCount: 'ALL',
+          blogSidebarTitle: 'All our posts',
+          remarkPlugins: [math, simplePlantUML],
+          rehypePlugins: [katex],
           readingTime: ({ content, frontMatter, defaultReadingTime }) =>
             frontMatter.hide_reading_time
               ? undefined

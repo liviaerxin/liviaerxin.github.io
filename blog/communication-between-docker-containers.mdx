@@ -1,0 +1,129 @@
+---
+authors:
+  - frank
+description: Communication Between Docker Containers
+keywords:
+  - docker container
+  - network
+  - postgres
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - docker container
+  - communication
+  - network
+  - postgres
+date: 2023-06-08
+draft: false
+---
+
+# Communication Between Docker Containers
+
+Sometimes between docker containers, we need connect container B from container A to do fast test, etc. For most well-known example, we have `FastAPI` app container connect to `postgres` db container. In addition, it's likely to do some sql test on `PostgreSQL` db container in a third container.
+
+Here some methods we can use.
+
+## Using `--link` flag(Legacy)
+
+Start a `postgres db` container:
+
+```sh
+$ docker run --rm --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
+```
+
+Run a `postgres client` container to connect the `db` container:
+
+```sh
+$ docker run -it --rm --link postgres-db:db postgres psql -h db -U postgres
+psql (14.3)
+Type "help" for help.
+
+postgres=# SELECT 1;
+ ?column? 
+----------
+        1
+(1 row)
+```
+
+Or run a utility container:
+
+```sh
+$ docker run -it --rm --link postgres-db:db busybox sh
+# in `busybox`
+busybox$ ping db
+```
+
+## Using Default Bridge Network
+
+If you are running your container without specifying attached `network`, it will use the docker `default bridge network`.
+
+However The `default bridge network` allows container-to-container communication by `IP address` only. To use `hostname` or `alias name` in connecting rather than IP address, see the following methods.
+
+> So before connecting, we need get the container IP address by `docker inspect`.
+
+Start a `postgres db` container:
+
+```sh
+$ docker run --rm --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
+```
+
+Get the IP address of the `postgres db` container:
+
+```sh
+$ docker inspect mynginx | grep IPAddress
+            "IPAddress": "172.17.0.2",
+```
+
+Run a `postgres client` container to connect the `db` container:
+
+```sh
+$ docker run -it --rm postgres psql -h "172.17.0.2" -U postgres
+psql (14.3)
+Type "help" for help.
+
+postgres=# SELECT 1;
+ ?column? 
+----------
+        1
+(1 row)
+```
+
+## Using Private Defined Bridge Network
+
+The `private defined bridge network` will give you more privacy that it only allows only containers belonging to it can talk to each other.
+
+Moreover, you can use `hostname` or `alias name` to connect without regard of `IP address` changing due to re-start.
+
+Create a `private bridge network`:
+
+```sh
+docker network create postgres-net
+```
+
+Start a `postgres db` container:
+
+```sh
+$ docker run --rm --net postgres-net --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
+```
+
+Run a `postgres client` container to connect the `db` container:
+
+```sh
+$ docker run -it --rm --net postgres-net postgres psql -h postgres-db -U postgres
+psql (14.3)
+Type "help" for help.
+
+postgres=# SELECT 1;
+ ?column? 
+----------
+        1
+(1 row)
+```
+
+## Using Docker Compose
+
+Actually, `docker compose` will create its `private bridge network`, and when it start containers, containers will be attached to that network in default.
+
+import CodeBlock from '@theme/CodeBlock';
+import CodeSource from '!!raw-loader!./docker-compose-postgres.yml';
+
+<CodeBlock language="yaml" title="docker-compose-postgres.yml">{CodeSource}</CodeBlock>

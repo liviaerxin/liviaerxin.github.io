@@ -1,0 +1,24 @@
+# Use below credentials to access in `adminer` web to access `db`,
+# server:   db  (db1, db2 are also available!)
+# user:     postgres
+# password: example 
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      # POSTGRES_USER: postgres  # `postgres` in default.
+      POSTGRES_PASSWORD: example
+    networks:
+      default:
+        aliases:
+          - db1
+          - db2
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
