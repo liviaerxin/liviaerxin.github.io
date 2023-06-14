@@ -3,13 +3,14 @@ authors:
   - frank
 description: Communication Between Docker Containers
 keywords:
-  - docker container
+  - docker
+  - container
   - network
   - postgres
+  - communication
 image: https://i.imgur.com/mErPwqL.png
 tags:
-  - docker container
-  - communication
+  - docker
   - network
   - postgres
 date: 2023-06-08
@@ -30,7 +31,7 @@ Start a `postgres db` container:
 $ docker run --rm --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
 ```
 
-Run a `postgres client` container to connect the `db` container:
+Run a `postgres client` container to connect the `db` container with user `postgres` and password `mysecretpassword`:
 
 ```sh
 $ docker run -it --rm --link postgres-db:db postgres psql -h db -U postgres
