@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[4907],{5794:e=>{e.exports=JSON.parse('{"label":"fastapi","permalink":"/docs/tags/fastapi","allTagsPath":"/docs/tags","count":1,"items":[{"id":"lock-endpoint-request","title":"Lock Http Request","description":"Lock Endpoint Request At A Time","permalink":"/docs/lock-endpoint-request"}]}')}}]);

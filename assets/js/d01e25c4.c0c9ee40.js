@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[649],{750:e=>{e.exports=JSON.parse('{"label":"python","permalink":"/docs/tags/python","allTagsPath":"/docs/tags","count":1,"items":[{"id":"lock-endpoint-request","title":"Lock Http Request","description":"Lock Endpoint Request At A Time","permalink":"/docs/lock-endpoint-request"}]}')}}]);
