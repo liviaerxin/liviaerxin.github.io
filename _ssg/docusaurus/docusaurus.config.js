@@ -83,19 +83,6 @@ const config = {
 
   plugins: [
     [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "family",
-        path: "../../family",
-        routeBasePath: "family",
-        sidebarPath: require.resolve("./sidebars.js"),
-        editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
-        breadcrumbs: false,
-      },
-    ],
-    [
       '@docusaurus/plugin-content-blog',
       {
         /**
@@ -135,7 +122,6 @@ const config = {
           },
           { to: '/blog', label: 'Blog', position: 'right' },
           { to: "/journal", label: "Journal", position: "right" },
-          { to: "/family", label: "Family", position: "right" },
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',
