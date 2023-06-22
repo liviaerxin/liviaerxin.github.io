@@ -1,0 +1,58 @@
+---
+foam_template:
+  name: Docs Docusaurus Template
+  description: Creates Docusaurus docs/slip
+  filepath: docs/lock-http-request.md
+sidebar_label: Lock Http Request
+description: Lock Endpoint Request At A Time
+keywords:
+  - limit only one access to endpoint at a time
+  - lock access to endpoint at a time
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - fastapi
+  - python
+  - http
+last_update:
+  date: 2023-06-21
+  author: frank
+---
+
+# FastAPI Best Practices
+
+## Limit Only One Access to Endpoint at a Time
+
+Limit only one access to an endpoint at a time with `asyncio.Lock` in `asyncio` in **FastAPI**.
+
+import CodeBlock from '@theme/CodeBlock';
+import CodeSource from '!!raw-loader!../code-snippets/app_request_lock.py';
+
+<CodeBlock language="python" title="../code-snippets/app_request_lock.py">{CodeSource}</CodeBlock>
+
+> NOTE: The `asyncio.Lock` only take effect in the `asyncio` loop level, if using `unicorn` to run server in multiple processes, it can not lock the request! 
+
+No limitation.
+
+import CodeSource1 from '!!raw-loader!../code-snippets/app_request_nolock.py';
+
+<CodeBlock language="python" title="../code-snippets/app_request_nolock.py">{CodeSource1}</CodeBlock>
+
+
+Limit only one access to an endpoint at a time with `thread.Lock`
+
+Limit only one access to an endpoint at a time with `process.Lock`
+
+## Attach A Background Service Into the Application
+
+Run a background service behind the FastAPI server:
+
+- share the same `asyncio` main loop with the server
+- the service start when the server starts and stop when the server stops
+- it should be light-weight and non-CPU heavy workload
+
+[Coroutines and Tasks — Python 3.11.4 documentation](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel)
+[Event Loop — Python 3.11.4 documentation](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.create_task)
+
+import CodeSourceAppBackgroundService from '!!raw-loader!../code-snippets/app_background_service.py';
+
+<CodeBlock language="python" title="../code-snippets/app_background_service.py">{CodeSourceAppBackgroundService}</CodeBlock>
