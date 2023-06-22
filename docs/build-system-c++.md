@@ -3,6 +3,7 @@ title: Build System C/C++
 description: ""
 created: 2023-05-22
 tags: [Make, Ninja, MSBuild, CMake, Meson]
+enableComments: true # for Gisqus
 ---
 
 # C/C++ Build System

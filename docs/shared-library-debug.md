@@ -18,6 +18,7 @@ tags:
   - linux
 date: 2023-06-02
 draft: false
+enableComments: true # for Gisqus
 ---
 
 # Debug Shared Library

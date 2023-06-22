@@ -15,6 +15,7 @@ tags:
   - docusaurus
 date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}
 draft: false
+enableComments: true # for Gisqus
 ---
 
 # ${FOAM_TITLE}
