@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/blog</id>
     <title>My Site Blog</title>
-    <updated>2023-06-22T09:06:26.000Z</updated>
+    <updated>2023-06-22T14:31:51.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/blog"/>
     <subtitle>My Site Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Todo]]></title>
         <id>https://liviaerxin.github.io/blog/todo</id>
         <link href="https://liviaerxin.github.io/blog/todo"/>
-        <updated>2023-06-22T09:06:26.000Z</updated>
+        <updated>2023-06-22T14:31:51.000Z</updated>
         <summary type="html"><![CDATA[You can create todos in Foam.]]></summary>
         <content type="html"><![CDATA[<p>You can create todos in Foam.</p><ul><li>[] Host this wiki project with Jekyll and GitHub Pages. [<!-- -->[inbox#Build Personal Wiki Work Station]<!-- -->]<ul><li>[] use minimal theme</li><li>[] apply navigation bar</li><li>[] set up search bar</li></ul></li><li>[] Improve routing table understanding. [<!-- -->[network-diagnosis#Network Diagnosis]<!-- -->]</li><li>[] Test serialization/de-serialization performance for json, msgpack and protobuf.</li><li>[] Try Homebridge on Jetson nano.</li><li>[] Research on Wayland. [<!-- -->[graphical-user-interface#WayLand]<!-- -->]</li><li>[] Learn GLFW<ul><li><a href="https://cplusplus.com/articles/NvCRko23/" target="_blank" rel="noopener noreferrer">A simple OpenGL animation with glfw, ste - C++ Articles</a></li><li><a href="https://carette.xyz/posts/opengl_and_cpp_on_m1_mac/" target="_blank" rel="noopener noreferrer">The case of OpenGL, in C++, on m1 mac - Antonin Carette</a></li><li><a href="https://github.com/datenwolf/linmath.h" target="_blank" rel="noopener noreferrer">GitHub - datenwolf/linmath.h: a lean linear math library, aimed at graphics programming. Supports vec3, vec4, mat4x4 and quaternions</a></li></ul></li></ul>]]></content>
     </entry>
