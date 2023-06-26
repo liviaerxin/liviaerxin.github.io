@@ -43,8 +43,12 @@ Project Structure:
 Local test:
 
 ```sh
+# dev
 npm run start --prefix _ssg/docusaurus
+
+# prod
 npm run build --prefix _ssg/docusaurus
+npm run serve --prefix _ssg/docusaurus
 ```
 
 [Foam: A personal knowledge management and sharing system for VSCode](https://github.com/foambubble/foam)
