@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[9938],{4520:e=>{e.exports=JSON.parse('{"label":"Make","permalink":"/docs/tags/make","allTagsPath":"/docs/tags","count":1,"items":[{"id":"c++-build-system","title":"Build System C/C++","description":"","permalink":"/docs/c++-build-system"}]}')}}]);
