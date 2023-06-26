@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[8142],{5922:e=>{e.exports=JSON.parse('{"label":"dotfiles","permalink":"/docs/tags/dotfiles","allTagsPath":"/docs/tags","count":1,"items":[{"id":"dotfiles-guide","title":"Dotfiles Guide","description":"Dotfiles Guide","permalink":"/docs/dotfiles-guide"}]}')}}]);
