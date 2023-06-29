@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1342],{6018:i=>{i.exports=JSON.parse('{"label":"windows","permalink":"/docs/tags/windows","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wifi-autoswitch-windows","title":"WiFi AutoSwitch Windows","description":"WiFi AutoSwitch Windows","permalink":"/docs/wifi-autoswitch-windows"}]}')}}]);

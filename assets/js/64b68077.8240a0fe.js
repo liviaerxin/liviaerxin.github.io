@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[4105],{1469:s=>{s.exports=JSON.parse('{"label":"MSBuild","permalink":"/docs/tags/ms-build","allTagsPath":"/docs/tags","count":1,"items":[{"id":"c-build-system","title":"Build System C/C++","description":"","permalink":"/docs/c-build-system"}]}')}}]);

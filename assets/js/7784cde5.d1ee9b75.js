@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[6847],{1009:e=>{e.exports=JSON.parse('{"label":"c++","permalink":"/docs/tags/c","allTagsPath":"/docs/tags","count":1,"items":[{"id":"c++-package-management","title":"C++ Package Management","description":"C++ Package Management","permalink":"/docs/c++-package-management"}]}')}}]);

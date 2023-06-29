@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1222],{9944:e=>{e.exports=JSON.parse('{"label":"cuda","permalink":"/docs/tags/cuda","allTagsPath":"/docs/tags","count":1,"items":[{"id":"learn-cuda","title":"Learn CUDA","description":"Learn CUDA","permalink":"/docs/learn-cuda"}]}')}}]);
