@@ -15,13 +15,14 @@ tags:
   - debug
   - shared library
   - osx
+  - windows
   - linux
 date: 2023-06-02
 draft: false
 enableComments: true # for Gisqus
 ---
 
-# Debug Shared Library
+# Inspect Shared Library
 
 Concepts:
 
@@ -165,3 +166,26 @@ Show list of symbols:
                  U __DefaultRuneLocale
                  U ___CFConstantStringClassReference
 ```
+
+### Using `dumpbin`
+
+Available in Windows
+
+Show dependent dynamic libraries(`DLL`):
+
+```powershell
+dumpbin /dependents your_dll_file.dll
+```
+
+### Using `Microsoft.PowerShell`
+
+```powershell
+(Get-Command "C:\Path\To\Thing.dll").FileVersionInfo
+(Get-Item "C:\Windows\System32\nvcuda.dll").VersionInfo
+```
+
+## References
+
+[Additional MSVC Build Tools](https://learn.microsoft.com/en-us/cpp/build/reference/c-cpp-build-tools)
+
+[How to Show All Shared Libraries Used by Executables in Linux](https://www.baeldung.com/linux/show-shared-libraries-executables)
