@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[5698],{5997:e=>{e.exports=JSON.parse('{"label":"ffmpeg","permalink":"/docs/tags/ffmpeg","allTagsPath":"/docs/tags","count":1,"items":[{"id":"learn-ffmpeg","title":"Learn FFmpeg","description":"Learn FFmpeg","permalink":"/docs/learn-ffmpeg"}]}')}}]);
