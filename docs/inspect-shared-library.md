@@ -184,6 +184,19 @@ dumpbin /dependents your_dll_file.dll
 (Get-Item "C:\Windows\System32\nvcuda.dll").VersionInfo
 ```
 
+## Useful Environment Variables
+
+OSX:
+
+- `DYLD_LIBRARY_PATH`
+- `DYLD_PRINT_LIBRARIES`
+- `DYLD_PRINT_STATISTICS`
+
+Linux:
+
+- `LD_LIBRARY_PATH`
+- `LD_DEBUG=libs`
+
 ## References
 
 [Additional MSVC Build Tools](https://learn.microsoft.com/en-us/cpp/build/reference/c-cpp-build-tools)

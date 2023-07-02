@@ -3,7 +3,6 @@ sidebar_label: Learn CMake
 description: Learn CMake
 keywords:
   - cmake
-  - interface
   - project structure
 image: https://i.imgur.com/mErPwqL.png
 tags:
@@ -16,11 +15,15 @@ last_update:
 
 # Learn CMake
 
+It’s all about targets and properties
+
+[[learn-vcpkg]](./learn-vcpkg.md)
+
 ## CMake Project Structure
 
-A typical **CMake** project can be regarded to has three `interfaces`(someone call it `trees`):
+A typical **CMake** project can be regarded to has three `Tree`:
 
-**Source Interface**:
+**Source Tree**:
 
 ```sh
 project_root
@@ -30,7 +33,7 @@ project_root
 └── simple_lib.hpp
 ```
 
-**Build Interface**:
+**Build Tree**:
 
 ```sh
 project_root
@@ -42,9 +45,9 @@ project_root
     └── CMakeCache.txt
 ```
 
-**Install Interface**:
+**Install Tree**:
 
-This interface is located in the `CMAKE_INSTALL_PREFIX`, of which default value is platform-dependent. By default, it is set to `/usr/local` on Unix-like systems (Linux, macOS) and `C:/Program Files/<Project Name>` on Windows..
+This tree is located in the `CMAKE_INSTALL_PREFIX`, of which default value is platform-dependent. By default, it is set to `/usr/local` on Unix-like systems (Linux, macOS) and `C:/Program Files/<Project Name>` on Windows..
 
 To change it, you can pass `-DCMAKE_INSTALL_PREFIX` argument during CMake `configuration` step, like this:
 
@@ -60,7 +63,7 @@ cmake --install build --prefix "/my/custom/installation/path"
 
 It's recommended to use a default install layout as `GNUInstallDirs`.
 
-When setting `cmake --install build --prefix "./install`, the **install** interface will be like:
+When setting `cmake --install build --prefix "./install`, the **install** tree will be like:
 
 ```sh
 project_root
@@ -86,3 +89,33 @@ project_root
        └── documentation
 ```
 
+## How CMake Works
+
+A typical workflow of CMake includes `Configure`, `Build` and `Install` steps, combined with the above mentioned `Trees` concepts.
+
+`Configure` step will generate a sort of configuration files, the most important ones among them are `CMakeCache.txt`, `cmake_install.cmake` and `Makefile` if using `Make` as building system. With these generated configuration files, the later steps `Build` and `Install` will run according to them.
+`Build` step will generate the build binary directory.
+`Install` step will generate the install binary directory.
+
+## How to make your package be found by others by `find_package()`
+
+package configuration files: `find_package`
+
+[Title](https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#importing-targets)
+
+## RPATH in CMake
+
+[^rpath]
+
+## CMake Variables
+
+There are some useful and important CMake variables that will be introduced here:
+
+`CMAKE_PREFIX_PATH`
+
+`CMAKE_IGNORE_PATH`
+
+## References
+
+[CMake hands-on workshop — CMake Workshop](https://enccs.github.io/cmake-workshop/)
+[^rpath]: [RPATH handling from official cmake](https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling)
