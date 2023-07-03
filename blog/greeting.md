@@ -1,6 +1,6 @@
 ---
 description: Create a doc page with rich content.
-id: doc-with-tags
+slug: doc-with-tags
 tags:
   - Demo
   - Getting started

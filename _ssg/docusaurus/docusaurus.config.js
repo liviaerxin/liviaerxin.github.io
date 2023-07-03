@@ -45,28 +45,30 @@ const config = {
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
-          path: '../../docs',
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
-          remarkPlugins: [math, simplePlantUML],
-          rehypePlugins: [katex],
-        },
+        docs: false, // Optional: disable the docs plugin
+        // {
+        //   sidebarPath: require.resolve('./sidebars.js'),
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
+        //   path: '../../docs',
+        //   showLastUpdateAuthor: true,
+        //   showLastUpdateTime: true,
+        //   remarkPlugins: [math, simplePlantUML],
+        //   rehypePlugins: [katex],
+        // },
         blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
+          routeBasePath: '/',
           path: '../../blog', // './blog' for local test
           blogTitle: 'Docusaurus blog!',
           blogDescription: 'A Docusaurus powered blog!',
           postsPerPage: 5,
           blogSidebarCount: 'ALL',
           blogSidebarTitle: 'All our posts',
+          showReadingTime: true,
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
           remarkPlugins: [math, simplePlantUML],
           rehypePlugins: [katex],
           readingTime: ({ content, frontMatter, defaultReadingTime }) =>
@@ -114,12 +116,6 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'right',
-            label: 'Docs',
-          },
           { to: '/blog', label: 'Blog', position: 'right' },
           { to: "/journal", label: "Journal", position: "right" },
           {

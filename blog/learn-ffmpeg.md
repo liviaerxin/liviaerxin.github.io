@@ -23,11 +23,11 @@ Examples of Container and Codec lists in Chrome[^chrome]:
 
 Video Container Format:
 
-- MP4
+- MP4 [`.mp4` file extension]
 - Ogg
 - WebM
 - WAV
-- HLS
+- HLS [`.m3u8` file extension]
 
 Video Codec Format:
 
@@ -84,7 +84,7 @@ ffmpeg -i input.avi -c:v libx264 -preset fast -crf 23 output.mp4
 # To `mp4` container and `mpeg4` codecs
 ffmpeg -i input.avi -c:v libxvid -preset fast output.mp4
 
-# To be friendly for streaming, adding necessary metadata to playback faster! 
+# To be friendly for streaming, adding necessary metadata to begin playback faster! 
 ffmpeg -i input.avi -c:v libx264 -preset fast -crf 23 -movflags +faststart output.mp4
 
 # Remove audio
