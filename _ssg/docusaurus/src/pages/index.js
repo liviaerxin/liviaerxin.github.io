@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomePage from '../components/Homepage';
 
 import styles from './index.module.css';
 
@@ -15,11 +16,11 @@ function HomepageHeader() {
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
+          <HomepageFeatures
             className="button button--secondary button--lg"
             to="/docs/intro">
             Docusaurus Tutorial - 5min ⏱️
-          </Link>
+          </HomepageFeatures>
         </div>
       </div>
     </header>
@@ -28,14 +29,21 @@ function HomepageHeader() {
 
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
+
+  const lines = [
+		'Developer, teacher, dreamer & tech lover',
+    'I love participating at dev events',
+    'and I am also an open-source enthusiast.'
+	];
+
   return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      {/* <HomepageHeader /> */}
-      <main>
-        {/* <HomepageFeatures /> */}
-      </main>
-    </Layout>
+		<Layout
+			title={siteConfig.title}
+			description={siteConfig.customFields.description}
+		>
+			<main className={styles.heroContainer}>
+				<HomePage {...siteConfig} descriptionLines={lines} />
+			</main>
+		</Layout>
   );
 }
