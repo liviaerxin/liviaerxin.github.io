@@ -46,7 +46,7 @@
 
 ## Principles
 
-![MVVM Application](mvvm-application.png)
+![MVVM Application](../img/mvvm-application.png)
 
 - View-to-ViewModel one-to-one/many-to-one mapping
 - ViewModel-to-ViewModel communication

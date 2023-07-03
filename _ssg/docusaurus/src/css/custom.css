@@ -6,25 +6,33 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #003b7a;
-  --ifm-color-primary-dark: #00356e;
-  --ifm-color-primary-darker: #003268;
-  --ifm-color-primary-darkest: #002955;
-  --ifm-color-primary-light: #004186;
-  --ifm-color-primary-lighter: #00448c;
-  --ifm-color-primary-lightest: #004d9f;
+  --ifm-color-primary: #7986cb;
+  --ifm-color-primary-dark: #6271c2;
+  --ifm-color-primary-darker: #5666bd;
+  --ifm-color-primary-darkest: #3f4fa3;
+  --ifm-color-primary-light: #909bd4;
+  --ifm-color-primary-lighter: #9ca6d9;
+  --ifm-color-primary-lightest: #bfc5e6;
+  --ifm-footer-background-color: var(--ifm-background-color);
+  --ifm-border-color: #202225;
+
+  --ifm-font-color-secondary: #607d8b;
+  --ifm-code-font-size: 95%;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+html[data-theme='dark'] {
+  --ifm-background-color: #202225;
+  --ifm-footer-background-color: var(--ifm-background-color);
+
+  --ifm-color-primary: #ff9800;
+  --ifm-color-primary-dark: #e68900;
+  --ifm-color-primary-darker: #d98100;
+  --ifm-color-primary-darkest: #b36a00;
+  --ifm-color-primary-light: #ffa21a;
+  --ifm-color-primary-lighter: #ffa726;
+  --ifm-color-primary-lightest: #ffb74d;
+
+  --ifm-border-color: #ffffff;
 }
 
 [data-theme='light'] .DocSearch {
@@ -65,4 +73,32 @@
     var(--ifm-color-emphasis-200) 0%,
     var(--ifm-color-emphasis-100) 100%
   );
+}
+
+
+.svg-inline--fa.fa-w-16 {
+  width: 1.5em;
+}
+
+.svg-inline--fa.fa-w-14 {
+  width: 1.3125em;
+}
+
+.footer__links {
+  margin: 0;
+}
+
+.footer__item {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+.footer__items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer__col {
+  margin-bottom: 0;
 }

@@ -54,3 +54,9 @@ npm run serve --prefix _ssg/docusaurus
 [Foam: A personal knowledge management and sharing system for VSCode](https://github.com/foambubble/foam)
 
 [Docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
+
+## Disclaim
+
+To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
+
+Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design my blog website by referring his [blog library](https://github.com/HunteRoi/tinaeldevresse.eu).
