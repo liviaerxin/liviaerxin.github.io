@@ -60,3 +60,13 @@ npm run serve --prefix _ssg/docusaurus
 To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
 
 Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design my blog website by referring his [blog library](https://github.com/HunteRoi/tinaeldevresse.eu).
+
+[Grid | Infima](https://infima.dev/docs/layout/grid)
+
+[Bootstrap Icons · Official open source SVG icon library for BootstrapBootstrapGitHubTwitterOpen CollectiveBootstrap](https://icons.getbootstrap.com/)
+
+[Font Awesome](https://fontawesome.com/)
+
+[Tabler Icons - 1400+ Open source free SVG icons](https://tablericons.com/)
+
+[React SVG: How to use SVGs best in React - CopyCat Blog](https://www.copycat.dev/blog/react-svg/)

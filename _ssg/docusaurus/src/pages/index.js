@@ -9,7 +9,7 @@ import HomePage from '../components/Homepage';
 import styles from './index.module.css';
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
@@ -28,22 +28,56 @@ function HomepageHeader() {
 }
 
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
 
   const lines = [
-		'Developer, teacher, dreamer & tech lover',
+    'Developer, teacher, dreamer & tech lover',
     'I love participating at dev events',
     'and I am also an open-source enthusiast.'
-	];
+  ];
 
+  const skills = [
+    {
+      image: 'img/github-tile.svg',
+      title: 'xxxx',
+      descriptionLines: [
+        'xxxx',
+        'xxxx'
+      ]
+    },
+    {
+      image: 'img/github-tile.svg',
+      title: 'xxxx',
+      descriptionLines: [
+        'xxxx',
+        'xxxx'
+      ]
+    },
+    {
+      image: 'img/github-tile.svg',
+      title: 'xxxx',
+      descriptionLines: [
+        'xxxx',
+        'xxxx'
+      ]
+    },
+    {
+      image: 'img/github-tile.svg',
+      title: 'xxxx',
+      descriptionLines: [
+        'xxxx',
+        'xxxx'
+      ]
+    }
+  ]
   return (
-		<Layout
-			title={siteConfig.title}
-			description={siteConfig.customFields.description}
-		>
-			<main className={styles.heroContainer}>
-				<HomePage {...siteConfig} descriptionLines={lines} />
-			</main>
-		</Layout>
+    <Layout
+      title={siteConfig.title}
+      description={siteConfig.customFields.description}
+    >
+      <main className={styles.heroContainer}>
+        <HomePage {...siteConfig} descriptionLines={lines} skills={skills}/>
+      </main>
+    </Layout>
   );
 }

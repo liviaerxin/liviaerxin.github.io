@@ -23,8 +23,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'liviaerxin', // Usually your GitHub org/user name.
-  projectName: 'liviaerxin.github.io', // Usually your repo name.
+  organizationName: websiteConfig.GITHUB_USER, // Usually your GitHub org/user name.
+  projectName: websiteConfig.GITHUB_REPOSITORY, // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -94,9 +94,7 @@ const config = {
         //   remarkPlugins: [math, simplePlantUML],
         //   rehypePlugins: [katex],
         // },
-        blog:
-        // false,
-        {
+        blog: {
           // routeBasePath: '/',
           path: '../../blog', // './blog' for local test
           blogTitle: 'Docusaurus blog!',
@@ -175,7 +173,7 @@ const config = {
         cacheTime: 6000 * 1000, // 600 sec - cache purge period
         changefreq: 'weekly',
         priority: 0.5
-    }
+      }
     }),
 };
 
