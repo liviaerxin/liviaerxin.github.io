@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2551],{662:e=>{e.exports=JSON.parse('{"label":"dependency-injection","permalink":"/docs/tags/dependency-injection","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wpf/ioc","title":"IoC","description":"Introduction IoC, DIP, DI and IoC Container","permalink":"/docs/wpf/ioc"}]}')}}]);

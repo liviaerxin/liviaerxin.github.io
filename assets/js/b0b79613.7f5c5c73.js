@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[7237],{3224:e=>{e.exports=JSON.parse('{"label":"react","permalink":"/docs/tags/react","allTagsPath":"/docs/tags","count":1,"items":[{"id":"mdx-features","title":"MDX Features of Docusaurus","description":"MDX Features","permalink":"/docs/mdx-features"}]}')}}]);

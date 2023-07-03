@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[4706],{3367:t=>{t.exports=JSON.parse('{"label":"http","permalink":"/docs/tags/http","allTagsPath":"/docs/tags","count":1,"items":[{"id":"fastapi-best-practices","title":"FastAPI Best Practices","description":"Lock Endpoint Request At A Time","permalink":"/docs/fastapi-best-practices"}]}')}}]);
