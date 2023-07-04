@@ -72,6 +72,24 @@ const config = {
         path: '../../journal',
       },
     ],
+    [
+      '@docusaurus/plugin-content-pages',
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: 'learning',
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: '/learning',
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: '../../learning',
+      },
+    ],
   ],
 
   presets: [
@@ -128,9 +146,10 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          {to: '/blog', label: 'Blog', position: 'right'},
-          {to: '/journal', label: 'Journal', position: 'right'},
-          {to: '/portfolio', label: 'Portfolio', position: 'right'},
+          {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/learning', label: 'Learning', position: 'left'},
+          {to: '/journal', label: 'Journal', position: 'left'},
+          {to: '/portfolio', label: 'Portfolio', position: 'left'},
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',
@@ -143,10 +162,10 @@ const config = {
           {
             items: [
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://${websiteConfig.GITHUB_USER}.github.io'><img class='svg-inline--fa fa-github fa-w-14' src="img/github-tile.svg"/></a>`,
+                html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://github.com/${websiteConfig.GITHUB_USER}'><img class='svg-inline--fa fa-github fa-w-14' src="img/github-tile.svg"/></a>`,
               },
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="img/stackoverflow-tile.svg" /></a>`,
+                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/users/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="img/stackoverflow-tile.svg" /></a>`,
               },
               {
                 html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://linkedin.com/in/${websiteConfig.LINKEDIN_USER}'><img class='svg-inline--fa fa-linkedin fa-w-14' src="img/linkedin-tile.svg" /></a>`,

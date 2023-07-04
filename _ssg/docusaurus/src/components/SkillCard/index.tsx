@@ -32,7 +32,8 @@ export default function SkillCard({skill}: {skill: SkillItem}) {
         <h2 className={clsx('text--center', styles.skill_card__title)}>
           {skill.title}
         </h2>
-        <div className={styles.skill_card__description}>
+        <div
+          className={clsx('padding-horiz--md', styles.skill_card__description)}>
           {/* {skill.descriptionLines &&
             skill.descriptionLines.map((d, i) => <p key={i}>{d}</p>)} */}
           {skill.description}

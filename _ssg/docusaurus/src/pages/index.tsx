@@ -40,7 +40,7 @@ export default function Home() {
   PROFILE.title =
     (PROFILE.title?.trim()?.length || 0) > 0 ? PROFILE.title : title;
   PROFILE.tagline =
-    (PROFILE.tagline?.trim()?.length || 0) > 0 ? PROFILE.tagline : title;
+    (PROFILE.tagline?.trim()?.length || 0) > 0 ? PROFILE.tagline : tagline;
 
   return (
     <Layout title={tagline} description={description}>

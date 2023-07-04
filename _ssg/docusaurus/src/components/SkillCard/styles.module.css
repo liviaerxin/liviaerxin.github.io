@@ -15,18 +15,17 @@
 
 .skill_card__title {
   font-family: 'Roboto Slab', serif;
-  font-size: 1.5em;
-  font-weight: lighter;
+  font-size: var(--ifm-h3-font-size);
+  font-weight: var(--ifm-font-weight-bold);
   -webkit-font-smoothing: antialiased;
   margin: 0 0 0.3rem 0;
-  color: var(--ifm-font-color-secondary);
 }
 
 .skill_card__description > p {
-  margin: 0;
+  margin: 10px 0 0 0;
   text-align: center;
-  font-size: 1.2em;
-  line-height: 1.5rem;
+  font-size: var(--ifm-h4-font-size);
+  line-height: 1.2rem;
   letter-spacing: 0.05rem;
   max-width: 100%;
 }
