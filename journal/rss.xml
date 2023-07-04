@@ -4,10 +4,18 @@
         <title>S' Wiki Blog</title>
         <link>https://liviaerxin.github.io/journal</link>
         <description>S' Wiki Blog</description>
-        <lastBuildDate>Mon, 03 Jul 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 04 Jul 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Tuesday, July 4, 2023]]></title>
+            <link>https://liviaerxin.github.io/journal/2023/07/04/</link>
+            <guid>https://liviaerxin.github.io/journal/2023/07/04/</guid>
+            <pubDate>Tue, 04 Jul 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Resumable upload]]></description>
+            <content:encoded><![CDATA[<p>Resumable upload</p><p><a href="https://tus.io/implementations" target="_blank" rel="noopener noreferrer">Implementations | tus.io</a></p><p><a href="https://javascript.info/resume-upload" target="_blank" rel="noopener noreferrer">Resumable file upload</a></p><p><a href="https://github.com/tus/tus-js-client" target="_blank" rel="noopener noreferrer">GitHub - tus/tus-js-client: A pure JavaScript client for the tus resumable upload protocol</a></p><p><a href="https://github.com/tus/tusd" target="_blank" rel="noopener noreferrer">GitHub - tus/tusd: Reference server implementation in Go of tus: the open protocol for resumable file uploads</a></p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Monday, July 3, 2023]]></title>
             <link>https://liviaerxin.github.io/journal/2023/07/03/</link>

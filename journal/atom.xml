@@ -2,11 +2,19 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/journal</id>
     <title>S' Wiki Blog</title>
-    <updated>2023-07-03T00:00:00.000Z</updated>
+    <updated>2023-07-04T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/journal"/>
     <subtitle>S' Wiki Blog</subtitle>
     <icon>https://liviaerxin.github.io/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Tuesday, July 4, 2023]]></title>
+        <id>https://liviaerxin.github.io/journal/2023/07/04/</id>
+        <link href="https://liviaerxin.github.io/journal/2023/07/04/"/>
+        <updated>2023-07-04T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Resumable upload]]></summary>
+        <content type="html"><![CDATA[<p>Resumable upload</p><p><a href="https://tus.io/implementations" target="_blank" rel="noopener noreferrer">Implementations | tus.io</a></p><p><a href="https://javascript.info/resume-upload" target="_blank" rel="noopener noreferrer">Resumable file upload</a></p><p><a href="https://github.com/tus/tus-js-client" target="_blank" rel="noopener noreferrer">GitHub - tus/tus-js-client: A pure JavaScript client for the tus resumable upload protocol</a></p><p><a href="https://github.com/tus/tusd" target="_blank" rel="noopener noreferrer">GitHub - tus/tusd: Reference server implementation in Go of tus: the open protocol for resumable file uploads</a></p>]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Monday, July 3, 2023]]></title>
         <id>https://liviaerxin.github.io/journal/2023/07/03/</id>
