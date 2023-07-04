@@ -55,7 +55,7 @@ npm run serve --prefix _ssg/docusaurus
 
 [Docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
 
-## Disclaim
+## References
 
 To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
 

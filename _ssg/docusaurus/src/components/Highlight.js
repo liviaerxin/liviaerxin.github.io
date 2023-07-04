@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function SharedHighlight({ children, color }) {
+export default function SharedHighlight({children, color}) {
   return (
     <span
       style={{

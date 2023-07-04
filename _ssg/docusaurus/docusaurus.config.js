@@ -5,13 +5,13 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const math = require('remark-math');
 const katex = require('rehype-katex');
-const simplePlantUML = require("@akebifiky/remark-simple-plantuml");
+const simplePlantUML = require('@akebifiky/remark-simple-plantuml');
 
 const websiteConfig = require('./website_config.json');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'S\' Wiki',
+  title: "S' Wiki",
   tagline: 'Dinosaurs are cool to focus on your content',
   favicon: 'img/favicon.ico',
 
@@ -53,11 +53,9 @@ const config = {
 
   plugins: [
     '@docusaurus/theme-mermaid',
+    [require.resolve('docusaurus-lunr-search'), {}],
     [
-      require.resolve("docusaurus-lunr-search"),
-      {
-      }],
-    ['@docusaurus/plugin-content-blog',
+      '@docusaurus/plugin-content-blog',
       {
         /**
          * Required for any multi-instance plugin
@@ -81,8 +79,7 @@ const config = {
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs:
-          false, // Optional: disable the docs plugin
+        docs: false, // Optional: disable the docs plugin
         // {
         //   sidebarPath: require.resolve('./sidebars.js'),
         //   // Please change this to your repo.
@@ -103,13 +100,14 @@ const config = {
           blogSidebarCount: 20,
           blogSidebarTitle: 'Recent posts',
           showReadingTime: true,
-          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
+          editUrl:
+            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
           remarkPlugins: [math, simplePlantUML],
           rehypePlugins: [katex],
-          readingTime: ({ content, frontMatter, defaultReadingTime }) =>
+          readingTime: ({content, frontMatter, defaultReadingTime}) =>
             frontMatter.hide_reading_time
               ? undefined
-              : defaultReadingTime({ content }),
+              : defaultReadingTime({content}),
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -124,15 +122,15 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'S\' Wiki',
+        title: "S' Wiki",
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
         },
         items: [
-          { to: '/blog', label: 'Blog', position: 'right' },
-          { to: "/journal", label: "Journal", position: "right" },
-          { to: "/portfolio", label: "Portfolio", position: "right" },
+          {to: '/blog', label: 'Blog', position: 'right'},
+          {to: '/journal', label: 'Journal', position: 'right'},
+          {to: '/portfolio', label: 'Portfolio', position: 'right'},
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',
@@ -145,18 +143,18 @@ const config = {
           {
             items: [
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://${websiteConfig.GITHUB_USER}.github.io'><img class='svg-inline--fa fa-github fa-w-14' src="img/github-tile.svg"/></a>`
+                html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://${websiteConfig.GITHUB_USER}.github.io'><img class='svg-inline--fa fa-github fa-w-14' src="img/github-tile.svg"/></a>`,
               },
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="img/stackoverflow-tile.svg" /></a>`
+                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="img/stackoverflow-tile.svg" /></a>`,
               },
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://linkedin.com/in/${websiteConfig.LINKEDIN_USER}'><img class='svg-inline--fa fa-linkedin fa-w-14' src="img/linkedin-tile.svg" /></a>`
+                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://linkedin.com/in/${websiteConfig.LINKEDIN_USER}'><img class='svg-inline--fa fa-linkedin fa-w-14' src="img/linkedin-tile.svg" /></a>`,
               },
-            ]
-          }
+            ],
+          },
         ],
-        copyright: `<span style='font-size: 10px;'>Copyright ©2020-present Frank. Built with Docusaurus.</span>`
+        copyright: `<span style='font-size: 10px;'>Copyright ©2020-present Frank. Built with Docusaurus.</span>`,
       },
       prism: {
         theme: lightCodeTheme,
@@ -164,7 +162,7 @@ const config = {
         additionalLanguages: ['powershell', 'csharp'],
       },
       mermaid: {
-        theme: { light: 'neutral', dark: 'forest' },
+        theme: {light: 'neutral', dark: 'forest'},
         options: {
           maxTextSize: 100000,
         },
@@ -172,8 +170,8 @@ const config = {
       sitemap: {
         cacheTime: 6000 * 1000, // 600 sec - cache purge period
         changefreq: 'weekly',
-        priority: 0.5
-      }
+        priority: 0.5,
+      },
     }),
 };
 
