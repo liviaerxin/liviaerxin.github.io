@@ -1,3 +1,4 @@
-# TO-DO
+# Continuous Learning
 
-xxxx
+- Vcpkg
+- dotfiles

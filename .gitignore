@@ -4,4 +4,6 @@
 !.vscode/foam.json
 !.vscode/extensions.json
 
+.venv/
+
 **/.DS_Store

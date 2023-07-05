@@ -37,7 +37,7 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     # close ProcessPoolExecutor
-    logger.info(f"PID[{os.getpid()}] app shutdown")
+    print(f"PID[{os.getpid()}] app shutdown")
     await service.stop()
 
 @app.post("/")
