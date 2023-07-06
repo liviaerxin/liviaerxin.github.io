@@ -189,7 +189,12 @@ async def unicorn_exception_handler(request: Request, exc: UnicornException):
 
 
 @app.get("/")
-async def home():
+async def home(request: Request):
+    async for chunk in request.stream():
+        # The last chunk is b""
+        chunk_size = len(chunk)
+        print(f"chunk_size: {chunk_size}")
+            
     return {"message": "Hello World"}
 
 
@@ -255,7 +260,9 @@ async def upload(request: Request):
 
     try:
         async for chunk in request.stream():
+            # The last chunk is b""
             chunk_size = len(chunk)
+            print(f"chunk_size: {chunk_size}")
             fs.write(chunk)
             uploadFile["bytesReceived"] += chunk_size
 

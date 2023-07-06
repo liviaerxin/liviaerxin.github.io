@@ -16,7 +16,7 @@ import base64
 import hashlib
 from uuid import uuid4
 from datetime import datetime, timedelta
-import json json
+import json
 import io
 import os
 
@@ -41,7 +41,7 @@ html_content = """
             inline: true,
             target: '#drag-drop-area'
         })
-        .use(Tus, {endpoint: '/files/'})
+        .use(Tus, {endpoint: '/files'})
 
     uppy.on('complete', (result) => {
         console.log('Upload complete! We’ve uploaded these files:', result.successful)
@@ -59,11 +59,14 @@ max_size=128849018880
 location="http://127.0.0.1:8000/files"
 files_dir="/tmp/files"
 
+if not os.path.exists(files_dir):
+    os.mkdir(files_dir)
+
 from pydantic import BaseModel
 class FileMetadata(BaseModel):
-    uid: str
-    metadata: dict[Hashable, str]
-    size: int
+    uuid: str
+    upload_metadata: dict[Hashable, str]
+    upload_length: int
     offset: int = 0
     upload_part: int = 0
     created_at: str
@@ -74,17 +77,17 @@ class FileMetadata(BaseModel):
     @classmethod
     def from_request(
             cls,
-            uid: str,
-            metadata: dict[Any, str],
-            size: int,
+            uuid: str,
+            upload_metadata: dict[Any, str],
+            upload_length: int,
             created_at: str,
             defer_length: bool,
-            expires: str
+            expires: str | None = None,
     ):
         return FileMetadata(
-            uid=uid,
-            metadata=metadata,
-            size=size,
+            uuid=uuid,
+            upload_metadata=upload_metadata,
+            upload_length=upload_length,
             created_at=created_at,
             defer_length=defer_length,
             expires=expires
@@ -96,21 +99,30 @@ metadata_cache = {}
 async def home():
     return {"message": "Hello World"}
 
-@app.get("/uppy.html")
+@app.get("/upload.html")
 async def read_uppy():
     return HTMLResponse(html_content)
 
 @app.post("/files")
-async def create_upload_resource(request: Request, repsonse: Response, 
+async def create_upload_resource(request: Request, response: Response, 
     upload_metadata: str = Header(None),
     upload_length: int = Header(None),
-    upload_defer_length: int = Header(None),):
+    upload_defer_length: int = Header(None),
+    content_length: int = Header(None),
+    content_type: str = Header(None),
+    ):
     
     if upload_defer_length is not None and upload_defer_length != 1:
         raise HTTPException(status_code=400, detail="Invalid Upload-Defer-Length")
 
-    defer_length = upload_defer_length is not None
+    if upload_length is None and upload_defer_length is None:
+        raise HTTPException(status_code=400, detail="Invalid Upload-Defer-Length")
 
+    if upload_length is not None and upload_length > 0:
+        defer_length = False
+    else:
+        defer_length = True
+        
     # Create a new upload and store the file and metadata in the mapping
     metadata = {}
     if upload_metadata is not None and upload_metadata != '':
@@ -122,42 +134,140 @@ async def create_upload_resource(request: Request, repsonse: Response,
 
     uuid = str(uuid4().hex)
 
-    date_expiry = datetime.now() + timedelta(days=1)
-    saved_meta_data = FileMetadata.from_request(
+    meta = FileMetadata.from_request(
         uuid,
         metadata,
         upload_length,
         str(datetime.now()),
         defer_length,
-        str(date_expiry.isoformat()),
+        None,
     )
     
-    _write_metadata(uuid, saved_meta_data)
+    _write_metadata(meta)
     
+    # Create the empty file
     open(os.path.join(files_dir, f'{uuid}'), 'a').close()
 
-    chunk: bool | None = await _read_request_stream(request, uuid, True)
-    if chunk:
-        response = _get_and_save_the_file(
-            response,
-            uuid,
-        )
-        response.headers["Location"] = f"{location}/{uuid}"
-        return response
+    # Creation With Upload, similar with `PATCH` request 
+    if content_length and content_length and upload_length and not defer_length:
+        assert content_type == "application/offset+octet-stream"
+        
+        meta = await _save_request_stream(request, uuid)
+        
+        if not meta:
+            response.status_code = 412
+            response.headers["Tus-Resumable"] = tus_version
+            return
+        
+        date_expiry = datetime.now() + timedelta(days=1)
+        meta.expires = str(date_expiry.isoformat())
+        _write_metadata(meta)
 
-    response.headers["Location"] = f"{location}/{uuid}"
-    response.headers["Tus-Resumable"] = tus_version
-    response.status_code = 201
+        response.headers["Location"] = f"{location}/{uuid}"
+        response.headers["Tus-Resumable"] = tus_version
+        response.headers["Upload-Offset"] = str(meta.offset)
+        response.headers["Upload-Expires"] = str(meta.expires)
+        response.status_code = 204
+        
+        return
     
-    return response
+    # Creation Without Upload   
+    else:
+        response.headers["Location"] = f"{location}/{uuid}"
+        response.headers["Tus-Resumable"] = tus_version
+            
+        response.status_code = 201
+        return
     
 @app.head("/files/{uuid}")
-async def read_file_offset(request: Request):
-    pass
+async def read_file_meta(request: Request, response: Response, uuid: str):
+    meta = _read_metadata(uuid)
+    if meta is None or not _file_exists(uuid):
+        raise HTTPException(status_code=404)
+        
+    response.headers["Tus-Resumable"] = tus_version
+    response.headers["Upload-Length"] = str(meta.upload_length)
+    response.headers["Upload-Offset"] = str(meta.offset)
+    response.headers["Cache-Control"] = "no-store"
+    
+    if meta.defer_length:
+        response.headers["Upload-Defer-Length"] = str(1)
+        
+    # Encode metadata
+    if meta.upload_metadata:
+        metadata_base64 = ""
+        for key, value in meta.upload_metadata.items():
+            metadata_base64 += f"{key} {base64.b64encode(bytes(value, 'utf-8'))}," 
+        response.headers["Upload-Metadata"] = metadata_base64.strip(",")
+            
+    response.status_code = 200
+    return ""    
 
 @app.patch("/files/{uuid}")
-async def upload_file(request: Request):
-    pass
+async def upload_file(request: Request, response: Response, uuid: str):
+    tus_resumable = request.headers["Tus-Resumable"]
+    content_length = int(request.headers["Content-Length"])
+    content_type = request.headers["Content-Type"]
+    upload_offset = int(request.headers["Upload-Offset"])
+
+    assert tus_resumable == tus_version
+    assert content_type == "application/offset+octet-stream"
+    
+    meta = _read_metadata(uuid)
+        
+    # PATCH request against a non-existent resource
+    if not meta or not _file_exists(uuid):
+        response.status_code = 404
+        response.headers["Tus-Resumable"] = tus_version
+        return
+    
+    if meta.defer_length:
+        if request.headers["Upload-Length"]:
+            response.status_code = 412
+            response.headers["Tus-Resumable"] = tus_version
+            return
+        else:
+            upload_length = int(request.headers["Upload-Length"])
+        
+        meta.upload_length = upload_length
+        _write_metadata(meta)
+        
+    # The Upload-Offset header's value MUST be equal to the current offset of the resource.
+    if upload_offset != meta.offset:
+        response.status_code = 409
+        response.headers["Tus-Resumable"] = tus_version
+        return
+    
+    # Saving
+    meta = await _save_request_stream(request, uuid)
+
+    # TODO: move above to `save_request_stream`
+    if not meta:
+        response.status_code = 412
+        response.headers["Tus-Resumable"] = tus_version
+        return
+    
+    if upload_offset + content_length != meta.offset:
+        print(f"disconnect with client")
+        response.status_code = 460
+        response.headers["Tus-Resumable"] = tus_version
+        return
+    
+    date_expiry = datetime.now() + timedelta(days=1)
+    meta.expires = str(date_expiry.isoformat())
+    _write_metadata(meta)
+    
+    # Upload file complete
+    if meta.upload_length == meta.offset:
+        # TODO: callbacks should be here
+        pass
+    
+    response.headers["Location"] = f"{location}/{uuid}"
+    response.headers["Tus-Resumable"] = tus_version
+    response.headers["Upload-Offset"] = str(meta.offset)
+    response.headers["Upload-Expires"] = str(meta.expires)
+    response.status_code = 204
+    return ""
 
 """
 curl -v -X OPTIONS http://127.0.0.1:8000/files
@@ -170,35 +280,42 @@ async def read_tus_config(request: Request, response: Response):
     response.headers["Tus-Max-Size"] = str(max_size)
     response.headers["Tus-Extension"] = tus_extension
     
-    return
+    return ""
 
 @app.delete("/files/{uuid}")
 async def delete_file(request: Request):
     pass
 
 
-async def _read_request_stream(request: Request, uuid: str, post_request: bool = False) -> bool | None:
+async def _save_request_stream(request: Request, uuid: str, post_request: bool = False) -> FileMetadata | None:
     meta = _read_metadata(uuid)
     if not meta or not os.path.exists(os.path.join(files_dir, uuid)):
-        return False
+        return None
 
-    with open(f"{files_dir}/{uuid}", "ab") as f:
+    f = open(f"{files_dir}/{uuid}", "ab")
+    try:
         async for chunk in request.stream():
-            # EOF
-            if post_request and chunk is None or len(chunk) == 0:
-                return None
-
             chunk_size = len(chunk)
             f.write(chunk)
             meta.offset += chunk_size
             meta.upload_chunk_size = chunk_size
             meta.upload_part += 1
-            _write_metadata(meta)
-
-    return True
+    except ClientDisconnect as e:
+        print(f"Client disconnected: {e}")
+    finally:
+        _write_metadata(meta)
+        f.close()
+        
+    return meta
 
 def _read_metadata(uuid) -> FileMetadata | None:
     return metadata_cache.get(uuid)
 
-def _write_metadata(uuid, meta: FileMetadata):
-    metadata_cache[uuid] = meta
+def _write_metadata(meta: FileMetadata):
+    metadata_cache[meta.uuid] = meta
+    
+def _file_exists(uuid: str) -> bool:
+    return os.path.exists(os.path.join(files_dir, uuid))
+
+def _file_path(uuid: str) -> str:
+    return os.path.join(files_dir, uuid)
