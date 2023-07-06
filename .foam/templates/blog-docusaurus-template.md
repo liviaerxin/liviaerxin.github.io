@@ -3,16 +3,17 @@ foam_template:
   name: Blog Docusaurus Template
   description: Creates Docusaurus blog/slip
   filepath: blog/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md
+title: ${FOAM_TITLE}
 authors:
   - frank
+tags:
+  - blog
+  - docusaurus
 description: ${FOAM_TITLE}
 keywords:
   - docs
   - docusaurus
 image: https://i.imgur.com/mErPwqL.png
-tags:
-  - blog
-  - docusaurus
 date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}
 draft: false
 enableComments: true # for Gisqus

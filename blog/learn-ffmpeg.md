@@ -3,7 +3,8 @@ foam_template:
   name: Docs Docusaurus Template
   description: Creates Docusaurus docs/slip
   filepath: docs/learn-ffmpeg.md
-sidebar_label: Learn FFmpeg
+authors:
+  - frank
 description: Learn FFmpeg
 keywords:
   - learn
@@ -12,9 +13,8 @@ image: https://i.imgur.com/mErPwqL.png
 tags:
   - learn
   - ffmpeg
-last_update:
-  date: 2023-06-29
-  author: frank
+date: 2023-07-06
+last_update: 2023-07-06
 ---
 
 # Learn FFmpeg

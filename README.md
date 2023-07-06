@@ -55,13 +55,11 @@ npm run serve --prefix _ssg/docusaurus
 
 [Docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
 
-## References
-
-To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
-
-Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design my blog website by referring his [blog library](https://github.com/HunteRoi/tinaeldevresse.eu).
+## Layout
 
 [Grid | Infima](https://infima.dev/docs/layout/grid)
+
+## Icon Management
 
 [Bootstrap Icons · Official open source SVG icon library for BootstrapBootstrapGitHubTwitterOpen CollectiveBootstrap](https://icons.getbootstrap.com/)
 
@@ -70,3 +68,27 @@ Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design m
 [Tabler Icons - 1400+ Open source free SVG icons](https://tablericons.com/)
 
 [React SVG: How to use SVGs best in React - CopyCat Blog](https://www.copycat.dev/blog/react-svg/)
+
+## Metadata Setting
+
+[📦 plugin-content-blog | Docusaurus](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog#markdown-front-matter)
+
+[📦 plugin-content-docs | Docusaurus](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter)
+
+## Front Matter VS Code Extension
+
+[Introduction | Front Matter](https://frontmatter.codes/docs)
+
+## Import Code from GitHub Repository
+
+Docusaurus refer code snippets from GitHub repositories
+
+[GitHub - saucelabs/docusaurus-theme-github-codeblock: A Docusaurus v2 plugin that supports referencing code examples from public GitHub repositories.](https://github.com/saucelabs/docusaurus-theme-github-codeblock)
+
+## References
+
+To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
+
+Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design my blog website by referring his [blog library](https://github.com/HunteRoi/tinaeldevresse.eu).
+
+[Grid | Infima](https://infima.dev/docs/layout/grid)

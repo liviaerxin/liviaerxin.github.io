@@ -53,6 +53,7 @@ const config = {
 
   plugins: [
     '@docusaurus/theme-mermaid',
+    '@saucelabs/theme-github-codeblock',
     [require.resolve('docusaurus-lunr-search'), {}],
     [
       '@docusaurus/plugin-content-blog',
