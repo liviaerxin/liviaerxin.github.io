@@ -4,6 +4,7 @@ import os
 
 app = FastAPI()
 
+
 class BackgroundService:
     def __init__(self, loop: asyncio.AbstractEventLoop, tasks: list):
         self.loop = loop
@@ -18,7 +19,7 @@ class BackgroundService:
 
     async def start(self):
         self.task = self.loop.create_task(self.work())
-    
+
     async def stop(self):
         self.task.cancel()
         try:
@@ -26,7 +27,9 @@ class BackgroundService:
         except asyncio.CancelledError:
             print("Clean up background service")
 
+
 service = BackgroundService(asyncio.get_running_loop())
+
 
 @app.on_event("startup")
 async def startup():
@@ -34,11 +37,13 @@ async def startup():
     # schedule a task on main loop
     await service.start()
 
+
 @app.on_event("shutdown")
 async def shutdown():
     # close ProcessPoolExecutor
     print(f"PID[{os.getpid()}] app shutdown")
     await service.stop()
+
 
 @app.post("/")
 async def hello():

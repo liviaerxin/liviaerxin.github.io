@@ -1,5 +1,41 @@
 """
+Usage:
 uvicorn app_resumable_upload:app --reload
+
+Description:
+Http Upload file with progress and resumable features, client and server are supposed to work in their agreed protocol.
+
+[Resumable file upload](https://javascript.info/resume-upload)
+
+The protocol here is very simple:
+- based on http request headers by adding some custom fields, `X-File-Id`, `X-Start-Byte`, `X-File-Size`,...etc.
+- `X-File-Id` is a unique identifier for the file in both client and server. Here for simplicity, let client decide it unique as follows:
+    `X-File-Id` = file size + "-" + file last modified + "-" + file name
+
+client is stateless, however server is stateful with maintaining a cache of uploaded file records.
+
+'/status' request headers:
+X-File-Id: fileId
+X-File-Size: fileSize
+return {bytesReceived: int, fileUri: string}
+
+'/upload' request headers:
+X-File-Id: fileId
+X-Start-Byte: startByte
+Content-Length: fileSize
+Content-Type: application/octet-stream
+return {fileUri: string, bytesReceived: int}
+
+cached file records:
+{
+    file_id_1: {
+        "fileId": str,
+        "bytesReceived": int,
+        "fileSize": int,
+        "fileUri": str,
+    }
+    ...
+}
 """
 from fastapi import FastAPI, Header, Request, HTTPException
 from starlette.requests import ClientDisconnect
@@ -133,41 +169,9 @@ html_content = """
 """
 # fmt: on
 
-"""
-Http Upload file with progress and resumable features, client and server are supposed to work in their agreed protocol.
-
-The protocol here is very simple:
-- based on http request headers by adding some custom fields, `X-File-Id`, `X-Start-Byte`, `X-File-Size`,...etc.
-- `X-File-Id` is a unique identifier for the file in both client and server. Here for simplicity, let client decide it unique as follows:
-    `X-File-Id` = file name + "-" + file size + "-" + file last modified
-
-client is stateless, however server is stateful with maintaining a cache of uploaded file records.
-
-'/status' request headers:
-X-File-Id: fileId
-X-File-Size: fileSize
-return {bytesReceived: int, fileUri: string}
-
-'/upload' request headers:
-X-File-Id: fileId
-X-Start-Byte: startByte
-Content-Length: fileSize
-Content-Type: application/octet-stream
-return {fileUri: string, bytesReceived: int}
-
-cached file records:
-{
-    file_id_1: {
-        "fileId": str,
-        "bytesReceived": int,
-        "fileSize": int,
-        "fileUri": str,
-    }
-    ...
-}
-"""
-
 Uploads_Cache = {}
+
+
 class UnicornException(Exception):
     def __init__(self, name: str):
         self.name = name
@@ -182,7 +186,8 @@ async def unicorn_exception_handler(request: Request, exc: UnicornException):
         status_code=418,
         content={"message": f"Oops! {exc.name} did something. There goes a rainbow..."},
     )
-    
+
+
 @app.get("/")
 async def home():
     return {"message": "Hello World"}
@@ -197,12 +202,17 @@ async def read_upload():
 async def read_status(request: Request):
     fileId = request.headers["X-File-Id"]
     fileSize = int(request.headers["X-File-Size"])
-    
+
     uploadFile = Uploads_Cache.get(fileId)
-    
+
     if uploadFile:
-        assert os.path.getsize(uploadFile["fileUri"]) == uploadFile["bytesReceived"], "actual file bytes must match record bytes!"
-        return {"bytesReceived": uploadFile["bytesReceived"], "fileUri": uploadFile["fileUri"]}
+        assert (
+            os.path.getsize(uploadFile["fileUri"]) == uploadFile["bytesReceived"]
+        ), "actual file bytes must match record bytes!"
+        return {
+            "bytesReceived": uploadFile["bytesReceived"],
+            "fileUri": uploadFile["fileUri"],
+        }
     else:
         return {"bytesReceived": 0, "fileUri": ""}
 
@@ -219,25 +229,27 @@ async def upload(request: Request):
         # fileUri = "/dev/null"
         # could use a real path instead, e.g.
         fileUri = os.path.join("/tmp", fileId + ".uploading")
-    
+
         uploadFile = Uploads_Cache[fileId] = {
             "fileId": fileId,
             "bytesReceived": 0,
             "fileSize": fileSize,
             "fileUri": fileUri,
         }
-        
+
         assert startByte == 0, "startByte must be 0"
-        
+
         fs = io.FileIO(fileUri, "w")
         print(f"File create: {fileUri}")
     # Check the size and append to existing one
     else:
         uploadFile = Uploads_Cache[fileId]
         fileUri = uploadFile["fileUri"]
-        
-        assert uploadFile["bytesReceived"] == startByte, "startByte must match record bytes!"
-        
+
+        assert (
+            uploadFile["bytesReceived"] == startByte
+        ), "startByte must match record bytes!"
+
         fs = io.FileIO(fileUri, "a")
         print(f"File reopened: {fileUri}")
 
@@ -254,13 +266,16 @@ async def upload(request: Request):
         fs.close()
 
         assert fileSize == actualSize, "actual file size must match record size!"
-        
+
         # Rename the file
         uploadFile["fileUri"] = os.path.splitext(fileUri)[0]
         print(f"renamed file: {fileUri} to {uploadFile['fileUri']}")
         os.rename(fileUri, uploadFile["fileUri"])
 
-        return {"bytesReceived": uploadFile["bytesReceived"], "fileUri": uploadFile["fileUri"]}
+        return {
+            "bytesReceived": uploadFile["bytesReceived"],
+            "fileUri": uploadFile["fileUri"],
+        }
     except ClientDisconnect as e:
         print(f"exception: {e}")
 

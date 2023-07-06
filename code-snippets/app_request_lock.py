@@ -7,6 +7,7 @@ lock = asyncio.Lock()
 
 counter = 0
 
+
 @app.post("/limit")
 async def func():
     global counter
