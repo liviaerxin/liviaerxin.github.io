@@ -1,18 +1,17 @@
 ---
-sidebar_label: MDX Features
 description: MDX Features
-keywords:
-  - mdx
-  - docusaurus
-image: https://i.imgur.com/mErPwqL.png
+authors:
+  - frank
 tags:
   - mdx
   - docusaurus
   - react
   - best practice
-last_update:
-  date: 2023-07-06
-  author: frank
+keywords:
+  - mdx features in docusaurus
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-07-06
+last_update: 2023-07-07
 ---
 
 # MDX Features of Docusaurus
@@ -432,3 +431,15 @@ It imports file from [skia.md](./skia.md):
 import PartialExample1 from './skia.md';
 
 <PartialExample1 />
+
+## Import Code Snippets from GitHub Repositories
+
+[A Docusaurus v2 plugin that supports referencing code examples from public GitHub repositories.](https://github.com/saucelabs/docusaurus-theme-github-codeblock)
+
+```js reference
+https://github.com/saucelabs/docusaurus-theme-github-codeblock/blob/main/src/theme/ReferenceCodeBlock/index.tsx#L105-L108
+```
+
+```js reference
+https://github.com/liviaerxin/liviaerxin.github.io/blob/560ce03e8dbf5d32b197ccf307ca36af25b5dacd/code-snippets/XKeyIn.cpp#L55-L72
+```

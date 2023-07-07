@@ -7,12 +7,11 @@ title: ${FOAM_TITLE}
 authors:
   - frank
 tags:
-  - blog
-  - docusaurus
+  - ${1:First tabstop}
+  - ${2:First tabstop}
 description: ${FOAM_TITLE}
 keywords:
-  - docs
-  - docusaurus
+  - ${FOAM_TITLE}
 image: https://i.imgur.com/mErPwqL.png
 date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}
 draft: false
