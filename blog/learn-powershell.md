@@ -24,6 +24,8 @@ Set environment variables permanently
 [Environment]::SetEnvironmentVariable("VCPKG_ROOT", "Whatever you need it to be", "Machine")
 ```
 
+<!--truncate-->
+
 Get environment variables
 
 ```powershell
