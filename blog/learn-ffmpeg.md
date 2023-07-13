@@ -29,6 +29,8 @@ Video Container Format:
 - WAV
 - HLS [`.m3u8` file extension]
 
+<!--truncate-->
+
 Video Codec Format:
 
 - VP8

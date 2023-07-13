@@ -21,6 +21,7 @@ https://github.com/microsoft/vcpkg/tree/master/ports/qtbase
 
 https://learn.microsoft.com/en-us/vcpkg/maintainers/functions/vcpkg_cmake_config_fixup
 
+<!--truncate-->
 
 ## Manifest Mode
 
@@ -31,11 +32,13 @@ https://learn.microsoft.com/en-us/vcpkg/maintainers/functions/vcpkg_cmake_config
 `CURRENT_INSTALLED_DIR`
 `CURRENT_PACKAGES_DIR`
 
+```sh
 set(VCPKG_RELEASE_LIBDIR "${CURRENT_INSTALLED_DIR}/lib")
 set(VCPKG_DEBUG_LIBDIR "${CURRENT_INSTALLED_DIR}/debug/lib")
 set(VCPKG_TOOLS_DIR "${CURRENT_INSTALLED_DIR}/tools")
 set(VCPKG_SHARE_DIR "${CURRENT_INSTALLED_DIR}/share")
 set(VCPKG_INCLUDE_DIR "${CURRENT_INSTALLED_DIR}/include")
+```
 
 ## Tips and Tricks
 

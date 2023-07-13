@@ -1,14 +1,28 @@
 ---
-title: Build System C/C++
-description: ""
-created: 2023-05-22
-tags: [Make, Ninja, MSBuild, CMake, Meson]
+authors:
+  - frank
+tags:
+  - make
+  - ninja
+  - msbuild
+  - cmake
+  - meson
+  - ci-cd
+description: Learn Avalonia
+keywords:
+  - practice
+  - avalonia
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-07-07
+draft: false
 enableComments: true # for Gisqus
 ---
 
 # C/C++ Build System
 
 [List of build automation software - Wikipedia](https://en.wikipedia.org/wiki/List_of_build_automation_software)
+
+<!--truncate-->
 
 ```plantuml
 @startuml

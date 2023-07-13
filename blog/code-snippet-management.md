@@ -17,6 +17,8 @@ last_update:
 
 # Code Snippet Management
 
+<!--truncate-->
+
 ```plantuml
 @startuml
 skinparam linetype polyline

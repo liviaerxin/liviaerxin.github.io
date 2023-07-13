@@ -13,7 +13,7 @@ const websiteConfig = require('./website_config.json');
 const config = {
   title: "S' Wiki",
   tagline: 'Dinosaurs are cool to focus on your content',
-  favicon: 'img/favicon.ico',
+  favicon: 'https://github.com/liviaerxin.png',
 
   // Set the production url of your site here
   url: 'https://liviaerxin.github.io',
@@ -115,9 +115,9 @@ const config = {
           path: '../../blog', // './blog' for local test
           blogTitle: 'Docusaurus blog!',
           blogDescription: 'A Docusaurus powered blog!',
-          postsPerPage: 5,
-          blogSidebarCount: 20,
+          postsPerPage: 'ALL',
           blogSidebarTitle: 'Recent posts',
+          blogSidebarCount: 10,
           showReadingTime: true,
           editUrl:
             'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
@@ -144,8 +144,9 @@ const config = {
         title: "S' Wiki",
         logo: {
           alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          src: 'https://github.com/liviaerxin.png',
         },
+        hideOnScroll: true,
         items: [
           {to: '/blog', label: 'Blog', position: 'left'},
           {to: '/learning', label: 'Learning', position: 'left'},

@@ -26,7 +26,9 @@ To implement a resumable file upload, it is necessary to contain three parts:
 
 - Protocol: provide a mechanism for resumable file uploads
 - Upload Server: receive an interrupted upload and store it in local machine or in cloud storage
-- Upload Client: upload the file which may be interrupted 
+- Upload Client: upload the file which may be interrupted
+
+<!--truncate-->
 
 ## A Basic Resumable Upload
 

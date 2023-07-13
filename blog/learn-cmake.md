@@ -17,6 +17,8 @@ last_update:
 
 It’s all about targets and properties
 
+<!--truncate-->
+
 [[learn-vcpkg]](./learn-vcpkg.md)
 
 ## CMake Project Structure

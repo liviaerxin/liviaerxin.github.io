@@ -1,4 +1,22 @@
+---
+authors:
+  - frank
+tags:
+  - practice
+  - avalonia
+description: Learn Avalonia
+keywords:
+  - practice
+  - avalonia
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-07-07
+draft: false
+enableComments: true # for Gisqus
+---
+
 # Avalonia
+
+<!--truncate-->
 
 [skiasharp - Is it possible to create a Skia Canvas element in an Avalonia application? - Stack Overflow](https://stackoverflow.com/questions/61627374/is-it-possible-to-create-a-skia-canvas-element-in-an-avalonia-application)
 
