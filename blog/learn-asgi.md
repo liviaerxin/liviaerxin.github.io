@@ -1,0 +1,63 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/learn-asgi.md
+authors:
+  - frank
+tags:
+  - backend
+  - asgi
+description: Learn ASGI
+keywords:
+  - Learn ASGI
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-07-11
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Learn ASGI
+
+Nowadays as web server framework is getting easy to use and work with. In Python areas, FastAPI obtains nearly 60k stars and becomes the most popular web framework for Pythoners.
+
+Looking at the advantage of `FastAPI`, it simplifies everything from parsing http requests, middleware processing, authentication, database manipulation and more.
+
+Let's dive into the behind-the-scenes technique stacks of `FastAPI`.
+
+Before research, there are some common questions around the web server development:
+
+- How to process messages on `HTTP` protocol on `TCP` protocol? What're the favorite library used to do that?
+- What are the differences between `WSGI` and `ASGI`?
+- Data model used for database and users
+
+
+stacks from low-level to high-level
+
+Uvicorn:
+
+- ASGI web server implementation/interface
+  - scope
+  - receive
+  - send
+- h11 to process HTTP messages
+- websocket to process websocket messages
+
+Starlette:
+
+- ASGI framework
+- abstract Request class for receive in `Uvicorn`
+- abstract Response class for send in `Uvicorn`
+- provide middleware
+
+FastAPI:
+
+- Fast to code
+- OpenAPI docs
+- Pydantic native model
+
+`APIRoute`
+
+`APIRouter`
+
+`Application` <-- `APIRouter` <-- `APIRoute`

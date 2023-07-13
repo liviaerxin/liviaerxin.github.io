@@ -3,7 +3,6 @@ foam_template:
   name: Blog Docusaurus Template
   description: Creates Docusaurus blog/slip
   filepath: blog/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md
-title: ${FOAM_TITLE}
 authors:
   - frank
 tags:
