@@ -24,7 +24,7 @@ Nowadays as web server framework is getting easy to use and work with. In Python
 Looking at the advantage of `FastAPI`, it simplifies everything from parsing http requests, middleware processing, authentication, database manipulation and more.
 
 Let's dive into the behind-the-scenes technique stacks of `FastAPI`.
-
+<!--truncate-->
 Before research, there are some common questions around the web server development:
 
 - How to process messages on `HTTP` protocol on `TCP` protocol? What're the favorite library used to do that?

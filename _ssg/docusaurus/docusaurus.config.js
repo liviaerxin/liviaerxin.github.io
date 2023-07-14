@@ -164,13 +164,13 @@ const config = {
           {
             items: [
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://github.com/${websiteConfig.GITHUB_USER}'><img class='svg-inline--fa fa-github fa-w-14' src="img/github-tile.svg"/></a>`,
+                html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://github.com/${websiteConfig.GITHUB_USER}'><img class='svg-inline--fa fa-github fa-w-14' src="/img/github-tile.svg"/></a>`,
               },
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/users/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="img/stackoverflow-tile.svg" /></a>`,
+                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/users/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="/img/stackoverflow-tile.svg" /></a>`,
               },
               {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://linkedin.com/in/${websiteConfig.LINKEDIN_USER}'><img class='svg-inline--fa fa-linkedin fa-w-14' src="img/linkedin-tile.svg" /></a>`,
+                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://linkedin.com/in/${websiteConfig.LINKEDIN_USER}'><img class='svg-inline--fa fa-linkedin fa-w-14' src="/img/linkedin-tile.svg" /></a>`,
               },
             ],
           },
