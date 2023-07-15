@@ -6,20 +6,22 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #0969da;
+  /* Use the default color from [infima](https://infima.dev/docs/utilities/colors) */
+  /* --ifm-color-primary: #0969da;
   --ifm-color-primary-dark: #0859b9;
   --ifm-color-primary-darker: #064999;
   --ifm-color-primary-darkest: #053f83;
   --ifm-color-primary-light: #1b7ff6;
   --ifm-color-primary-lighter: #4698f7;
   --ifm-color-primary-lightest: #72b0f9;
+  */
 
-  --ifm-footer-background-color: var(--ifm-background-color);
-  --ifm-border-color: #1867dc;
+  --ifm-line-height-base: 1.4;
+  --ifm-code-font-size: 80%;
 }
 
 html[data-theme='dark'] {
-  --ifm-background-color: #202225;
+  /* --ifm-background-color: #202225;
   --ifm-footer-background-color: var(--ifm-background-color);
 
   --ifm-color-primary: #2f81f7;
@@ -30,7 +32,7 @@ html[data-theme='dark'] {
   --ifm-color-primary-lighter: #599bf9;
   --ifm-color-primary-lightest: #84b4fa;
 
-  --ifm-border-color: #ffffff;
+  --ifm-border-color: #ffffff; */
 }
 
 [data-theme='light'] .DocSearch {
@@ -100,8 +102,7 @@ html[data-theme='dark'] {
   margin-bottom: 0;
 }
 
-
-.blog-wrapper .main-wrapper .container.margin-vert--lg .col.text--right a,.footerContainer .formButton,.theme-doc-footer a {
+/* .blog-wrapper .main-wrapper .container.margin-vert--lg .col.text--right a,.footerContainer .formButton,.theme-doc-footer a {
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: var(--ifm-global-radius);
   color: var(--ifm-color-content-secondary);
@@ -218,9 +219,9 @@ blockquote>:last-child {
 
 .text--capitalize {
   text-transform: capitalize
-}
+} */
 
-.text--lowercase {
+/* .text--lowercase {
   text-transform: lowercase
 }
 
@@ -257,7 +258,7 @@ blockquote>:last-child {
 .text--break {
   word-wrap: break-word!important;
   word-break: break-word!important
-}
+} */
 
 [class^="sidebarItemList"] {
   font-size: 13px !important;

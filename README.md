@@ -55,9 +55,26 @@ npm run serve --prefix _ssg/docusaurus
 
 [Docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
 
+## Swizzling
+
+Here're `@docusaurus/theme-classic` components being customized by swizzling,
+
+```sh
+npm run swizzle @docusaurus/theme-classic BlogPostItem -- --wrap
+npm run swizzle @docusaurus/theme-classic BlogPostItem/Footer/ReadMoreLink -- --eject
+npm run swizzle @docusaurus/theme-classic BlogTagsPostsPage -- --eject
+npm run swizzle @docusaurus/theme-classic SearchBar -- --eject
+```
+
 ## Layout
 
 [Grid | Infima](https://infima.dev/docs/layout/grid)
+
+## CSS Styles
+
+[Colors | Infima](https://infima.dev/docs/utilities/colors)
+
+I used the default colors shades from **Infima**.
 
 ## Icon Management
 
@@ -90,5 +107,3 @@ Docusaurus refer code snippets from GitHub repositories
 To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
 
 Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design my blog website by referring his [blog library](https://github.com/HunteRoi/tinaeldevresse.eu).
-
-[Grid | Infima](https://infima.dev/docs/layout/grid)

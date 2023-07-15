@@ -52,20 +52,17 @@ function BlogTagsPostsPageMetadata({tag}) {
   );
 }
 
-type Foo = {
-  bar: string;
-  qux: number;
-}
-
 function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
   const title = useBlogTagsPostsPageTitle(tag);
+
+  // NOTE: Override the sidebar to display the only items matching the tag
+  // Start
   const sidebarItems = items.map(function(singleElement){
     return {title: singleElement.content.metadata.title, permalink: singleElement.content.metadata.permalink};
   });
   const tagSidebar: BlogSidebar = {title: "All posts with tags", items: sidebarItems};
-  console.log(items[0].content.metadata);
-
   sidebar = tagSidebar;
+  // End
 
   return (
     <BlogLayout sidebar={sidebar}>

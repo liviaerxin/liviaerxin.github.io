@@ -52,6 +52,7 @@ const config = {
   },
 
   plugins: [
+    'docusaurus-plugin-sass',
     '@docusaurus/theme-mermaid',
     '@saucelabs/theme-github-codeblock',
     [require.resolve('docusaurus-lunr-search'), {}],
@@ -129,7 +130,7 @@ const config = {
               : defaultReadingTime({content}),
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve('./src/css/custom.scss'),
         },
       }),
     ],
