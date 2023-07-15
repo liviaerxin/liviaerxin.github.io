@@ -9,6 +9,7 @@ import styles from './styles.module.css';
 import {useHideableNavbar} from '@docusaurus/theme-common/internal';
 
 export default function BlogSidebarDesktop({sidebar}: Props): JSX.Element {
+  // Hide the sidebar when scrolling down
   const hideOnScroll = true;
   const {navbarRef, isNavbarVisible} = useHideableNavbar(hideOnScroll);
 
