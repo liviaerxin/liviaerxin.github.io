@@ -60,10 +60,10 @@ npm run serve --prefix _ssg/docusaurus
 Here're `@docusaurus/theme-classic` components being customized by swizzling,
 
 ```sh
-npm run swizzle @docusaurus/theme-classic BlogPostItem -- --wrap
-npm run swizzle @docusaurus/theme-classic BlogPostItem/Footer/ReadMoreLink -- --eject
-npm run swizzle @docusaurus/theme-classic BlogTagsPostsPage -- --eject
-npm run swizzle @docusaurus/theme-classic SearchBar -- --eject
+npm run swizzle @docusaurus/theme-classic BlogPostItem -- --wrap --typescript
+npm run swizzle @docusaurus/theme-classic BlogPostItem/Footer/ReadMoreLink -- --eject --typescript
+npm run swizzle @docusaurus/theme-classic BlogTagsPostsPage -- --eject --typescript
+npm run swizzle @docusaurus/theme-classic SearchBar -- --eject --typescript
 ```
 
 ## Layout

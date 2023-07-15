@@ -11,7 +11,7 @@ export default function BlogPostItemWrapper(props) {
   const {metadata, isBlogPostPage} = useBlogPost();
   const isBrowser = useIsBrowser();
 
-  const {frontMatter, slug, title} = metadata;
+  const {frontMatter, title} = metadata;
   const {enableComments} = frontMatter;
 
   const {colorMode} = useColorMode();

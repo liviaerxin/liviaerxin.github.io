@@ -1,6 +1,8 @@
 import React from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
+import type {Props} from '@theme/BlogPostItem/Footer/ReadMoreLink';
+
 function ReadMoreLabel() {
   return (
     <b>
@@ -12,10 +14,14 @@ function ReadMoreLabel() {
     </b>
   );
 }
-export default function BlogPostItemFooterReadMoreLink(props) {
+
+export default function BlogPostItemFooterReadMoreLink(
+  props: Props,
+): JSX.Element {
   const {blogPostTitle, ...linkProps} = props;
   return (
     <Link
+     // Change to use button style
       className="button button--secondary"
       aria-label={translate(
         {
