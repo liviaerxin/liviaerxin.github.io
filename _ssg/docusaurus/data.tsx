@@ -4,7 +4,7 @@ import {ProfileItem} from './src/components/Profile';
 
 export const SKILLS: SkillItem[] = [
   {
-    title: 'Backend',
+    title: 'Backend Stacks',
     href: '/blog/tags/backend',
     image: {
       src: 'img/github-tile.svg',
@@ -13,42 +13,39 @@ export const SKILLS: SkillItem[] = [
       <>
         <p>Web frameworks on Python, Java and Node.js</p>
         <p>Load balancing, Caching, Scalability and Monitoring</p>
-        <p>SQL and NoSQL Database</p>
-        <p>Machine Learning Integration and Deployment</p>
+        <p>SQL and NoSQL Database Operation</p>
       </>
     ),
   },
   {
-    title: 'Microservice',
+    title: 'Microservices Architecture',
     href: '/blog/tags/microservice',
     image: {
       src: 'img/github-tile.svg',
     },
     description: (
       <>
-        <p>
-          Microservices-based architectures managed with Docker and Kubernetes
-        </p>
-        <p></p>
+        <p>Management and deployment with help of Docker and Kubernetes.</p>
+        <p>Leverage microservices for machine learning products.</p>
       </>
     ),
   },
   {
-    title: 'CI/CD',
+    title: 'DevOps Principles',
     href: '/blog/tags/ci-cd',
     image: {
       src: 'img/github-tile.svg',
     },
     description: (
       <>
-        <p>Streamline development, testing, and deployment.</p>
-        <p>C/C++, Qt, Python Packaging.</p>
-        <p>Automation and CI/CD pipelines like Github Actions</p>
+        <p>Automation in building, testing, and deployment.</p>
+        <p>CI/CD pipelines using Github Actions.</p>
+        <p>Application packaging in C/C++, Python, QT, ...etc.</p>
       </>
     ),
   },
   {
-    title: 'Practice',
+    title: 'Best Practices',
     href: '/blog/tags/practice',
     image: {
       src: 'img/github-tile.svg',
@@ -68,9 +65,9 @@ export const PROFILE: ProfileItem = {
   tagline: '',
   description: (
     <>
-      <p>Developer, tech lover & father of two</p>
-      <p>Keep simplicity and stability principles in problems solving</p>
-      <p>and I am also an open-source enthusiast.</p>
+      <p><b>Software engineer</b> to build infrastructure for machine learning products.</p>
+      <p>Passionate about JetBot currently. Experienced in <b>Python and C/C++</b>, (Java is past).</p>
+      <p>and I am also an <b>open-source</b> enthusiast.</p>
     </>
   ),
 };

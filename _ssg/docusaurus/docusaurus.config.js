@@ -12,7 +12,7 @@ const websiteConfig = require('./website_config.json');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "S' Wiki",
-  tagline: 'Dinosaurs are cool to focus on your content',
+  tagline: 'Learn in practice',
   favicon: 'https://github.com/liviaerxin.png',
 
   // Set the production url of your site here

@@ -43,8 +43,8 @@
 
 .divider {
   width: 25%;
-  margin: 2% auto;
   border-top: 0.01rem solid;
+  border: 1px solid;
 }
 
 .divider::before {
@@ -71,6 +71,6 @@
 
 @media (min-width: 640px) {
   .description {
-    max-width: 30%;
+    max-width: 50%;
   }
 }
