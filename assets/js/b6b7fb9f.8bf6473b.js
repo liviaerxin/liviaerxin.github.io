@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[9897],{60004:e=>{e.exports=JSON.parse('{"label":"circular-dependencies","permalink":"/blog/tags/circular-dependencies","allTagsPath":"/blog/tags","count":1}')}}]);
