@@ -32,7 +32,7 @@ export const SKILLS: SkillItem[] = [
   },
   {
     title: 'DevOps Principles',
-    href: '/blog/tags/ci-cd',
+    href: '/blog/tags/dev-ops',
     image: {
       src: 'img/github-tile.svg',
     },
@@ -46,7 +46,7 @@ export const SKILLS: SkillItem[] = [
   },
   {
     title: 'Best Practices',
-    href: '/blog/tags/practice',
+    href: '/blog/tags/best-practice',
     image: {
       src: 'img/github-tile.svg',
     },

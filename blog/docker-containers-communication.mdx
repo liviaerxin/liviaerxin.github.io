@@ -2,17 +2,12 @@
 authors:
   - frank
 description: Communication Between Docker Containers
-keywords:
-  - docker
-  - container
-  - network
-  - postgres
-  - communication
 image: https://i.imgur.com/mErPwqL.png
 tags:
   - docker
-  - network
+  - docker-network
   - postgres
+  - dev-ops
 date: 2023-06-08
 draft: false
 ---
@@ -30,13 +25,13 @@ Here some methods we can use.
 Start a `postgres db` container:
 
 ```sh
-$ docker run --rm --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
+docker run --rm --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
 ```
 
 Run a `postgres client` container to connect the `db` container with user `postgres` and password `mysecretpassword`:
 
 ```sh
-$ docker run -it --rm --link postgres-db:db postgres psql -h db -U postgres
+docker run -it --rm --link postgres-db:db postgres psql -h db -U postgres
 psql (14.3)
 Type "help" for help.
 
@@ -50,9 +45,9 @@ postgres=# SELECT 1;
 Or run a utility container:
 
 ```sh
-$ docker run -it --rm --link postgres-db:db busybox sh
+docker run -it --rm --link postgres-db:db busybox sh
 # in `busybox`
-busybox$ ping db
+busyboxping db
 ```
 
 ## Using Default Bridge Network
@@ -66,20 +61,20 @@ However The `default bridge network` allows container-to-container communication
 Start a `postgres db` container:
 
 ```sh
-$ docker run --rm --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
+docker run --rm --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
 ```
 
 Get the IP address of the `postgres db` container:
 
 ```sh
-$ docker inspect mynginx | grep IPAddress
+docker inspect mynginx | grep IPAddress
             "IPAddress": "172.17.0.2",
 ```
 
 Run a `postgres client` container to connect the `db` container:
 
 ```sh
-$ docker run -it --rm postgres psql -h "172.17.0.2" -U postgres
+docker run -it --rm postgres psql -h "172.17.0.2" -U postgres
 psql (14.3)
 Type "help" for help.
 
@@ -105,13 +100,13 @@ docker network create postgres-net
 Start a `postgres db` container:
 
 ```sh
-$ docker run --rm --net postgres-net --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
+docker run --rm --net postgres-net --name postgres-db --detach -e POSTGRES_PASSWORD=mysecretpassword postgres
 ```
 
 Run a `postgres client` container to connect the `db` container:
 
 ```sh
-$ docker run -it --rm --net postgres-net postgres psql -h postgres-db -U postgres
+docker run -it --rm --net postgres-net postgres psql -h postgres-db -U postgres
 psql (14.3)
 Type "help" for help.
 
