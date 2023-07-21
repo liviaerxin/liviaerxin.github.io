@@ -4,10 +4,18 @@
         <title>S' Wiki Blog</title>
         <link>https://liviaerxin.github.io/journal</link>
         <description>S' Wiki Blog</description>
-        <lastBuildDate>Thu, 20 Jul 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 21 Jul 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Friday, July 21, 2023]]></title>
+            <link>https://liviaerxin.github.io/journal/2023/07/21/</link>
+            <guid>https://liviaerxin.github.io/journal/2023/07/21/</guid>
+            <pubDate>Fri, 21 Jul 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[- [ ]  Mysql, redis, or other db connections pool vs as single connection in Nodejs]]></description>
+            <content:encoded><![CDATA[<ul class="contains-task-list containsTaskList_mC6p"><li class="task-list-item"><input type="checkbox" disabled=""> <!-- --> Mysql, redis, or other db connections pool vs as single connection in Nodejs</li></ul><p>Since Node.js and Redis are both effectively single threaded there is no need to use multiple client instances or any pooling mechanism save for a few exceptions;</p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Thursday, July 20, 2023]]></title>
             <link>https://liviaerxin.github.io/journal/2023/07/20/</link>
