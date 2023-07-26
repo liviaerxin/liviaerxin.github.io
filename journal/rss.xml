@@ -4,10 +4,18 @@
         <title>S' Wiki Blog</title>
         <link>https://liviaerxin.github.io/journal</link>
         <description>S' Wiki Blog</description>
-        <lastBuildDate>Fri, 21 Jul 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 26 Jul 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Wednesday, July 26, 2023]]></title>
+            <link>https://liviaerxin.github.io/journal/2023/07/26/</link>
+            <guid>https://liviaerxin.github.io/journal/2023/07/26/</guid>
+            <pubDate>Wed, 26 Jul 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[postgres + node + data model(typescript)]]></description>
+            <content:encoded><![CDATA[<p>postgres + node + data model(typescript)</p><p><a href="https://blog.appsignal.com/2022/06/01/build-a-data-access-layer-with-postgres-and-node.html" target="_blank" rel="noopener noreferrer">Build a Data Access Layer with PostgreSQL and Node.js | AppSignal Blog</a></p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Friday, July 21, 2023]]></title>
             <link>https://liviaerxin.github.io/journal/2023/07/21/</link>

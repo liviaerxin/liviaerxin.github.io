@@ -2,11 +2,19 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/journal</id>
     <title>S' Wiki Blog</title>
-    <updated>2023-07-21T00:00:00.000Z</updated>
+    <updated>2023-07-26T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/journal"/>
     <subtitle>S' Wiki Blog</subtitle>
     <icon>https://liviaerxin.github.io/https://github.com/liviaerxin.png</icon>
+    <entry>
+        <title type="html"><![CDATA[Wednesday, July 26, 2023]]></title>
+        <id>https://liviaerxin.github.io/journal/2023/07/26/</id>
+        <link href="https://liviaerxin.github.io/journal/2023/07/26/"/>
+        <updated>2023-07-26T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[postgres + node + data model(typescript)]]></summary>
+        <content type="html"><![CDATA[<p>postgres + node + data model(typescript)</p><p><a href="https://blog.appsignal.com/2022/06/01/build-a-data-access-layer-with-postgres-and-node.html" target="_blank" rel="noopener noreferrer">Build a Data Access Layer with PostgreSQL and Node.js | AppSignal Blog</a></p>]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Friday, July 21, 2023]]></title>
         <id>https://liviaerxin.github.io/journal/2023/07/21/</id>
