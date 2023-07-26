@@ -16,6 +16,14 @@
         <content type="html"><![CDATA[<p>postgres + node + data model(typescript)</p><p><a href="https://blog.appsignal.com/2022/06/01/build-a-data-access-layer-with-postgres-and-node.html" target="_blank" rel="noopener noreferrer">Build a Data Access Layer with PostgreSQL and Node.js | AppSignal Blog</a></p>]]></content>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Tuesday, July 25, 2023]]></title>
+        <id>https://liviaerxin.github.io/journal/2023/07/25/</id>
+        <link href="https://liviaerxin.github.io/journal/2023/07/25/"/>
+        <updated>2023-07-25T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[- [ ] Authentication and Authorization in Microservices]]></summary>
+        <content type="html"><![CDATA[<ul class="contains-task-list containsTaskList_mC6p"><li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->Authentication and Authorization in Microservices</li></ul><p>Authentication in microservices involves two main occasions:</p><ol><li>authentication required when end users communicate with services.</li><li>authentication happens between internal services.</li><li>authentication needed when external services enter internal services.</li></ol><p>OAuth 2.0 provides the industry-standard protocol for authorizing users in distributed systems. The OAuth framework reduces the burden on developers, eliminating duplications to build their own authentication mechanism in each microservice.</p><p><a href="https://dev.to/behalf/authentication-authorization-in-microservices-architecture-part-i-2cn0" target="_blank" rel="noopener noreferrer">Authentication &amp; Authorization in Microservices Architecture - Part I</a></p>]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Friday, July 21, 2023]]></title>
         <id>https://liviaerxin.github.io/journal/2023/07/21/</id>
         <link href="https://liviaerxin.github.io/journal/2023/07/21/"/>
