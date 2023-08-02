@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[4052],{21720:s=>{s.exports=JSON.parse('{"label":"First tabstop","permalink":"/blog/tags/first-tabstop","allTagsPath":"/blog/tags","count":1}')}}]);
