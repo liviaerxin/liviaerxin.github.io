@@ -20,6 +20,5 @@
   "markdown.preview.breaks": true,
   "pasteImage.path": "${projectRoot}/attachments",
   "pasteImage.showFilePathConfirmInputBox": true,
-  "prettier.singleQuote": false,
-  "workbench.colorTheme": "Dracula Soft"
+  "prettier.singleQuote": false
 }
