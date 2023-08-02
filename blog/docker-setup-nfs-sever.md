@@ -6,8 +6,8 @@ foam_template:
 authors:
   - frank
 tags:
-  - First tabstop
-  - First tabstop
+  - docker
+  - nfs
 description: Setup NFS Sever
 keywords:
   - Setup NFS Sever
@@ -17,9 +17,9 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# Setup NFS Sever
+# Setup NFS Sever In Docker
 
-- Setup a NFS server in Docker.
+## Setup a NFS server
 
 ```sh
 docker run -it --rm \
@@ -45,7 +45,7 @@ Here the output is
 172.17.0.2
 ```
 
-- Test NFS server by manual **mount** operation in the container.
+## Test NFS server by manual **mount** in the container
 
 > NOTE: run container as root by option `--privileged` or `--cap-add SYS_ADMIN` when permissions denied inside the container:
 
@@ -70,7 +70,7 @@ Then go to the Host to list directory `/data/volume/test`, where you will find t
 cat /data/volume/test/file1.txt
 ```
 
-- Test NFS server in a Docker container with creating a NFS volume,
+## Test NFS server in a Docker container with creating a NFS volume
 
 Create a NFS volume in Docker
 
@@ -104,4 +104,59 @@ docker run -it --rm \
   --mount 'type=volume,source=nfsvolume,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/,"volume-opt=o=addr=172.17.0.2,rw,nfsvers=4,async",target=/mnt' \
   busybox \
   sh
+```
+
+## Setup a NFS Server and Mount NFS Volume int Docker Compose
+
+```yaml
+version: '3'
+services:
+  nfs-client:
+    image: busybox
+    ports:
+      - 8001:8000
+    environment:
+      - ROOT_PATH=/upload
+    working_dir: /app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-config=log_conf.yaml
+    volumes:
+      - type: volume
+        source: nfs-volume
+        target: /data
+        volume:
+          nocopy: true
+    depends_on:
+      - nfs-server
+    networks:
+      backend:
+
+  nfs-server:
+    image: itsthenetwork/nfs-server-alpine:latest
+    privileged: true
+    # ports:
+      # - 2049:2049
+    environment:
+      SHARED_DIRECTORY: /nfs-share
+    working_dir: /usr/src/app/docusaurus
+    volumes:
+      - /data/volume/mtr:/nfs-share
+    networks:
+      backend:
+        ipv4_address: 172.28.0.2
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
+
+volumes:
+  nfs-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=172.28.0.2,nfsvers=4,async"
+      device: ":/"
 ```

@@ -1,18 +1,24 @@
-# Wednesday, July 19, 2023
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/git-submodules.md
+authors:
+  - frank
+tags:
+  - git
+  - git submodules
+  - best practice
+description: Git Submodules
+keywords:
+  - Git Submodules
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-08-02
+draft: false
+enableComments: true # for Gisqus
+---
 
-- [ ] I still prefer **os.path** over **Pathlib**, as follows
-
-1. Consistency, I'm used to use path string as an argument between functions and I think **Pathlib** is not flexible enough to handle arguments
-2. Pure and Function, Although **Pathlib** brings many useful features like `glob`, `stem`, and so on. I still like the concept of simplicity that don't put all things together!
-
-
-- [ ] Trim `$` for clipboard copy in **Docusaurus** in code block bash.
-
-[Ignore `$ ` for clipboard copy · Issue #1745 · facebook/docusaurus · GitHub](https://github.com/facebook/docusaurus/issues/1745)
-
-- [x] Some common issues I often hit when using **git**
-
-Configure username/password for different repos or remotes
+# Git Best Practices
 
 Global configuration
 
@@ -21,14 +27,13 @@ git config --global --list
 git config --local --list
 ```
 
+**GIT** two popular authentication methods: [SSH Key](#git-ssh-key) and [Credentials](#git-credentials)
 
-**GIT** two popular authentication methods:
-
-- ssh key
+## Git SSH Key
 
 [How to Authenticate Your Git to GitHub with SSH Keys](https://hackernoon.com/how-to-authenticate-your-git-to-github-with-ssh-keys)
 
-- git credentials
+## Git Credentials
 
 Store username/password instead of ssh for multiple remotes
 
@@ -71,8 +76,37 @@ Alternatively, we can directly edit our global Git config file `~/.gitconfig`,
 
 [Configuring Git Credentials](https://www.baeldung.com/ops/git-configure-credentials)
 
-- [ ] Programming Algorithms
+## Git Submodules
 
-Top Algorithms Every Programmer Should Know
+1. Pull the repo and its all submodules in **the first time**.
 
-[What is Algorithm | Introduction to Algorithms - GeeksforGeeks](https://www.geeksforgeeks.org/introduction-to-algorithms/)
+```sh
+git clone http://10.6.64.66:30000/mtr/mtr.git
+
+cd mtr
+
+git submodule update --init --recursive --progress
+```
+
+Or just one command to clone with all the submodules.
+
+```sh
+git clone --recursive http://10.6.64.66:30000/mtr/mtr.git
+```
+
+2. Pull the repo and its all submodules later
+
+```sh
+git submodule update --recursive --progress
+```
+
+3. Pull the latest of `main` branch in each repository, when the parent repo does point to the latest branch of its submodules!
+
+```sh
+git submodule foreach git pull origin main
+```
+
+```sh
+git submodule update --recursive --remote
+```
+
