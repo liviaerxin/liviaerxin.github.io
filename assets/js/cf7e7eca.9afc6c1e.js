@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2177],{85050:a=>{a.exports=JSON.parse('{"label":"fastapi","permalink":"/blog/tags/fastapi","allTagsPath":"/blog/tags","count":3}')}}]);
