@@ -29,10 +29,13 @@ To start a Celery worker will start a main process that will spawn child process
 
 To increase the number of child processes/threads(via `--concurrency` option) will increase the number of tasks the Celery worker can process in parallel. More processes are usually better.
 
-However, in reality, there are often situations:
+However, in reality, there are some situations in following modes:
 
-1. Run N workers with M pool processes each.
-2. Run 1 worker with N*M pool processes.
+1. Run N workers with M child processes each.
+2. Run 1 worker with N*M child processes.
+3. Run N workers with only 1 main process each.
+4. Run N workers with M child threads each.
+5. Run 1 worker with N*M child threads.
 
 Whether to use `processes` or `threads` depends on what your tasks will actually do and whether they are GPU bound or IO bound.
 
@@ -62,7 +65,38 @@ When coming to a microservices environment, this option becomes useful and pract
 
 When start a Celery worker via `celery -A tasks worker --loglevel INFO --pool=solo`
 
+## Celery Task
 
+### What is Task in Celery
+
+### How Task be Executed
+
+```py
+from celery import Celery, Task
+
+app = Celery(...)
+
+@app.task(base=Task)
+def add(x, y):
+  return x + y
+
+@app.task(base=Task)
+def mul(x, y):
+  return x * y
+```
+
+The `@app.task` decoration will use `Task` class in default if you don't specify explicitly.
+
+When a worker start by `celery -A tasks worker`,
+
+1. Worker will spawn child Processes, the number of child Processes is based on CPU cores in default.
+2. Each child Process will initialize a `Task` instance for every decorated function. Here `add()` has its own `Task` instance and `mul()` also has its own `Task` instance respectively.
+
+When a client call `add.delay(1, 2)`,
+  
+1. Worker receive a Task in Queue.
+2. Worker assign the Task to a child Process, which will determine to use which `Task` instance to execute. A `Task` instance is initialized in each decorated function and registered with a task name using function name in default(such as `add`, `mul`). Here is the `Task` instance with name `add()` should be picked up to run the task.
+3. When be decorated in `add()`, the `Task` instance `run()` method will be `add()` original function body. The child Process will use the `Task` instance's `__call__()` method to run task, and `__call__()` will invoke the `run()` within itself.  
 
 ## Known Issues
 
