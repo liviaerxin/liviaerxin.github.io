@@ -4,3 +4,5 @@
 *.dSYM
 
 __pycache__/
+
+*.joblib
