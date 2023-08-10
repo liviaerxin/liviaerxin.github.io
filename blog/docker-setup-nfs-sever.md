@@ -23,20 +23,20 @@ enableComments: true # for Gisqus
 
 ```sh
 docker run -it --rm \
-  --name nfs \ 
-  --privileged \
-  -v /data/volume/test:/nfs-share \
-  -e SHARED_DIRECTORY=/nfs-share \
-  -p 2049:2049 \
-  itsthenetwork/nfs-server-alpine:latest
+    --name nfs \
+    --privileged \
+    -v /data/volume/test:/nfs-share \
+    -e SHARED_DIRECTORY=/nfs-share \
+    -p 2049:2049 \
+    itsthenetwork/nfs-server-alpine:latest
 ```
 
 Get the ip address of the nfs server,
 
 ```sh
 docker inspect \
-  -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
-  nfs
+    -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+    nfs
 ```
 
 Here the output is
@@ -100,10 +100,11 @@ Or use the combined one command which will create a volume `nfsvolume`,
 
 ```sh
 docker run -it --rm \
-  --name nfs-test \
-  --mount 'type=volume,source=nfsvolume,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/,"volume-opt=o=addr=172.17.0.2,rw,nfsvers=4,async",target=/mnt' \
-  busybox \
-  sh
+    --privileged \
+    --name nfs-test \
+    --mount 'type=volume,source=nfsvolume,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/,"volume-opt=o=addr=172.17.0.2,rw,nfsvers=4,async",target=/mnt' \
+    busybox \
+    sh
 ```
 
 ## Setup a NFS Server and Mount NFS Volume int Docker Compose
@@ -137,7 +138,6 @@ services:
       # - 2049:2049
     environment:
       SHARED_DIRECTORY: /nfs-share
-    working_dir: /usr/src/app/docusaurus
     volumes:
       - /data/volume/mtr:/nfs-share
     networks:
