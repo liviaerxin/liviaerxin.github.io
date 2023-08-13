@@ -1,0 +1,153 @@
+---
+authors:
+  - frank
+tags:
+  - docker
+  - samba
+description: Docker Setup Samba Server
+keywords:
+  - Docker Setup Samba Server
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-08-12
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Docker Setup Samba Server
+
+**!IMPORTANT**: Permission setting is very annoying but critical, sometimes you need take long time to fine tune it and debug.
+
+Some takeaways about Permission:
+
+- Creating and deleting files is controlled by permissions on the directory.
+- Modifying the file is controlled by permissions on the file. You may have a mask which is removing the write privilege from the file.
+
+When I turned to set up Samba server locally, the main purpose is that I would like to integrate the Samba server into my Docker Compose project to mock a real remote Samba server, which will facilitate your local development in Docker environment.
+
+So this blog will illustrate to set up a Samba server and a client, and test interaction between them.
+
+## Start Samba Server in Docker
+
+Here, we use Samba server image from [dperson/samba](https://hub.docker.com/r/dperson/samba). Although there is an alternative from [ghcr.io/servercontainers/samba](https://hub.docker.com/r/servercontainers/samba) or [crazymax/samba](https://github.com/crazy-max/docker-samba)
+
+```sh
+docker run -it --rm \
+    --name samba \
+    -p 139:139 -p 445:445 \
+    -v mnt:/mnt:z \
+    dperson/samba \
+    -p -s "Mount;/mnt;yes;no;yes" -u "bob;bobspasswd" -g "log level = 5"
+```
+
+:::note
+`-s "<Mount;/mnt>;yes;no;yes"` means [browsable:yes;readonly:no;guest:yes]", which will allow the guest to `read` and the user to `read/write`!
+:::
+
+:::note
+In OSX, due to the docker desktop itself is running in VM, it will cause some error like `Operation not supported` when binding a local file folder via `bind mount` even you set `777` mask on the folder. So it's recommended to use `volume` to bind to `/mnt` in Samba server in OSX.
+
+Furthermore, the Samba server will log such message: `error reading meta xattr: Not supported`.
+:::
+
+Get the samba server IP address:
+
+```sh
+$ docker inspect \
+    -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+    samba
+172.17.0.2
+```
+
+## Start Samba Client in Docker
+
+Use `dperson/samba` or `busybox` image,
+
+```sh
+docker run -it --rm --privileged dperson/samba bash
+```
+
+or
+
+```sh
+docker run -it --rm --privileged busybox sh
+```
+
+Inside the container:
+
+```sh
+mkdir /smb_share
+
+# mount -t cifs //[server-ip]/[share-path] /[mount-point]
+mount -t cifs //172.17.0.2/Mount /smb_share -o rw,username=bob,password=bobspasswd
+
+# write file
+echo "xxxx" > /smb_share/f.txt
+```
+
+## Start Samba Client which Create Volume in Docker
+
+1. Create a CIFS/Samba Volume
+
+```sh
+docker volume create \
+    --driver local \
+    --opt type=cifs \
+    --opt device=//172.17.0.2/Mount \
+    --opt o=username=bob,password=bobspasswd \
+    --name samba-volume
+```
+
+```sh
+$ docker inspect samba-volume
+[
+    {
+        "CreatedAt": "2023-08-13T16:24:03Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/samba-volume/_data",
+        "Name": "samba-volume",
+        "Options": {
+            "device": "//172.17.0.2/Mount",
+            "o": "addr=username=bob,password=bobspasswd",
+            "type": "cifs"
+        },
+        "Scope": "local"
+    }
+]
+```
+
+2. Start a container using the created volume `samba-volume`.
+
+```sh
+docker run -it --rm \
+    -v samba-volume:/mnt \
+    busybox \
+    sh
+```
+
+## Use Case in Docker Compose
+
+import CodeBlock from '@theme/CodeBlock';
+import CodeSource from '!!raw-loader!../code-snippets/docker-compose/samba/docker-compose.yml';
+
+<CodeBlock language="yaml" title="docker-compose-samba.yml">{CodeSource}</CodeBlock>
+
+
+## Troubleshooting
+
+When you mount an Samba Share in Linux, you may encounter error like `failed: Invalid argument`,
+
+```sh
+bash-5.1# mount -t cifs //172.17.0.2/Mount /mnt/smb_share -o iocharset=utf8,rw,vers=1.0
+mount: mounting //172.17.0.2/Mount on /mnt/smb_share failed: Invalid argument
+```
+
+You can use `dmesg` to debug,
+
+```sh
+bash-5.1# dmesg
+[317258.750535] CIFS: Attempting to mount \\172.17.0.2\Mount
+[317258.752956] CIFS: VFS: No username specified
+[317336.240984] cifs: Unknown parameter 'passwd'
+[317344.451345] CIFS: Attempting to mount \\172.17.0.2\Mount
+```

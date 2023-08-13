@@ -28,10 +28,9 @@ Use docker image [gists/nfs-server](https://hub.docker.com/r/gists/nfs-server) t
 ```sh
 docker run --rm -d \
     --name nfs \
-    --cap-add=SYS_ADMIN \
-    --cap-add=SETPCAP \
+    --privileged \
     -p 2049:2049 \
-    -v /data/volume/test:/nfs-share \
+    -v /tmp/volume:/nfs-share \
     -e NFS_DIR=/nfs-share \
     -e NFS_OPTION="rw,fsid=0,async,no_subtree_check,no_auth_nlm,insecure,no_root_squash" \
     gists/nfs-server
@@ -45,7 +44,7 @@ Before we use an old nfs server image [itsthenetwork/nfs-server-alpine](https://
 docker run -it --rm \
     --name nfs \
     --privileged \
-    -v /data/volume/test:/nfs-share \
+    -v /tmp/volume:/nfs-share \
     -e SHARED_DIRECTORY=/nfs-share \
     -p 2049:2049 \
     itsthenetwork/nfs-server-alpine:latest
@@ -104,10 +103,10 @@ cat /data/volume/test/file1.txt
 
 ```sh
 docker volume create --driver local \
-  --opt type=nfs \
-  --opt o=addr=172.17.0.2,nfsvers=4 \
-  --opt device=:/ \
-  nfs-volume
+    --opt type=nfs \
+    --opt o=addr=172.17.0.2,nfsvers=4 \
+    --opt device=:/ \
+    nfs-volume
 ```
 
 ```sh
@@ -118,10 +117,11 @@ Then run a container with the created volume `nfs-volume`.
 
 ```sh
 docker run -it --rm \
-  --name nfs-test \
-  -v nfs-volume:/mnt \
-  busybox \
-  sh
+    --privileged \
+    --name nfs-test \
+    -v nfs-volume:/mnt \
+    busybox \
+    sh
 ```
 
 
@@ -138,54 +138,7 @@ docker run -it --rm \
 
 ## Setup a NFS Server and Mount NFS Volume int Docker Compose
 
-```yaml
-version: '3'
-services:
-  nfs-client:
-    image: busybox
-    ports:
-      - 8001:8000
-    environment:
-      - ROOT_PATH=/upload
-    working_dir: /app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-config=log_conf.yaml
-    volumes:
-      - type: volume
-        source: nfs-volume
-        target: /data
-        volume:
-          nocopy: true
-    depends_on:
-      - nfs-server
-    networks:
-      backend:
 
-  nfs-server:
-    image: itsthenetwork/nfs-server-alpine:latest
-    privileged: true
-    # ports:
-      # - 2049:2049
-    environment:
-      SHARED_DIRECTORY: /nfs-share
-    volumes:
-      - /data/volume/mtr:/nfs-share
-    networks:
-      backend:
-        ipv4_address: 172.28.0.2
+## About NFS Options
 
-networks:
-  backend:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
-          gateway: 172.28.0.1
-
-volumes:
-  nfs-volume:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=172.28.0.2,nfsvers=4,async"
-      device: ":/"
-```
+[Understanding the /etc/exports File – The Geek Diary](https://www.thegeekdiary.com/understanding-the-etc-exports-file/)

@@ -2,17 +2,16 @@
 foam_template:
   name: Blog Docusaurus Template
   description: Creates Docusaurus blog/slip
-  filepath: blog/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md
+  filepath: blog/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
 authors:
   - frank
 tags:
-  - ${1:First tabstop}
-  - ${2:First tabstop}
+  - ${FOAM_TITLE}
 description: ${FOAM_TITLE}
 keywords:
   - ${FOAM_TITLE}
 image: https://i.imgur.com/mErPwqL.png
-date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}
+date: ${FOAM_DATE_YEAR}-${FOAM_DATE_MONTH}-${FOAM_DATE_DATE}
 draft: false
 enableComments: true # for Gisqus
 ---
