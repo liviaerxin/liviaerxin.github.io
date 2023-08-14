@@ -43,6 +43,21 @@ docker rm -f $(docker ps -a -q)
 docker volume rm $(docker volume ls -q)
 ```
 
+- Keep container running for for testing and debugging
+
+```sh
+# Use -t(-tty)
+docker run --rm -d -t busybox
+```
+
+```sh
+docker run --rm -d busybox tail -f /dev/null
+```
+
+```sh
+docker run --rm -d busybox sleep infinity
+```
+
 ## Docker Compose
 
 Rebuild image and restart a service which you specified,
