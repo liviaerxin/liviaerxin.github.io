@@ -4,18 +4,19 @@ authors:
 tags:
   - docker
   - samba
-description: Docker Setup Samba Server
+description: Set Up Samba Server in Docker
 keywords:
-  - Docker Setup Samba Server
+  - Set Up Samba Server in Docker
 image: https://i.imgur.com/mErPwqL.png
 date: 2023-08-12
 draft: false
 enableComments: true # for Gisqus
 ---
 
-# Docker Setup Samba Server
+# Set Up Samba Server in Docker
 
 **!IMPORTANT**: Permission setting is very annoying but critical, sometimes you need take long time to fine tune it and debug.
+**!IMPORTANT**: When setting up a Samba server in Docker in OSX, you will encounter problems such as `Operation not suppored` when using `bind mount`. Roughly saying, the reason is Docker run in a light VM in Mac and your Mac host uses a different file system(HFS+) compared to Linux(ext4 or similar). So switching to `volume mount` will solve this potential problem.
 
 Some takeaways about Permission:
 
@@ -30,6 +31,16 @@ So this blog will illustrate to set up a Samba server and a client, and test int
 
 Here, we use Samba server image from [dperson/samba](https://hub.docker.com/r/dperson/samba). Although there is an alternative from [ghcr.io/servercontainers/samba](https://hub.docker.com/r/servercontainers/samba) or [crazymax/samba](https://github.com/crazy-max/docker-samba)
 
+In OSX, it's critical to use `volume mount` and avoid using `bind mount` as we mentioned above.
+
+:::note
+In OSX, due to the docker desktop itself is running in VM, it will cause some error like `Operation not supported` when binding a local file folder via `bind mount` even you set `777` mask on the folder. So it's recommended to use `volume mount` to bind to `/mnt` in Samba server in OSX.
+
+Furthermore, the Samba server will log such message: `error reading meta xattr: Not supported`.
+:::
+
+In Linux, it's okay to use either `volume mount` or `bind mount`.  
+
 ```sh
 docker run -it --rm \
     --name samba \
@@ -43,11 +54,6 @@ docker run -it --rm \
 `-s "<Mount;/mnt>;yes;no;yes"` means [browsable:yes;readonly:no;guest:yes]", which will allow the guest to `read` and the user to `read/write`!
 :::
 
-:::note
-In OSX, due to the docker desktop itself is running in VM, it will cause some error like `Operation not supported` when binding a local file folder via `bind mount` even you set `777` mask on the folder. So it's recommended to use `volume` to bind to `/mnt` in Samba server in OSX.
-
-Furthermore, the Samba server will log such message: `error reading meta xattr: Not supported`.
-:::
 
 Get the samba server IP address:
 
@@ -151,3 +157,4 @@ bash-5.1# dmesg
 [317336.240984] cifs: Unknown parameter 'passwd'
 [317344.451345] CIFS: Attempting to mount \\172.17.0.2\Mount
 ```
+

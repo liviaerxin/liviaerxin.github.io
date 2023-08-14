@@ -24,7 +24,7 @@ enableComments: true # for Gisqus
 There are three types of data to manage data in Docker,
 
 - bind mount
-- volume
+- volume mount
 - tmpfs mount
 
 ![](../img/types-of-mounts-volume.png)
