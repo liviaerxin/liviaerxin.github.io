@@ -2,11 +2,19 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/journal</id>
     <title>S' Wiki Blog</title>
-    <updated>2023-08-04T00:00:00.000Z</updated>
+    <updated>2023-08-14T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/journal"/>
     <subtitle>S' Wiki Blog</subtitle>
     <icon>https://liviaerxin.github.io/https://github.com/liviaerxin.png</icon>
+    <entry>
+        <title type="html"><![CDATA[Monday, August 14, 2023]]></title>
+        <id>https://liviaerxin.github.io/journal/2023/08/14/</id>
+        <link href="https://liviaerxin.github.io/journal/2023/08/14/"/>
+        <updated>2023-08-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[- [ ] Write best ChatGPT prompts]]></summary>
+        <content type="html"><![CDATA[<ul class="contains-task-list containsTaskList_mC6p"><li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->Write best ChatGPT prompts</li></ul>]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Friday, August 4, 2023]]></title>
         <id>https://liviaerxin.github.io/journal/2023/08/04/</id>
