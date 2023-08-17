@@ -11,13 +11,15 @@ keywords:
   - ffmpeg
 image: https://i.imgur.com/mErPwqL.png
 tags:
-  - learn
+  - cheat-sheet
   - ffmpeg
 date: 2023-07-06
 last_update: 2023-07-06
 ---
 
-# Learn FFmpeg
+# FFmpeg Cheat Sheet
+
+A list of FFmpeg command samples for quick lookup!
 
 Examples of Container and Codec lists in Chrome[^chrome]:
 
@@ -38,7 +40,6 @@ Video Codec Format:
 - H.264 [Chrome only]
 - H.265 [Chrome only and also only with the underlying OS support]
 - MPEG-4 [Chrome OS only, aka **Xvid**, **DivX**]
-
 
 ## FFmpeg Command Samples
 
@@ -110,7 +111,7 @@ ffmpeg -i input.avi -vcodec libxvid -preset fast -g 10 -keyint_min 10 -sc_thresh
 ffmpeg -i input.avi -vcodec h264_nvenc -preset fast -g 10 -keyint_min 10 -sc_threshold 0 output.avi
 ```
 
-Trim video:
+Clip video:
 
 ```sh
 # Fast clip with stream copy and faster seeking(700x)
