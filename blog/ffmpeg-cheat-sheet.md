@@ -76,6 +76,12 @@ List all keyframe(I-frame) timestamp:
 ffprobe -select_streams v -show_entries frame=pict_type,pts_time -of csv=p=0 -skip_frame nokey -i input.mp4
 ```
 
+- Read video information json output:
+
+```sh
+ffprobe -v quiet -show_streams -select_streams v:0 -print_format json video.mp4
+```
+
 Convert video:
 
 you can convert either the `container formats` or the `codecs formats`, such as:
@@ -145,6 +151,47 @@ ffmpeg -i video.mp4 -filter:v "setpts=0.5*PTS" output.mp4
 ffmpeg -i video.mp4 -filter:v "fps=30" output.mp4
 ```
 
+Draw region of interest(ROI) on a video:
+
+```sh
+# Draw one drawbox
+
+ffmpeg -i input.mp4 -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red@0.5" output.mp4
+
+ffmpeg -i input.mp4 -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red@0.5,drawtext=text='Test Text':x=100:y=100:fontsize=24:fontcolor=yellow:box=1:boxcolor=yellow" output.mp4
+
+ffmpeg -y -ss 30 -noaccurate_seek -i input.mp4 -t 10 -c:v libx264 -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red@0.5,drawtext=text='Test Text':x=100:y=(100-text_h):fontsize=24:fontcolor=black:box=1:boxcolor=red:boxborderw=2" output.mp4
+```
+
+```sh
+# Draw different `drawbox` at different time on video from a file(using `timeline` feature)
+# See timeline: https://ffmpeg.org/ffmpeg-filters.html#Timeline-editing
+# See expression: https://ffmpeg.org/ffmpeg-utils.html#Expression-Evaluation
+ffmpeg -i input.mp4 -filter_complex_script timeline.txt output.mp4
+
+# `timeline.txt` look like:
+[0:v]drawbox=x=100:y=100:w=200:h=150:color=red@0.5:enable='between(t,0,21)'[box1];
+[box1]drawbox=x=300:y=200:w=150:h=100:color=green@0.5:t=:enable='between(t,21,40)'[box2];
+[box2]drawbox=x=50:y=300:w=300:h=200:color=blue@0.5:t=:enable='between(t,41,60)'
+
+
+# or using `n`: sequential number of the input frame, starting from 0
+[0:v]drawbox=x=100:y=100:w=200:h=150:color=red@0.5:n=0:600[box1];
+[box1]drawbox=x=300:y=200:w=150:h=100:color=green@0.5:n=601:1200[box2];
+[box2]drawbox=x=50:y=300:w=300:h=200:color=blue@0.5:n=1201:1800
+```
+
+```sh
+# Draw different `drawbox` at different time on video
+ffmpeg -i input.mp4 -filter_complex "[0:v]drawbox=x=100:y=100:w=200:h=150:color=red:t=8:enable='between(t,0,21)'[box1];[box1]drawbox=x=300:y=200:w=150:h=100:color=green:t=8:enable='between(t,21,40)'[box2];[box2]drawbox=x=50:y=300:w=300:h=200:color=blue:t=8:enable='between(t,41,60)'" output.mp4
+```
+
+- Pipeline ffmpeg input to ffmpeg output
+
+```sh
+# It works in Linux and Windows(`cmd`, does not work in `PS`)
+ffmpeg -ss 00:00:10 -i video.mp4 -to 00:00:20 -an -c:v copy -f h264 pipe: | ffmpeg -y -i pipe: -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red" output.mp4
+```
 ## References
 
 [^ffmpeg]: [FFmpeg Wiki](https://trac.ffmpeg.org/wiki)
