@@ -41,7 +41,20 @@ Video Codec Format:
 - H.265 [Chrome only and also only with the underlying OS support]
 - MPEG-4 [Chrome OS only, aka **Xvid**, **DivX**]
 
-## FFmpeg Command Samples
+## FFmpeg Command
+
+The common patter of `ffmpeg` looks like:
+
+```sh
+ffmpeg [options] -i input.mp4 [options] output.mp4
+```
+
+In short:
+
+- The first `[options]` before `-i input.mp4` is option used to decode the video
+- The second `[options]` before `output.mp4` is option used to encode the video
+
+## FFmpeg Command Examples
 
 It's note worthing to look over FFmpeg Wiki [^ffmpeg]
 
@@ -57,7 +70,12 @@ List all available `codec` formats:
 ffmpeg -codecs
 ```
 
-List private options of the `codec`:
+List all available `encoder` or `decoder`:
+
+```sh
+ffmpeg -encoders
+ffmpeg -decoders
+```
 
 ```sh
 # Show available `presets`
@@ -76,13 +94,19 @@ List all keyframe(I-frame) timestamp:
 ffprobe -select_streams v -show_entries frame=pict_type,pts_time -of csv=p=0 -skip_frame nokey -i input.mp4
 ```
 
-- Read video information json output:
+- Read video information json output
 
 ```sh
 ffprobe -v quiet -show_streams -select_streams v:0 -print_format json video.mp4
 ```
 
-Convert video:
+- Transcode video
+
+There are three possible and reasonable methods for transcoding:
+
+- software decoding and software encoding
+- software decoding and hardware encoding
+- hardware decoding and hardware encoding
 
 you can convert either the `container formats` or the `codecs formats`, such as:
 
