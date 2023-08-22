@@ -215,7 +215,18 @@ ffmpeg -i input.mp4 -filter_complex "[0:v]drawbox=x=100:y=100:w=200:h=150:color=
 ```sh
 # It works in Linux and Windows(`cmd`, does not work in `PS`)
 ffmpeg -ss 00:00:10 -i video.mp4 -to 00:00:20 -an -c:v copy -f h264 pipe: | ffmpeg -y -i pipe: -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red" output.mp4
+
+ffmpeg -i input.mp4 -c:v rawvideo -pix_fmt bgr24 -r 60 -f rawvideo pipe: | ffmpeg -y -f rawvideo -pix_fmt bgr24 -s 1920x1080 -r 60 -i pipe: -pix_fmt yuv420p -c:v h264_nvenc foo.mp4
+ffmpeg -i input.mp4 -pix_fmt yuv420p -r 60 -f rawvideo pipe: | ffmpeg -y -f rawvideo -pix_fmt yuv420p -s 1920x1080 -r 60 -i pipe: -c:v h264_nvenc foo.mp4
+ffmpeg -i input.mp4 -an -f h264 pipe: | ffmpeg -y -f h264 -i pipe: -c:v h264_nvenc foo.mp4
 ```
+
+- Use testsrc
+
+```sh
+ffmpeg -y -f lavfi -i testsrc=duration=10:size=1920x1080:rate=60 -c:v libx264 -pix_fmt yuv420p testsrc.mp4
+```
+
 ## References
 
 [^ffmpeg]: [FFmpeg Wiki](https://trac.ffmpeg.org/wiki)

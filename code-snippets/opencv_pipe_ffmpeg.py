@@ -10,6 +10,7 @@ import cv2
 import subprocess
 import shutil
 
+# Find `ffmpeg` tool
 FFMPEG_BINARY = shutil.which("ffmpeg")
 if not FFMPEG_BINARY:
     print("Please install ffmpeg!")
@@ -19,8 +20,8 @@ if not FFMPEG_BINARY:
 input_file = "input.mp4"
 output_file = "output.mp4"
 
+# Open the video file
 cap = cv2.VideoCapture(input_file)
-
 if not cap.isOpened():
     print("failed to read from file!")
     exit(1)
@@ -33,32 +34,37 @@ dimension = f"{width:.0f}x{height:.0f}"
 f_format = "bgr24"  # remember OpenCV uses bgr format in default
 fps = f"{fps:.0f}"
 
+
+# Create ffmpeg pipe VideoWriter
 # fmt: off
 command = [
     FFMPEG_BINARY,
     "-y",
     # "-loglevel", "warning",
     "-f", "rawvideo",
-    "-pix_fmt", f_format,        # pixel format            
-    "-s", dimension,            # or `-video_size`
+    "-pix_fmt", f_format,           # pixel format            
+    "-s", dimension,                # or `-video_size`
     "-r", fps,
-    "-i", "pipe:",              # input from `pipe:` or `-` or `pipe:0`
-    "-an",                     # remove audio
+    "-i", "pipe:",                  # input from `pipe:` or `-` or `pipe:0`
+    "-an",                          # remove audio
     "-pix_fmt",  "yuv420p",
-    "-vcodec", "libx264",          # `libx264` for CPU, `h264_videotoolbox` for MAC GPU, `h264_nvenc` for NVIDIA GPU
+    # "-vcodec", "libx264",           # `libx264` for CPU,
+    "-c:v", "h264_nvenc",           # `h264_videotoolbox` for MAC GPU, `h264_nvenc` for NVIDIA GPU 
+    "-preset", "fast",              #
     output_file,
 ]
 # fmt: on
 
+# Use `stdout=stderr=subprocess.DEVNULL`, Dont use `stdout=stderr=subprocess.PIPE`
 print(" ".join(command))
 proc = subprocess.Popen(
-    " ".join(command), #NOTE, it's strange sometimes you need to convert it to a string, using `" ".join(command)`
+    command,
     stdin=subprocess.PIPE,
     # stdout=subprocess.DEVNULL,
     # stderr=subprocess.DEVNULL,
-    shell=True,
-)  # Use `stdout=stderr=subprocess.DEVNULL`, Dont use `stdout=stderr=subprocess.PIPE`
+)
 
+# Output to the `ffmpeg` pipe
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -69,6 +75,8 @@ cap.release()
 
 print("EOF!")
 
-proc.stdin.close()
-# proc.stderr.close()
+if proc.stdin:
+    proc.stdin.close()
+if proc.stderr:
+    proc.stderr.close()
 proc.wait()
