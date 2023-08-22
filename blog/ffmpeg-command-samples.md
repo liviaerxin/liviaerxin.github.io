@@ -156,6 +156,14 @@ ffmpeg -i video.mp4 -ss 00:00:10 -to 00:00:50 -c:v copy output.mp4
 ffmpeg -ss 00:00:10 -i video.mp4 -to 00:00:50 -c:v libx264 output.mp4
 ```
 
+Use filter(Slow)
+
+```sh
+ffmpeg -y -i input.mp4 -an -c:v libx264 -filter:v "trim=start=10:end=30" output.mp4
+# remove the black video
+ffmpeg -y -i input.mp4 -an -c:v libx264 -filter:v "trim=start=10:end=30,setpts=PTS-STARTPTS" output.mp4
+```
+
 >NOTE: Cutting video with stream copy will lead the start frame is not precise!
 
 ### Slow down/Speed up video
@@ -187,6 +195,10 @@ ffmpeg -i input.mp4 -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red@0.5" ou
 ffmpeg -i input.mp4 -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red@0.5,drawtext=text='Test Text':x=100:y=100:fontsize=24:fontcolor=yellow:box=1:boxcolor=yellow" output.mp4
 
 ffmpeg -y -ss 30 -noaccurate_seek -i input.mp4 -t 10 -c:v libx264 -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red@0.5,drawtext=text='Test Text':x=100:y=(100-text_h):fontsize=24:fontcolor=black:box=1:boxcolor=red:boxborderw=2" output.mp4
+# Trim video and draw box
+ffmpeg -y -i input.mp4 -an -c:v libx264 -filter:v "trim=start=10:end=30,drawbox=x=100:y=100:w=200:h=150:color=red@0.5:enable='between(t,10,15)',setpts=PTS-STARTPTS" output.mp4
+
+ffmpeg -y -i input.mp4 -i overlay_video.mp4 -filter_complex "[0:v][1:v]overlay=0:0:enable='between(t,0,25)'" output.mp4
 ```
 
 ```sh
@@ -231,6 +243,52 @@ ffmpeg -i input.mp4 -an -f h264 pipe: | ffmpeg -y -f h264 -i pipe: -c:v h264_nve
 ```sh
 ffmpeg -y -f lavfi -i testsrc=duration=10:size=1920x1080:rate=60 -c:v libx264 -pix_fmt yuv420p testsrc.mp4
 ```
+
+### Split and Concatenate
+
+```sh
+ffmpeg -y -i input.mp4 -ss 0 -to 10 -c:v copy part1.mp4
+ffmpeg -y -i input.mp4 -ss 10 -to 15 -c:v copy part2.mp4
+ffmpeg -y -i input.mp4 -ss 15 -c:v copy part3.mp4
+```
+
+```sh
+ffmpeg -y -i part2.mp4 -filter:v "drawbox=x=100:y=100:w=200:h=150:color=red@0.5" part2-draw.mp4
+```
+
+Slow,
+
+```sh
+ffmpeg -y -i part1.mp4 -i part2-draw.mp4 -i part3.mp4 -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0[outv]" -map "[outv]" output.mp4
+```
+
+Fast(Concat protocol),
+
+```sh
+ffmpeg -i part1.mp4 -c copy part1.ts
+ffmpeg -i part2-draw.mp4 -c copy part2-draw.ts
+ffmpeg -i part3.mp4 -c copy part3.ts
+
+ffmpeg -y -i "concat:part1.ts|part2-draw.ts|part3.ts" -c:v copy output.mp4
+```
+
+Fast(Concat demuxer),
+
+```sh
+ffmpeg -y -f concat -i concat.txt -c:v copy output.mp4
+# concat.txt
+file 'part1.mp4'
+file 'part2-draw.mp4'
+file 'part3.mp4'
+
+# Or avoid creating the input file
+# bash
+ffmpeg -y -f concat -safe 0 -i <(echo "file '$PWD/part1.mp4'";echo "file '$PWD/part2-draw.mp4'";echo "file '$PWD/part3.mp4'";) -c:v copy output.mp4
+# cmd
+ffmpeg -y -f concat -safe 0 -i <(@echo "file '$PWD/part1.mp4'";@echo "file '$PWD/part2-draw.mp4'";@echo "file '$PWD/part3.mp4'";) -c:v copy output.mp4
+```
+
+https://trac.ffmpeg.org/wiki/Concatenate
 
 ## References
 

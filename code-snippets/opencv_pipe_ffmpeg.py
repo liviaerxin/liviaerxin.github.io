@@ -45,12 +45,12 @@ command = [
     "-pix_fmt", f_format,           # pixel format            
     "-s", dimension,                # or `-video_size`
     "-r", fps,
-    "-i", "pipe:",                  # input from `pipe:` or `-` or `pipe:0`
+    "-i", "pipe:",                  # input from `pipe:` or `-` or `pipe:0` for stdin, `pipe:1` for stdout, `pipe:2` for stderr
     "-an",                          # remove audio
     "-pix_fmt",  "yuv420p",
     # "-vcodec", "libx264",           # `libx264` for CPU,
-    "-c:v", "h264_nvenc",           # `h264_videotoolbox` for MAC GPU, `h264_nvenc` for NVIDIA GPU 
-    "-preset", "fast",              #
+    # "-c:v", "h264_nvenc",           # `h264_videotoolbox` for MAC GPU, `h264_nvenc` for NVIDIA GPU
+    "-c:v", "h264_videotoolbox",           # `h264_videotoolbox` for MAC GPU, `h264_nvenc` for NVIDIA GPU              
     output_file,
 ]
 # fmt: on
@@ -60,8 +60,8 @@ print(" ".join(command))
 proc = subprocess.Popen(
     command,
     stdin=subprocess.PIPE,
-    # stdout=subprocess.DEVNULL,
-    # stderr=subprocess.DEVNULL,
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
 )
 
 # Output to the `ffmpeg` pipe
