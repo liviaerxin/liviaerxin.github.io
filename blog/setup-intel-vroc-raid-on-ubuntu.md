@@ -1,18 +1,21 @@
 ---
+foam_template:
+  name: Docs Docusaurus Template
+  description: Creates Docusaurus docs/slip
+  filepath: docs/learn-ffmpeg.md
 authors:
   - frank
+description: Setup Intel VROC RAID on Ubuntu
+keywords:
+  - Setup Intel VROC RAID on Ubuntu
+image: https://i.imgur.com/mErPwqL.png
 tags:
   - intel vroc
   - raid
   - ubuntu
   - best practice
-description: Setup Intel VROC RAID on Ubuntu
-keywords:
-  - Setup Intel VROC RAID on Ubuntu
-image: https://i.imgur.com/mErPwqL.png
 date: 2023-08-29
-draft: false
-enableComments: true # for Gisqus
+last_update: 2023-08-29
 ---
 
 # Setup Intel VROC RAID on Ubuntu
