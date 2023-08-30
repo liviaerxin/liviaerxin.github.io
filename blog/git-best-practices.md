@@ -100,7 +100,18 @@ git clone --recursive http://10.6.64.66:30000/mtr/mtr.git
 git submodule update --recursive --progress
 ```
 
-3. Pull the latest of `main` branch in each repository, when the parent repo does point to the latest branch of its submodules!
+3. Enter each sub repository to pull its own latest of `main` per repository, when the parent repo does point to the latest branch of its submodules!
+
+Sometimes, it is very annoying to keep the parent repository up to date on the latest reference of its every sub repository!
+This approach give you the flexibility while being like a shortcut.
+
+```sh
+git submodule foreach git checkout main
+```
+
+```sh
+git submodule foreach git pull
+```
 
 ```sh
 git submodule foreach git pull origin main
