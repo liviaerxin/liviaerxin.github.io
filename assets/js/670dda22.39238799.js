@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[513],{96941:e=>{e.exports=JSON.parse('{"label":"intel vroc","permalink":"/blog/tags/intel-vroc","allTagsPath":"/blog/tags","count":2}')}}]);
