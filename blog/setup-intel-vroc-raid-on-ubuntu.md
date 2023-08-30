@@ -63,8 +63,6 @@ In my understanding, the intel VROC register in system with the common interface
 ```sh
 $ sudo mdadm --detail-platform
 
-rms@rms:~$ sudo mdadm --detail-platform
-[sudo] password for rms: 
        Platform : Intel(R) Virtual RAID on CPU
         Version : 8.0.3.1002
     RAID Levels : raid0 raid1 raid10 raid5
