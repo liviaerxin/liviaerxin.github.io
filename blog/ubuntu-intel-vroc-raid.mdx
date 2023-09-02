@@ -20,36 +20,23 @@ last_update: 2023-08-29
 
 # Intel VROC RAID on Ubuntu
 
-[Linux VROC User Guide](https://www.intel.com/content/dam/support/us/en/documents/memory-and-storage/ssd-software/Linux_VROC_6-0_User_Guide.pdf)
+- [Linux VROC User Guide](https://www.intel.com/content/dam/support/us/en/documents/memory-and-storage/ssd-software/Linux_VROC_6-0_User_Guide.pdf)
+- [VROC Ubuntu Setup](https://www.intel.com/content/dam/support/us/en/documents/memory-and-storage/ssd-software/VROC-Ubuntu-Setup-UserGuide-342787-US.pdf)
+- [Ubuntu RAID](./ubuntu-raid.md)
 
-[VROC Ubuntu Setup](https://www.intel.com/content/dam/support/us/en/documents/memory-and-storage/ssd-software/VROC-Ubuntu-Setup-UserGuide-342787-US.pdf)
+This document will present how to create and manage **Intel VROC RAID** on Ubuntu with `mdadm` utility(It should also work in other Linux).
 
-[How To Create RAID Arrays with mdadm on Ubuntu 22.04  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-create-raid-arrays-with-mdadm-on-ubuntu-22-04)
+For setting up **Intel VROC RAID** on Ubuntu in `BIOS`, go to see [VROC Ubuntu Setup](https://www.intel.com/content/dam/support/us/en/documents/memory-and-storage/ssd-software/VROC-Ubuntu-Setup-UserGuide-342787-US.pdf).
 
-Recently, there is a chance for me to install Ubuntu(server) OS on a Dell Precision xxx workstation which is includes 2 NVMe SSDs and 8 SATA hard drives(HDDs) and has in-box hardware-assisted RAID controller(intel **VROC**). In the past, I just play cloud virtual machines or personal host with single disk.
+For creating **software RAID** on Ubuntu, go to see [Ubuntu RAID](./ubuntu-raid.md).
 
-Storage is an important consideration coming up to my mind. So firstly, how to organize these disks to their roles:
+## Background
 
-- 2 SSDs hold the system to load quickly
-- 8 HDDs store data persistently
+On the premise machine, there are 2 NVMe SSDs and 8 SATA hard drives(HDDs), and also it ships with a in-box hardware-assisted RAID controller(**Intel VROC**) on the Intel CPU, which is supposed to keep overall advantages over **software RAID**.
 
-As Wiki saying, there are three types of raid:
+For me, I would like to use these 8 HDDs(sda, sdb, ..., sdh) to store data for long time, while retaining the balance between redundancy and performance. So here **RAID 5**(Stripping with Parity) comes into my mind.
 
-1. hardware RAID
-2. software RAID
-   - **mdadm** in Linux
-3. hardware-assisted software RAID, firmware RAID, fake RAID
-   - intel **VROC** (Virtual RAID on CPU)
-
-To leverage the power of intel **VROC** in Ubuntu(Linux), you also need the `mdadm` command line tool to manage intel VROC which support RAID 0, RAID 1, RAID 5 and RAID 10, following these steps:
-
-- [Setup RAID Array](#setup-raid-array)
-  1 - [Create RAID Container with Intel IMSM Metadata](#create-raid-container-with-intel-imsm-metadata)
-  2 - [Create RAID Array](#create-raid-array)
-  3 - [Create a filesystem on RAID array](#create-a-filesystem-on-raid-array)
-  4 - [Mount the RAID array](#mount-the-raid-array)
-  5 - [Persist RAID array](#persist-raid-array)
-
+To leverage the power of **Intel VROC** in Ubuntu(Linux), you also need the `mdadm` command line tool to manage intel VROC which support RAID 0, RAID 1, RAID 5 and RAID 10
 
 :::note
 In my understanding, the intel VROC register in system with the common interface with `mdadm`, so the `mdadm` software can operate it. And running command will show the `mdadm` is using intel VROC,
@@ -93,9 +80,7 @@ $ sudo mdadm --detail-platform
 
 :::
 
-
-
-!!!IMPORTANT
+:::info
 
 Install Ubuntu Server on RAID:
 Ubuntu Server Image has inbox `mdadm` utilities and `VMD` drivers(which enable intel VROC functionalities), so it is quite convenient to create the RAID 1 on 2 SSDs either in BIOS stage(for intel VROC only) or in storage layer step during OS installation stage(software RAID), then install Ubuntu Server OS on the RAID 1.
@@ -106,62 +91,75 @@ If you skip BIOS to create RAID during OS installation, remember to add `-e isms
 
 Install Ubuntu Desktop on RAID:
 Ubuntu Desk Image does not ship the `mdadm` tool, so it is nearly impossible to create RAID and install Ubuntu Desktop OS on the RAID(however this one [Install Ubuntu 20.04 desktop with RAID 1 and LVM on machine with UEFI BIOS](https://askubuntu.com/questions/1299978/install-ubuntu-20-04-desktop-with-raid-1-and-lvm-on-machine-with-uefi-bios) from stackoverflow seems to be successful)
+:::
 
-## Setup RAID Array
+## Set up RAID 5 array
 
-Here, we will create RAID 0 array and mount it.
+Here, I use 8 disks: `/dev/sda`, `/dev/sdb`, ..., `/dev/sdh` to create **RAID 5** array and mount it for use in practice.
 
-### Create RAID Container with Intel IMSM Metadata
+### Create RAID array
 
-The `/dev/sda` and `/dev/sdb` are used in this RAID container and the total number of drives is 2.
+When creating RAID array, **Intel VROC** is different with **software RAID** array creation as an additional container is needed to create firstly. Inside the container, some information is labelled into the drives for Intel VROC controller to recognize them.
+
+1. Create RAID Container with Intel IMSM Metadata
+
+the total number of drives is 8 and `-e imsm`.
 
 ```sh
-sudo mdadm --create /dev/md/imsm0 /dev/sd[a-b] -n 2 -e imsm
+sudo mdadm --create /dev/md/imsm0 /dev/sd[a-h] -n 8 -e imsm
 ```
 
-### Create RAID Array
-
-Create RAID 0 array `/dev/md/md0` in the `/dev/md/imsm0` container using total 2 drives.
+2. Then, Create a RAID array in the `/dev/md/imsm0` container using total 8 drives with **RAID 5**.
 
 ```sh
 sudo mdadm --create /dev/md/md0 /dev/md/imsm0 -l 0 -n 2
 ```
 
-### Create a filesystem on RAID array
+### Mount the RAID array for use
+
+After you create the RAID array in above step, all partitions and data will be erased from all individual disks.
+
+The RAID array is treated as a **logical drive** now.
+
+1. Create a `ext4` filesystem on the RAID array
 
 ```sh
 sudo mkfs.ext4 -F /dev/md/md0
 ```
 
-### Mount the RAID array
+2. Mount the RAID array
 
 ```sh
 sudo mkdir -p /mnt/md0
-```
 
-```sh
 sudo mount /dev/md/md0 /mnt/md0
 ```
 
-### Persist RAID array
+### Save RAID array configuration
 
-Persist RAID array config into `/etc/mdadm/mdadm.conf` and `/etc/fstab` files, even after system reboot,
+To make sure that the RAID array is reassembled and mounted automatically after reboot, we will have to add some necessary information into `/etc/mdadm/mdadm.conf` and `/etc/fstab`.
+
+1. Scan active array and append into `/etc/mdadm/mdadm.conf` file with following:
 
 ```sh
 sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
 ```
 
+2. Update `initramfs`, so the array will be available at early boot:
+
 ```sh
 sudo update-initramfs -u
 ```
+
+3. Add mount options to `/etc/fstab`, you can use `UUID=xxxx` instead of the `/dev/md0`.
 
 ```sh
 echo '/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 ```
 
-## Remove RAID Array with mdadm
+## Remove RAID Array
 
-### Umount the array from filesystem[Optional]
+### [Optional] Umount the array from filesystem
 
 Umount the array from filesystem if mounted,
 
@@ -190,7 +188,7 @@ sudo mdadm --zero-superblock /dev/sda
 sudo mdadm --zero-superblock /dev/sd[a-h]
 ```
 
-### Remove RAID Config [Optional]
+### [Optional] Remove RAID configuration
 
 Remove mount information to the array if exist. Edit the `/etc/fstab`:
 

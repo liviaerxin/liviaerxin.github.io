@@ -18,11 +18,23 @@ date: 2023-08-29
 last_update: 2023-08-29
 ---
 
-# Setup RAID on Ubuntu
+# RAID on Ubuntu
 
 [How To Create RAID Arrays with mdadm on Ubuntu 22.04  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-create-raid-arrays-with-mdadm-on-ubuntu-22-04)
 
-Recently, there is a chance for me to install Ubuntu(server) OS on a Dell Precision xxx workstation which is includes 2 NVMe SSDs and 8 SATA hard drives(HDDs) and has in-box hardware-assisted RAID controller(intel **VROC**). In the past, I just play cloud virtual machines or personal host with single disk.
+[SoftwareRAID](https://help.ubuntu.com/community/Installation/SoftwareRAID)
+
+[How to install Ubuntu with software RAID-1](https://www.servers.com/support/knowledge/linux-administration/how-to-install-ubuntu-with-software-raid-1)
+
+[Intel VROC RAID on Ubuntu](ubuntu-intel-vroc-raid.mdx)
+
+This blog will demonstrate to set up **software RAID** on Ubuntu(It should also work on other Linux).
+
+To setup **Intel VROC RAID** on Ubuntu, go to see [Intel VROC RAID on Ubuntu](ubuntu-intel-vroc-raid.mdx).
+
+## Background
+
+Recently, there is a chance for me to install Ubuntu(server) OS on a Dell Precision xxx workstation which is includes 2 NVMe SSDs and 8 SATA hard drives(HDDs) and has in-box hardware-assisted RAID controller(**Intel VROC**). In the past, I just play cloud virtual machines or personal host with single disk.
 
 Storage is an important consideration coming up to my mind. So firstly, how to organize these disks to their roles:
 
@@ -34,80 +46,98 @@ In order to access these physical disks easily and reduce damages from data loss
 Here are some benefits and shortcomings of them alongside common use cases:
 
 - **RAID**(Redundant Array of Independent Disks)
-drive layer  
-benefits: improve data redundancy and data read/write performance
+Abstraction level: drive layer
+Concept: RAID uses multiple drives to act as one(logical drive).
+Benefits: improve data redundancy and data read/write performance
 
 - **LVM**(Logical Volume Management)
-file system layer
-benefits: combine multiple disks into one logical volume, extend the volume with new disk added, increase/decrease mounted folder in file system
+Abstraction level: file system layer
+Concept: Manage a logical volume over multiple drives, each drive is a Physical Volume(PV).
+Benefits: combine multiple disks into one logical volume, extend the volume with new disk added, increase/decrease mounted folder in file system
 
 - **ZFS**(Z File System)
 
-As Wiki saying, there are three types of raid:
+There are three types of raid, as Wiki saying:
 
 1. hardware RAID
 2. software RAID
    - **mdadm** in Linux
 3. hardware-assisted software RAID, firmware RAID, fake RAID
-   - intel **VROC** (Virtual RAID on CPU)
+   - **Intel VROC** (Virtual RAID on CPU)
 
-This document will introduce how to set up software RAID(RAID0, RAID1, RAID5, RAID 10) on installed Ubuntu:
+This document will introduce how to set up software RAID(RAID0, RAID1, RAID5, RAID 10) on **already-installed** Ubuntu.
 
-- 
+To create a RAID to hold the Ubuntu OS when installing Ubuntu, see [SoftwareRAID](https://help.ubuntu.com/community/Installation/SoftwareRAID) or [How to install Ubuntu with software RAID-1](https://www.servers.com/support/knowledge/linux-administration/how-to-install-ubuntu-with-software-raid-1)
 
-For setting up intel VROC RAID on Ubuntu, go to [[ubuntu-intel-vroc-raid]](./ubuntu-intel-vroc-raid.md)
+In addition, there are different challenges you will face when installing Ubuntu Server and Ubuntu Desktop.
 
-For installing Ubuntu OS on RAID, see [SoftwareRAID](https://help.ubuntu.com/community/Installation/SoftwareRAID) or [How to install Ubuntu with software RAID-1](https://www.servers.com/support/knowledge/linux-administration/how-to-install-ubuntu-with-software-raid-1)
+> Install Ubuntu Server on RAID:
+> Ubuntu Server Image has inbox `mdadm` utilities, so it is quite convenient to create the software RAID on multiple disks then install Ubuntu Server OS on the RAID in storage layer step during OS installation stage.
 
-:::NOTE
-Install Ubuntu Server on RAID:
-Ubuntu Server Image has inbox `mdadm` utilities, so it is quite convenient to create the software RAID on multiple disks then install Ubuntu Server OS on the RAID in storage layer step during OS installation stage.
+---
 
-Install Ubuntu Desktop on RAID:
-Ubuntu Desk Image does not ship the `mdadm` tool, so it is nearly impossible to create RAID and install Ubuntu Desktop OS on the RAID(however this one [Install Ubuntu 20.04 desktop with RAID 1 and LVM on machine with UEFI BIOS](https://askubuntu.com/questions/1299978/install-ubuntu-20-04-desktop-with-raid-1-and-lvm-on-machine-with-uefi-bios) from stackoverflow seems to be successful)
-:::
+> Install Ubuntu Desktop on RAID:
+> Ubuntu Desk Image does not ship the `mdadm` tool, so it is nearly impossible to create RAID and install Ubuntu Desktop OS on the RAID(however this one [Install Ubuntu 20.04 desktop with RAID 1 and LVM on machine with UEFI BIOS](https://askubuntu.com/questions/1299978/install-ubuntu-20-04-desktop-with-raid-1-and-lvm-on-machine-with-uefi-bios) from stackoverflow seems to be successful)
 
-## Create RAID Array with mdadm
+## Set up RAID array
 
-Create RAID 0 array with device named `/dev/md0`
+To create a RAID array ready to use in practice, there are always common steps:
+
+1. Create a RAID array(RAID 0, RAID 1, RAID 5 or RAID 10)
+2. Mount the RAID array
+3. Save the RAID array configuration for system boot
+
+### Create RAID array with mdadm
+
+Create **RAID 0** array using devices: `/dev/sda` and `/dev/sdb`
 
 ```sh
 sudo mdadm --create --verbose /dev/md0 -l 0 -n 2 /dev/sda /dev/sdb
 ```
 
-Create a filesystem on the array
+### Mount RAID array for use
+
+1. Create a `ext4` filesystem on the array
 
 ```sh
 sudo mkfs.ext4 -F /dev/md0
 ```
 
-Mount the array
+2. Mount the array
 
 ```sh
 sudo mkdir -p /mnt/md0
-```
 
-```sh
 sudo mount /dev/md0 /mnt/md0
 ```
 
-Persist array config even after system reboot,
+### Save RAID array configuration
 
-```sh
+Persist the RAID array configuration to make the system reassemble and mount the RAID array automatically after reboot.
+
+Edit `/etc/mdadm/mdadm.conf`:
+
+```sh title="/etc/mdadm/mdadm.conf"
 sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
 ```
+
+Make RAID array available in early boot stage:
 
 ```sh
 sudo update-initramfs -u
 ```
 
-```sh
+Edit `/etc/fstab`:
+
+```sh title="/etc/fstab"
 echo '/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 ```
 
-## Remove RAID Array with mdadm
+## Delete RAID Array with mdadm
 
-[Optional]Umount the array from filesystem if mounted,
+Make sure to remove what are using the RAID array,
+
+[Optional] Umount the array from filesystem if mounted,
 
 ```sh
 sudo umount /dev/md0
@@ -128,13 +158,13 @@ sudo mdadm --zero-superblock /dev/sda
 sudo mdadm --zero-superblock /dev/sd[a-h]
 ```
 
-Remove any persistent references to the array if exist. Edit the `/etc/fstab`:
+[Optional] Remove any persistent references to the array if exist. Edit the `/etc/fstab`:
 
 ```sh title="/etc/fstab"
 sudo nano /etc/fstab
 ```
 
-Also, remove the array definition if exist, from the `/etc/mdadm/mdadm.conf` file:
+[Optional] Also, remove the array definition if exist, from the `/etc/mdadm/mdadm.conf` file:
 
 ```sh title="/etc/mdadm/mdadm.conf"
 sudo nano /etc/mdadm/mdadm.conf
@@ -142,7 +172,7 @@ sudo nano /etc/mdadm/mdadm.conf
 
 ## Manage RAID Array with mdadm
 
-Finding the RAID arrays,
+### Finding the RAID arrays
 
 ```sh
 $ cat /proc/mdstat
@@ -157,21 +187,21 @@ md127 : inactive nvme0n1[1](S) nvme1n1[0](S)
 unused devices: <none>
 ```
 
-Querying for Information on RAID array,
+### Querying information on RAID array
 
 ```sh
 sudo mdadm --detail /dev/md0
 sudo mdadm --query /dev/md0
 ```
 
-Getting Information on individual physical Devices,
+### Getting information on individual physical devices
 
 ```sh
 sudo mdadm --query /dev/sda
 sudo mdadm --examine /dev/sda
 ```
 
-Stop RAID array,
+### Stop RAID array
 
 ```sh
 sudo mdadm --stop /dev/md0
@@ -179,7 +209,7 @@ sudo mdadm --stop /dev/md0
 sudo mdadm --stop --scan
 ```
 
-Starting an Array,
+### Starting an RAID array
 
 ```sh
 # This works if the array is defined in the configuration `/etc/mdadm/mdadm.conf` file.
@@ -189,11 +219,13 @@ sudo mdadm --assemble /dev/md0
 sudo mdadm --assemble /dev/md0 /dev/sda /dev/sdb
 ```
 
-Adding a Spare Device to an Array,
+### Adding a spare device to an RAID array
 
 ```sh
 sudo mdadm /dev/md0 --add /dev/sde
 ```
+
+### Checking devices
 
 ```sh
 $ lsblk -f
@@ -221,11 +253,19 @@ nvme1n1     isw_raid_member 1.3.00
 └─md127                         
 ```
 
+### Partitioning a disk
+
 ```sh
 sudo fdisk -l /dev/sda
 ```
 
-Delete partition and data in drive,
+### Creating file system
+
+```sh
+sudo mkfs.ext4 -F /dev/sda
+```
+
+### Deleting partition and data in disk
 
 ```sh
 sudo dd if=/dev/zero of=/dev/sda  bs=512  count=1
