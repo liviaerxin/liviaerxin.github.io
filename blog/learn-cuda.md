@@ -37,6 +37,17 @@ NVIDIA CUDA software stack on WSL 2:
 
 ![NVIDIA CUDA software stack on WSL 2](https://docs.nvidia.com/cuda/wsl-user-guide/_images/wsl-launch-upt-0625-rz.png)
 
+## Nvidia CUDA container
+
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html
+
+## FFmpeg in Nvidia CUDA container
+
+https://developer.nvidia.com/ffmpeg
+
+https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvidia-gpu/index.html#compiling-for-linux
+
+https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/
 
 ## References
 
