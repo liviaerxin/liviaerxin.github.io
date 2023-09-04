@@ -226,8 +226,12 @@ ffmpeg -i input.mp4 -filter_complex "[0:v]drawbox=x=100:y=100:w=200:h=150:color=
 
 ### Pipe ffmpeg
 
-There are a common use case for FFmpeg pipe:
-Another program will process images such as object detection, roi drawing but it lacks ability to generate a video efficiently. So it will pipe the image to FFmpeg which will encode a video by leveraging hardware acceleration(GPU). For example, pipe the sequence images output from a `opencv` process to the `ffmpeg` which produces the final video.
+The `FFmpeg Pipe` is very useful in **IPC** for communicating `FFmpeg` with another `process`. For instance, an application generates images to `Pipe` stdin which `FFmpeg` reads and encodes into a video.
+
+**A real-life scenario that FFmpeg read from Pipe**:
+An application applied `OpenCV` to process images for object detection, and it will draw ROI but lacks ability to encode a video as efficiently as `FFmpeg` does. So it's somewhat ideal to pipe these images to `FFmpeg` that can encode the video by leveraging hardware acceleration(GPU) capability.
+
+However, FFmpeg can also **write to a Pipe**.
 
 ```sh
 # It works in Linux and Windows(`cmd`, does not work in `PS`)
