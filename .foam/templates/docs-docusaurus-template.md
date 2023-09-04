@@ -2,7 +2,7 @@
 foam_template:
   name: Docs Docusaurus Template
   description: Creates Docusaurus docs/slip
-  filepath: docs/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md
+  filepath: docs/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.mdx
 sidebar_label: ${FOAM_TITLE}
 description: ${FOAM_TITLE}
 keywords:

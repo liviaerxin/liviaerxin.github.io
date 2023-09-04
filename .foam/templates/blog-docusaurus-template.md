@@ -2,7 +2,7 @@
 foam_template:
   name: Blog Docusaurus Template
   description: Creates Docusaurus blog/slip
-  filepath: blog/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.md # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+  filepath: blog/${FOAM_TITLE/([\S]*)([ ]*)/${1:/downcase}${2:+-}/g}.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
 authors:
   - frank
 tags:
