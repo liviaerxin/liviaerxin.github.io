@@ -7,3 +7,4 @@ __pycache__/
 
 *.joblib
 *.mp4
+!*Dockerfile*
