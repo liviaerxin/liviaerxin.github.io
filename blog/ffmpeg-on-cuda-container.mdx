@@ -1,0 +1,67 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/ffmpeg-on-cuda-container.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - ffmpeg
+  - docker
+  - cuda
+  - nvidia
+description: FFmpeg on CUDA Container
+keywords:
+  - FFmpeg on CUDA Container
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-06
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Install FFmpeg on Nvidia CUDA Container
+
+[Using FFmpeg with NVIDIA GPU Hardware Acceleration - NVIDIA Docs](https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvidia-gpu/index.html)
+
+[NVIDIA FFmpeg Transcoding Guide | NVIDIA Technical Blog](https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/)
+
+[User Guide — container-toolkit 1.13.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
+
+
+**FFmpeg** can support hardware-based decoding and encoding for Nvidia GPU card. With the help of Nvidia GPU, `h264_nvenc` can lead encoding speed with **5x** faster than `libx264` in **GTX1080** card.
+
+Let's see how to install everything one by one on the Nvidia CUDA Docker container `nvidia/cuda:12.2.0-devel-ubuntu20.04`, which already includes CUDA toolkit and GPU driver.
+
+:::note
+> When running in the `nvidia/cuda` Docker container, what Nvidia libraries(from the host machine) should be mounted inside the container are specified by the `NVIDIA_DRIVER_CAPABILITIES` env variable, see [driver-capabilities](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html#driver-capabilities). Here for `FFmpeg` to employ GPU, it should be included at least as `NVIDIA_DRIVER_CAPABILITIES=video,utility`.
+:::
+
+:::note
+> It must use `nvidia/cuda:xxx-devel-xxx` image to build `FFmpeg`, because the `dev` image contain all the necessary libraries.
+:::
+
+## Step by Step
+
+
+```sh
+docker run --rm --runtime=nvidia \
+    -e NVIDIA_VISIBLE_DEVICES=all \
+    -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+    nvidia/cuda nvidia-smi
+```
+
+```sh
+docker run --rm --runtime=nvidia \
+    -e NVIDIA_VISIBLE_DEVICES=all \
+    -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+    nvidia/cuda bash
+```
+
+## The Final Dockerfile
+
+[](../code-snippets/dockerfiles/nvidia-cuda-ffmpeg/Dockerfile)
+
+import CodeBlock from '@theme/CodeBlock';
+import CodeSource from '!!raw-loader!../code-snippets/dockerfiles/nvidia-cuda-ffmpeg/Dockerfile';
+
+<CodeBlock language="yaml" title="nvidia-cuda-ffmpeg/Dockerfile">{CodeSource}</CodeBlock>
