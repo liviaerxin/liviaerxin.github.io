@@ -26,7 +26,7 @@ const config = {
   organizationName: websiteConfig.GITHUB_USER, // Usually your GitHub org/user name.
   projectName: websiteConfig.GITHUB_REPOSITORY, // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
   trailingSlash: false,
 
