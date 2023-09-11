@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[7622],{50194:e=>{e.exports=JSON.parse('{"permalink":"/blog/tags/docker","page":1,"postsPerPage":6,"totalPages":1,"totalCount":6,"blogDescription":"A Docusaurus powered blog!","blogTitle":"Docusaurus blog!"}')}}]);
