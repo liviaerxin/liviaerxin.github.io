@@ -1,0 +1,157 @@
+---
+foam_template:
+  name: Docs Docusaurus Template
+  description: Creates Docusaurus docs/slip
+  filepath: docs/learn-cuda.md
+sidebar_label: Learn CUDA
+description: Learn CUDA
+keywords:
+  - gpu
+  - cuda
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - nvidia
+  - gpu
+  - cuda
+  - wsl
+  - ubuntu
+last_update:
+  date: 2023-06-29
+  author: frank
+---
+
+# Learn CUDA
+
+Ecosystem:
+
+Hardware:
+
+- GPU(Hardware)
+
+Software:
+
+- Nvidia GPU Driver
+  - libnvidia-encode.so
+- CUDA Toolkit
+  - libnvcuvid.so
+  - libcuda.so
+- cuDNN library
+- Nvidia Container Toolkit
+  - libnvidia-container.so
+
+<!--truncate-->
+
+![CUDA Components](https://docs.nvidia.com/deploy/cuda-compatibility/graphics/CUDA-components.png)
+
+## CUDA on WSL
+
+NVIDIA CUDA software stack on WSL 2:
+
+![NVIDIA CUDA software stack on WSL 2](https://docs.nvidia.com/cuda/wsl-user-guide/_images/wsl-launch-upt-0625-rz.png)
+
+
+## Nvidia GPU Driver on Ubuntu
+
+### Finding out whether the host machine have Nvidia GPU hardware.
+
+```sh
+$ lspci | grep VGA
+0000:ac:00.0 VGA compatible controller: NVIDIA Corporation Device 2233 (rev a1)
+```
+
+or,
+
+```sh
+$ sudo lshw -C display
+  *-display
+       description: VGA compatible controller
+       product: NVIDIA Corporation
+       vendor: NVIDIA Corporation
+       physical id: 0
+       bus info: pci@0000:ac:00.0
+       logical name: /dev/fb0
+       version: a1
+       width: 64 bits
+       clock: 33MHz
+       capabilities: pm msi pciexpress vga_controller bus_master cap_list rom fb
+       configuration: depth=32 driver=nouveau latency=0 resolution=1920,1080
+       resources: iomemory:204f0-204ef iomemory:204f0-204ef irq:68 memory:99000000-99ffffff memory:204fe0000000-204fefffffff memory:204ff0000000-204ff1ffffff ioport:3000(size=128) memory:9a080000-9a0fffff
+```
+
+or,
+
+```sh
+$ hwinfo --gfxcard --short
+graphics card:
+                       nVidia VGA compatible controller
+
+Primary display adapter: #94
+```
+
+### Checking which GPU Driver being used
+
+Ubuntu is using **open-source Nouveau drivers**
+
+```sh
+$ lsmod | grep nouveau
+nouveau              2306048  1
+mxm_wmi                16384  1 nouveau
+i2c_algo_bit           16384  1 nouveau
+drm_ttm_helper         16384  1 nouveau
+ttm                    86016  2 drm_ttm_helper,nouveau
+drm_kms_helper        311296  1 nouveau
+drm                   622592  5 drm_kms_helper,drm_ttm_helper,ttm,nouveau
+video                  65536  2 dell_wmi,nouveau
+wmi                    32768  7 dell_wmi_sysman,dell_wmi,wmi_bmof,dell_smbios,dell_wmi_descriptor,mxm_wmi,nouveau
+```
+
+Ubuntu is not using the **proprietary NVIDIA drivers**
+
+```sh
+$ lsmod | grep nvidia
+```
+
+### Installing the Nvidia GPU driver
+
+[Ubuntu Linux Install Nvidia Driver (Latest Proprietary Driver)](https://www.cyberciti.biz/faq/ubuntu-linux-install-nvidia-driver-latest-proprietary-driver)
+
+[Install Nvidia Beta Drivers via PPA Repository](https://phoenixnap.com/kb/install-nvidia-drivers-ubuntu#ftoc-heading-11)
+
+### Verifying the Nvidia GPU driver
+
+```sh
+nvidia-smi
+
+nvidia-smi --query-gpu=driver_version --format=csv
+```
+
+```sh
+dconfig -p | grep nvidia
+```
+
+## Nvidia CUDA on Ubuntu
+
+[Official documentation: CUDA installation](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/contents.html)
+
+[How to Install CUDA on Ubuntu 22.04 LTS](https://linuxhint.com/install-cuda-on-ubuntu-22-04-lts)
+
+## Nvidia CUDA Container Toolkit
+
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html
+
+
+## FFmpeg in Nvidia CUDA Container
+
+https://developer.nvidia.com/ffmpeg
+
+https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvidia-gpu/index.html#compiling-for-linux
+
+https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/
+
+[Install FFmpeg on Nvidia CUDA Container](./ffmpeg-on-cuda-container.mdx)
+
+## References
+
+[CUDA And Nvidia Graphics Driver](https://docs.nvidia.com/deploy/cuda-compatibility/index.html)
+
+[CUDA on WSL User Guide](https://docs.nvidia.com/cuda/wsl-user-guide/index.html)

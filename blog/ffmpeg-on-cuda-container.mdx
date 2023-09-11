@@ -28,20 +28,36 @@ enableComments: true # for Gisqus
 [User Guide — container-toolkit 1.13.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
 
 
+[](./learn-cuda.mdx)
+
+This documentation describes to install `FFmpeg` on `nvidia/cuda` **container** to use the **Nvidia GPU** to accelerate encoding.
+
+If you want to know [how to install FFmpeg with NVIDIA GPU on Linux](https://www.cyberciti.biz/faq/how-to-install-ffmpeg-with-nvidia-gpu-acceleration-on-linux/), go to see that.
+
+
 **FFmpeg** can support hardware-based decoding and encoding for Nvidia GPU card. With the help of Nvidia GPU, `h264_nvenc` can lead encoding speed with **5x** faster than `libx264` in **GTX1080** card.
 
-Let's see how to install everything one by one on the Nvidia CUDA Docker container `nvidia/cuda:12.2.0-devel-ubuntu20.04`, which already includes CUDA toolkit and GPU driver.
-
-:::note
-> When running in the `nvidia/cuda` Docker container, what Nvidia libraries(from the host machine) should be mounted inside the container are specified by the `NVIDIA_DRIVER_CAPABILITIES` env variable, see [driver-capabilities](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html#driver-capabilities). Here for `FFmpeg` to employ GPU, it should be included at least as `NVIDIA_DRIVER_CAPABILITIES=video,utility`.
-:::
+Let's see how to install everything one by one on the **Nvidia CUDA Docker** container `nvidia/cuda:12.2.0-devel-ubuntu20.04`, in which CUDA toolkit and GPU driver are already included.
 
 :::note
 > It must use `nvidia/cuda:xxx-devel-xxx` image to build `FFmpeg`, because the `dev` image contain all the necessary libraries.
 :::
 
-## Step by Step
+## Prerequisites
 
+Make sure **Nvidia GPU Driver** is installed in your host machine! As it will be mounted into the **container**. 
+
+Use `ldconfig` to check if the required Nvidia GPU driver libraries are available inside the container. Such as,
+
+```console
+ldconfig -p | grep libcuda.
+```
+
+:::note
+> When running in the `nvidia/cuda` Docker container, what Nvidia libraries(from the host machine) should be mounted inside the container are specified by the `NVIDIA_DRIVER_CAPABILITIES` env variable, see [driver-capabilities](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html#driver-capabilities). Here for `FFmpeg` to employ GPU, it should be included at least as `NVIDIA_DRIVER_CAPABILITIES=video,utility`.
+:::
+
+## Step by Step
 
 ```sh
 docker run --rm --runtime=nvidia \
@@ -57,7 +73,7 @@ docker run --rm --runtime=nvidia \
     nvidia/cuda bash
 ```
 
-## The Final Dockerfile
+## Complete Dockerfile
 
 [](../code-snippets/dockerfiles/nvidia-cuda-ffmpeg/Dockerfile)
 
