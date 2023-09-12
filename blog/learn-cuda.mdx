@@ -131,14 +131,70 @@ dconfig -p | grep nvidia
 
 ## Nvidia CUDA on Ubuntu
 
-[Official documentation: CUDA installation](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/contents.html)
+[Official documentation: CUDA installation](https://docs.nvidia.com/cuda/)
 
 [How to Install CUDA on Ubuntu 22.04 LTS](https://linuxhint.com/install-cuda-on-ubuntu-22-04-lts)
 
 ## Nvidia CUDA Container Toolkit
 
-https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html
+[](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
 
+## Nvidia CUDA Container
+
+Prerequisites on Host Machine:
+
+- [Nvidia GPU driver](#nvidia-gpu-driver-on-ubuntu)
+- [Nvidia CUDA Container Toolkit](#nvidia-cuda-container-toolkit)
+- Docker
+
+Running a docker container `ubuntu`,
+
+[Specialized Configurations with Docker — container-toolkit 1.14.1 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/docker-specialized.html#)
+
+```sh
+$ docker run --rm --gpus all ubuntu nvidia-smi
+
+$ docker run --rm --gpus all ubuntu ldconfig -p | grep nvidia
+        libnvidia-ptxjitcompiler.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1
+        libnvidia-pkcs11-openssl3.so.535.86.05 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-pkcs11-openssl3.so.535.86.05
+        libnvidia-opencl.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-opencl.so.1
+        libnvidia-nvvm.so.4 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-nvvm.so.4
+        libnvidia-ml.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1
+        libnvidia-cfg.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-cfg.so.1
+        libnvidia-allocator.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-allocator.so.1
+
+$ docker run --rm -e NVIDIA_DRIVER_CAPABILITIES=video --gpus all ubuntu ldconfig -p | grep nvidia
+        libnvidia-ptxjitcompiler.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1
+        libnvidia-pkcs11-openssl3.so.535.86.05 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-pkcs11-openssl3.so.535.86.05
+        libnvidia-opticalflow.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-opticalflow.so.1
+        libnvidia-opencl.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-opencl.so.1
+        libnvidia-nvvm.so.4 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-nvvm.so.4
+        libnvidia-encode.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-encode.so.1
+        libnvidia-allocator.so.1 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libnvidia-allocator.so.1
+```
+
+Running a docker container `nvidia/cuda`,
+
+:::info
+Make sure the version of **CUDA container** `nvidia/cuda:xx.x.x-base-ubuntu22.04` such as `12.2.0` in following must be compatible with the version of the **Nvidia GPU driver** on the host platform such as `>525.60.13`.
+:::
+
+```sh
+docker run --rm --gpus all nvidia/cuda:12.2.0-base-ubuntu22.04 nvidia-smi
+```
+
+```sh
+docker run --rm \
+    --gpus all \
+    -e NVIDIA_VISIBLE_DEVICES=all \
+    -e NVIDIA_DRIVER_CAPABILITIES=compute,video,utility,graphics \
+    nvidia/cuda:12.2.0-base-ubuntu22.04 nvidia-smi
+```
+
+More `Dockerfile` examples:
+
+- [Dockerfile](../code-snippets/dockerfiles/nvidia-cuda-ffmpeg/Dockerfile)
+- [docker compose](../code-snippets/docker-compose/nvidia-cuda/docker-compose.yml)
 
 ## FFmpeg in Nvidia CUDA Container
 
