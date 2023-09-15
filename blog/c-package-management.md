@@ -23,6 +23,6 @@ last_update:
 
 vcpkg
 
-[[wiki-vcpkg.mdx]](wiki-vcpkg.md)
+[[wiki vcpkg]](./wiki-vcpkg.mdx)
 
 conan
