@@ -2,7 +2,7 @@
 foam_template:
   name: Docs Docusaurus Template
   description: Creates Docusaurus docs/slip
-  filepath: docs/learn-ffmpeg.md
+  filepath: docs/wiki-ffmpeg.md
 authors:
   - frank
 description: Learn FFmpeg

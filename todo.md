@@ -1,3 +1,3 @@
 # TO-DO
 
-[[learn-asgi]](./blog/learn-asgi.md)
+[[wiki-asgi.mdx]](./blog/wiki-asgi.md)

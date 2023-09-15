@@ -1,3 +1,22 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/wiki-wpf.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - wiki
+  - wpf
+description: Wiki WPF
+keywords:
+  - Wiki WPF
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-15
+draft: false
+enableComments: true # for Gisqus
+---
+
 # WPF
 
 [GitHub - SingletonSean/wpf-tutorials: Tutorial source code for WPF concepts.](https://github.com/SingletonSean/wpf-tutorials)

@@ -1,0 +1,38 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/wiki-samba.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - wiki
+  - samba
+description: Wiki Samba
+keywords:
+  - Wiki Samba
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-15
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Samba Wiki
+
+
+## Setting up Samba
+
+[How to Install Samba in Ubuntu {+Configuring and Connecting}searchtwitterfacebooklinkedinchevron-circle-upyoutube-playinstagram](https://phoenixnap.com/kb/ubuntu-samba)
+
+## Troubleshooting Samba
+
+[Troubleshooting Access Denied on SAMBA - Ask Ubuntu](https://askubuntu.com/questions/1391434/troubleshooting-access-denied-on-samba)
+
+```editorconfig title="/etc/samba.conf"
+[documents]
+path = /data/documents
+valid users = @simon
+guest ok = no
+writable = yes
+browsable = yes
+```

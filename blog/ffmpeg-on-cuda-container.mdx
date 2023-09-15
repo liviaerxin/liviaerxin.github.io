@@ -28,7 +28,7 @@ enableComments: true # for Gisqus
 [User Guide — container-toolkit 1.13.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
 
 
-[](./learn-cuda.mdx)
+[wiki cuda](./wiki-cuda.mdx)
 
 This documentation describes to install `FFmpeg` on `nvidia/cuda` **container** to use the **Nvidia GPU** to accelerate encoding.
 
@@ -38,6 +38,8 @@ If you want to know [how to install FFmpeg with NVIDIA GPU on Linux](https://www
 **FFmpeg** can support hardware-based decoding and encoding for Nvidia GPU card. With the help of Nvidia GPU, `h264_nvenc` can lead encoding speed with **5x** faster than `libx264` in **GTX1080** card.
 
 Let's see how to install everything one by one on the **Nvidia CUDA Docker** container `nvidia/cuda:12.2.0-devel-ubuntu20.04`, in which CUDA toolkit and GPU driver are already included.
+
+<!--truncate-->
 
 :::note
 > It must use `nvidia/cuda:xxx-devel-xxx` image to build `FFmpeg`, because the `dev` image contain all the necessary libraries.

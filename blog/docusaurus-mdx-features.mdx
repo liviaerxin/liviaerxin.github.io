@@ -254,6 +254,30 @@ function HelloCodeTitle(props) {
 }
 ```
 
+Syntax highlighting for Other languages by `prism`: `sh`, `editorconfig`, etc.
+
+**editorconfig**:
+
+````md
+```editorconfig title="/etc/samba.conf"
+[documents]
+path = /data/documents
+valid users = @simon
+guest ok = no
+writable = yes
+browsable = yes
+```
+````
+
+**sh**:
+
+````md
+```sh
+$ ls /home
+```
+````
+
+
 ````md
 ```js
 function HighlightSomeText(highlight) {
