@@ -1,0 +1,71 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/wiki-coral.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - wiki
+  - coral
+  - serial console
+description: wiki-coral
+keywords:
+  - wiki
+  - coral
+  - mendel
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-18
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Coral
+
+Set up Coral Dev Board for employing an Edge TPU coprocessor.
+
+Prototype new projects demanding fast on-device inference for the ML models.
+
+<!--truncate-->
+
+## Resources
+
+[Get started with the Dev Board | CoralCoralClose](https://coral.ai/docs/dev-board/get-started/)
+
+## Background
+
+The official documents [Get started with the Dev Board](https://coral.ai/docs/dev-board/get-started/) contains comprehensive how-to contents and rich examples. Here are just some experiences from myself. You can always go back to the official website to review and get the details.
+
+The recommended method to access the Coral board is using [Mendel Development Tool (mdt)](https://coral.ai/docs/dev-board/mdt/), which is required to be installed on your host machine alongside the `Python`. Common steps to enter the shell terminal from `mdt` are in following:
+
+1. `mdt` tool generate a pair of `SSH key`s, save the `private key` on the host and push the `public key` to the Coral using `http` via `41337` port.
+2. Coral board has a running a `mdt-keymaster` server that is listening `41337` port, and put the `public key` into `~/.ssh/authorized_keys`.
+3. `mdt shell` now can login to the shell terminal of Coral board like `ssh mendel@192.168.100.2` when connecting over USB-C(OTG) or `ssh mendel@indigo-quill.local` over the same network where your host PC is.
+
+:::info
+Coral board is set up by disabling password login in `OpenSSH` in default, so it must be provided with `SSH key` otherwise you change the setting to be like `PasswordAuthentication yes`.
+:::
+
+:::note
+You can check the `key master` by,
+
+```sh
+mendel@indigo-quill:~$ lsof -i:41337
+COMMAND    PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+mdt-keyma 7846 mendel    5u  IPv4  20302      0t0  TCP 192.168.100.2:41337 (LISTEN)
+mdt-keyma 7847 mendel    6u  IPv4  20619      0t0  TCP 192.168.101.2:41337 (LISTEN)
+```
+
+:::
+
+Although `mdt` maybe facilitate the access to the Coral board, some magics and additional steps are kept from sight.
+
+To do not use `mdt`, we need access the dev board through `serial console` instead of `mdt keymaster` server, to make configuration.
+
+There are general ways to access a just-setup Coral in brief steps:
+
+1. Connect to Coral board's `serial console` by the instructions [Connect to the Dev Board's serial console](https://coral.ai/docs/dev-board/serial-console/)
+2. Log into the Dev board by username: `mendel` and password: `mendel` in default.
+3. Enable SSH Password Authentication. Edit `/etc/ssh/sshd_config` to change `PasswordAuthentication no` to `PasswordAuthentication yes`, and `sudo service ssh restart` to restart the ssh service.
+4. Log into the shell using username: `mendel` and password: `mendel`.
+5. If you want to keep the secure shell, generate `private SSH key` stored in host and `public SSH key` saved into Coral.
