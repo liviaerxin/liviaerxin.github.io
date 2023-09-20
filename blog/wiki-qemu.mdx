@@ -1,0 +1,286 @@
+---
+authors:
+  - frank
+tags:
+  - wiki
+  - qemu
+description: Wiki QEMU
+keywords:
+  - Wiki QEMU
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-19
+draft: false
+enableComments: true # for Gisqus
+---
+
+# QEMU
+
+https://medium.com/@ThyCrow/compiling-the-linux-kernel-and-creating-a-bootable-iso-from-it-6afb8d23ba22
+
+https://levelup.gitconnected.com/probably-the-simplest-way-to-install-debian-ubuntu-in-qemu-2db6afde27ef
+
+https://krinkinmu.github.io/2020/11/21/EFI-aarch64.html
+
+https://wiki.debian.org/Arm64Qemu
+
+http://cdn.kernel.org/pub/linux/kernel/people/will/docs/qemu/qemu-arm64-howto.html
+
+https://futurewei-cloud.github.io/ARM-Datacenter/qemu/how-to-launch-aarch64-vm/
+
+https://xryan.net/p/212
+
+OS Image Resources:
+
+- [Ubuntu OS Images](https://cdimage.ubuntu.com/)
+- [Debian OS Images](https://cdimage.debian.org/)
+
+
+<!--truncate-->
+
+## Mount ISO file on Linux
+
+https://www.cyberciti.biz/tips/how-to-mount-iso-image-under-linux.html
+
+## Mount ISO file on macOS
+
+https://unix.stackexchange.com/questions/298685/can-a-mac-mount-a-debian-install-cd
+
+1. Attaching as a block device
+
+```sh
+# the '-nomount' option avoids the 'mount failed' error
+❯ hdiutil attach -nomount mantic-mini-iso-amd64.iso
+/dev/disk6          	GUID_partition_scheme          	
+/dev/disk6s1        	Microsoft Basic Data           	
+/dev/disk6s2        	EFI                            	
+/dev/disk6s3        	Microsoft Basic Data  
+```
+
+```sh
+❯ diskutil info /dev/disk6s2
+   Device Identifier:         disk6s2
+   Device Node:               /dev/disk6s2
+   Whole:                     No
+   Part of Whole:             disk6
+
+   Volume Name:               ESP
+   Mounted:                   No
+
+   Partition Type:            EFI
+   File System Personality:   MS-DOS FAT12
+   Type (Bundle):             msdos
+   Name (User Visible):       MS-DOS (FAT12)
+```
+
+2. Load CD9660
+
+```sh
+# Load the kext module
+❯ sudo kmutil load -p /System/Library/Extensions/cd9660.kext
+```
+
+3. Mount the disk with cd9660 (aka ISO9660) file system
+
+```sh
+# create mount point
+❯ mkdir -p /tmp/ubuntu-mantic-iso
+
+# mount the disk
+❯ mount -t cd9660 /dev/disk6 /tmp/ubuntu-mantic-iso
+```
+
+View the `iso` files,
+
+```sh
+❯ tree -h -L 3 /tmp/ubuntu-mantic-iso
+[2.0K]  /tmp/ubuntu-mantic-iso
+├── [2.0K]  EFI
+│   └── [2.0K]  boot
+│       ├── [938K]  bootx64.efi
+│       ├── [2.2M]  grubx64.efi
+│       └── [841K]  mmx64.efi
+├── [2.0K]  boot
+│   └── [2.0K]  grub
+│       ├── [2.0K]  fonts
+│       ├── [ 169]  grub.cfg
+│       ├── [ 38K]  i386-pc
+│       └── [ 36K]  x86_64-efi
+├── [2.0K]  boot.catalog
+└── [2.0K]  casper
+    ├── [ 56M]  initrd
+    └── [ 13M]  vmlinuz
+
+9 directories, 7 files
+```
+
+4. Umount the disk
+
+```sh
+❯ umount /dev/disk6
+```
+
+5. Detach the disk
+
+```sh
+❯ hdiutil detach /dev/disk6
+```
+
+
+## QEMU
+
+```sh
+qemu-img create -f raw ubuntu-latest.raw 10G
+qemu-img create -f qcow2 ubuntu-latest.qcow2 10G
+```
+
+QEMU boot from 3 method:
+
+- BIOS in default
+- Linux kernel and initrad
+- UEFI, you must provide the UEFI firmware to help QEMU enter UEFI boot like `OVMF.fd`
+
+https://github.com/tianocore/tianocore.github.io/wiki/OVMF
+
+```sh
+efi=/Users/frankchen/Documents/qemu/aarch64/QEMU_EFI.fd
+efi=QEMU_EFI.fd
+iso=ubuntu-22.04-live-server-arm64.iso
+iso=ubuntu-core-22-arm64+raspi.img
+
+# It will enter monitor console in default.
+# Holding down the Ctrl and Alt keys, and pressing Ctrl-Alt-2. Once in the monitor, Ctrl-Alt-1 switches back to the guest OS
+# `-monitor stdio` will enter the guest os in force.
+qemu-system-aarch64 \
+    -monitor stdio \
+    -machine virt \
+    -cpu cortex-a57 \
+    -m 1G \
+    -bios $efi
+
+qemu-system-aarch64 \
+    -machine virt \
+    -cpu cortex-a57 \
+    -m 1G \
+    -nographic \
+    -bios $efi
+
+qemu-system-aarch64 \
+    -machine virt \
+    -cpu cortex-a57 \
+    -m 1G \
+    -nographic \
+    -bios $efi \
+    -cdrom $iso
+
+qemu-system-aarch64 \
+    -monitor stdio \
+    -machine virt \
+    -accel hvf \
+    -cpu host \
+    -m 4G \
+    -smp 4 \
+    -display default,show-cursor=on \
+    -bios $efi \
+    -cdrom $iso
+
+qemu-system-aarch64 \
+    -monitor stdio \
+    -machine virt \
+    -accel hvf \
+    -cpu host \
+    -m 4G \
+    -smp 4 \
+    -display default,show-cursor=on \
+    -bios $efi \
+    -drive file=ubuntu-latest.raw,format=raw,if=virtio \
+    -cdrom $iso
+```
+
+```sh
+efi=/Users/frankchen/Documents/qemu/ovmf-x64/OVMF_CODE-pure-efi.fd
+
+qemu-system-x86_64 \
+    -m 1G \
+    -nographic \
+    -bios $efi
+```
+
+
+```sh
+qemu-system-aarch64 \
+    -cpu cortex-a57 \
+   -nographic \
+   -M virt\
+   -smp 4 \
+   -m 3000 \
+   -bios QEMU_EFI1.fd \
+   -device qemu-xhci \
+   -device usb-kbd \
+   -device usb-tablet \
+   -device intel-hda \
+   -device hda-duplex \
+   -drive file=ubuntu-latest.img,format=raw,if=virtio,cache=writethrough \
+   -cdrom ubuntu-core-22-arm64+raspi.img
+```
+
+```sh
+qemu-system-aarch64 \
+   -monitor stdio \
+   -cpu cortex-a57 \
+   -M virt,highmem=off \
+   -accel hvf \
+   -cpu host \
+   -smp 4 \
+   -m 3000 \
+   -bios QEMU_EFI1.fd \
+   -device virtio-gpu-pci \
+   -display default,show-cursor=on \
+   -device qemu-xhci \
+   -device usb-kbd \
+   -device usb-tablet \
+   -device intel-hda \
+   -device hda-duplex \
+   -drive file=ubuntu-latest.img,format=raw \
+   -drive if=none,file=ubuntu-22.04-live-server-arm64.iso,media=cdrom,id=cdrom
+```
+
+```sh
+qemu-system-aarch64 \
+   -monitor stdio \
+    -cpu cortex-a57 \
+   -M virt,highmem=off \
+   -accel hvf \
+   -cpu host \
+   -smp 4 \
+   -m 3000 \
+   -bios QEMU_EFI1.fd \
+   -device virtio-gpu-pci \
+   -display default,show-cursor=on \
+   -device qemu-xhci \
+   -device usb-kbd \
+   -device usb-tablet \
+   -device intel-hda \
+   -device hda-duplex \
+   -drive file=ubuntu-latest.img,format=raw,if=virtio,cache=writethrough \
+   -cdrom ubuntu-22.04-live-server-arm64.iso
+```
+
+```sh
+qemu-system-x86_64 \
+   -m 3000 \
+   -bios QEMU_EFI.fd \
+   -cdrom mantic-mini-iso-amd64.iso
+```
+
+
+```sh
+qemu-system-aarch64 -machine virt -serial stdio -cpu cortex-a53 -bios QEMU_EFI.fd
+```
+
+```sh
+qemu-system-aarch64 -machine virt -serial stdio -cpu cortex-a53 -bios QEMU_EFI1.fd
+```
+
+```sh
+qemu-system-aarch64 -machine virt -cpu cortex-a53 -bios QEMU_EFI.fd -m 3000 -cdrom ubuntu-core-22-arm64+raspi.img
+```
