@@ -1,0 +1,117 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/how-to-mount-iso-file.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - how-to
+  - iso
+  - osx
+  - linux
+description: How to mount ISO file
+keywords:
+  - How to mount ISO file
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-21
+draft: false
+enableComments: true # for Gisqus
+---
+
+# How to mount ISO image file
+
+For viewing the content of the **ISO** image file like `*.iso`, we can mount it to filesystem and loop up its contained files.
+
+Mounting the **ISO** image file in linux is much easier than doing in macOS. Because **ISO** use `ISO9660` file system while the `hdiutil` in macOS does not support it originally. That will require more steps to implement in comparison with one command like `mount ` in Linux.
+
+[How to mount iso image in Linux](https://www.cyberciti.biz/tips/how-to-mount-iso-image-under-linux.html)
+
+[osx - Can a Mac mount a Debian install CD? - Unix & Linux Stack Exchange](https://unix.stackexchange.com/questions/298685/can-a-mac-mount-a-debian-install-cd)
+
+<!--truncate-->
+
+## Mount ISO file on Linux
+
+
+## Mount ISO file on macOS
+
+1. Attaching as a block device
+
+```sh
+# the '-nomount' option avoids the 'mount failed' error
+❯ hdiutil attach -nomount mantic-mini-iso-amd64.iso
+/dev/disk6          	GUID_partition_scheme          	
+/dev/disk6s1        	Microsoft Basic Data           	
+/dev/disk6s2        	EFI                            	
+/dev/disk6s3        	Microsoft Basic Data  
+```
+
+```sh
+❯ diskutil info /dev/disk6s2
+   Device Identifier:         disk6s2
+   Device Node:               /dev/disk6s2
+   Whole:                     No
+   Part of Whole:             disk6
+
+   Volume Name:               ESP
+   Mounted:                   No
+
+   Partition Type:            EFI
+   File System Personality:   MS-DOS FAT12
+   Type (Bundle):             msdos
+   Name (User Visible):       MS-DOS (FAT12)
+```
+
+2. [Optional] Load CD9660
+
+```sh
+# Load the kext module
+❯ sudo kmutil load -p /System/Library/Extensions/cd9660.kext
+```
+
+3. Mount the disk with cd9660 (aka ISO9660) file system
+
+```sh
+# create mount point
+❯ mkdir -p /tmp/ubuntu-mantic-iso
+
+# mount the disk
+❯ mount -t cd9660 /dev/disk6 /tmp/ubuntu-mantic-iso
+```
+
+View the `iso` files,
+
+```sh
+❯ tree -h -L 3 /tmp/ubuntu-mantic-iso
+[2.0K]  /tmp/ubuntu-mantic-iso
+├── [2.0K]  EFI
+│   └── [2.0K]  boot
+│       ├── [938K]  bootx64.efi
+│       ├── [2.2M]  grubx64.efi
+│       └── [841K]  mmx64.efi
+├── [2.0K]  boot
+│   └── [2.0K]  grub
+│       ├── [2.0K]  fonts
+│       ├── [ 169]  grub.cfg
+│       ├── [ 38K]  i386-pc
+│       └── [ 36K]  x86_64-efi
+├── [2.0K]  boot.catalog
+└── [2.0K]  casper
+    ├── [ 56M]  initrd
+    └── [ 13M]  vmlinuz
+
+9 directories, 7 files
+```
+
+4. Umount the disk
+
+```sh
+❯ umount /dev/disk6
+```
+
+5. Detach the disk
+
+```sh
+❯ hdiutil detach /dev/disk6
+```

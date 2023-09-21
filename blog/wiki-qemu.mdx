@@ -15,11 +15,20 @@ enableComments: true # for Gisqus
 
 # QEMU
 
+Learning and using the QEMU help me understand how the linux operating system works including fields:
+
+1. Linux boot process.
+2. Cross compile for target system(such as arm64) on host system(such as x86_64), and test the binary.
+
+[UEFI, PC boot process and UEFI with QEMU | joonas.fi](https://joonas.fi/2021/02/uefi-pc-boot-process-and-uefi-with-qemu/)
+
 https://medium.com/@ThyCrow/compiling-the-linux-kernel-and-creating-a-bootable-iso-from-it-6afb8d23ba22
 
 https://levelup.gitconnected.com/probably-the-simplest-way-to-install-debian-ubuntu-in-qemu-2db6afde27ef
 
-https://krinkinmu.github.io/2020/11/21/EFI-aarch64.html
+[UEFI on AARCH64 | Welcome to the Mike’s homepage!](https://krinkinmu.github.io/2020/11/21/EFI-aarch64.html)
+
+[OVMF · tianocore/tianocore.github.io Wiki · GitHub](https://github.com/tianocore/tianocore.github.io/wiki/OVMF)
 
 https://wiki.debian.org/Arm64Qemu
 
@@ -29,7 +38,7 @@ https://futurewei-cloud.github.io/ARM-Datacenter/qemu/how-to-launch-aarch64-vm/
 
 https://xryan.net/p/212
 
-OS Image Resources:
+## OS image Resources
 
 - [Ubuntu OS Images](https://cdimage.ubuntu.com/)
 - [Debian OS Images](https://cdimage.debian.org/)
@@ -37,141 +46,151 @@ OS Image Resources:
 
 <!--truncate-->
 
-## Mount ISO file on Linux
 
-https://www.cyberciti.biz/tips/how-to-mount-iso-image-under-linux.html
-
-## Mount ISO file on macOS
-
-https://unix.stackexchange.com/questions/298685/can-a-mac-mount-a-debian-install-cd
-
-1. Attaching as a block device
+## Create disk image
 
 ```sh
-# the '-nomount' option avoids the 'mount failed' error
-❯ hdiutil attach -nomount mantic-mini-iso-amd64.iso
-/dev/disk6          	GUID_partition_scheme          	
-/dev/disk6s1        	Microsoft Basic Data           	
-/dev/disk6s2        	EFI                            	
-/dev/disk6s3        	Microsoft Basic Data  
+qemu-img create -f raw ubuntu.raw 20G
+qemu-img create -f qcow2 ubuntu.qcow2 20G
 ```
 
-```sh
-❯ diskutil info /dev/disk6s2
-   Device Identifier:         disk6s2
-   Device Node:               /dev/disk6s2
-   Whole:                     No
-   Part of Whole:             disk6
-
-   Volume Name:               ESP
-   Mounted:                   No
-
-   Partition Type:            EFI
-   File System Personality:   MS-DOS FAT12
-   Type (Bundle):             msdos
-   Name (User Visible):       MS-DOS (FAT12)
-```
-
-2. Load CD9660
-
-```sh
-# Load the kext module
-❯ sudo kmutil load -p /System/Library/Extensions/cd9660.kext
-```
-
-3. Mount the disk with cd9660 (aka ISO9660) file system
-
-```sh
-# create mount point
-❯ mkdir -p /tmp/ubuntu-mantic-iso
-
-# mount the disk
-❯ mount -t cd9660 /dev/disk6 /tmp/ubuntu-mantic-iso
-```
-
-View the `iso` files,
-
-```sh
-❯ tree -h -L 3 /tmp/ubuntu-mantic-iso
-[2.0K]  /tmp/ubuntu-mantic-iso
-├── [2.0K]  EFI
-│   └── [2.0K]  boot
-│       ├── [938K]  bootx64.efi
-│       ├── [2.2M]  grubx64.efi
-│       └── [841K]  mmx64.efi
-├── [2.0K]  boot
-│   └── [2.0K]  grub
-│       ├── [2.0K]  fonts
-│       ├── [ 169]  grub.cfg
-│       ├── [ 38K]  i386-pc
-│       └── [ 36K]  x86_64-efi
-├── [2.0K]  boot.catalog
-└── [2.0K]  casper
-    ├── [ 56M]  initrd
-    └── [ 13M]  vmlinuz
-
-9 directories, 7 files
-```
-
-4. Umount the disk
-
-```sh
-❯ umount /dev/disk6
-```
-
-5. Detach the disk
-
-```sh
-❯ hdiutil detach /dev/disk6
-```
-
-
-## QEMU
-
-```sh
-qemu-img create -f raw ubuntu-latest.raw 10G
-qemu-img create -f qcow2 ubuntu-latest.qcow2 10G
-```
-
-QEMU boot from 3 method:
+QEMU can boot from 3 ways:
 
 - BIOS in default
 - Linux kernel and initrad
-- UEFI, you must provide the UEFI firmware to help QEMU enter UEFI boot like `OVMF.fd`
+- UEFI
 
-https://github.com/tianocore/tianocore.github.io/wiki/OVMF
+For **UEFI** boot, the `-bios` option should be used alongside `UEFI` firmware(`OVMF.fd` file) being provided to help QEMU do `UEFI` boot. For instance it is like: `-bios OVMF.fd`.
+
+Get a prebuilt `OVMF` file from the [OVMF](https://www.kraxel.org/repos/jenkins/edk2/).
+
+## BIOS boot
+
+Test entering BIOS,
 
 ```sh
-efi=/Users/frankchen/Documents/qemu/aarch64/QEMU_EFI.fd
-efi=QEMU_EFI.fd
-iso=ubuntu-22.04-live-server-arm64.iso
-iso=ubuntu-core-22-arm64+raspi.img
+qemu-system-x86_64 -monitor stdio -m 1G
+```
 
-# It will enter monitor console in default.
-# Holding down the Ctrl and Alt keys, and pressing Ctrl-Alt-2. Once in the monitor, Ctrl-Alt-1 switches back to the guest OS
-# `-monitor stdio` will enter the guest os in force.
+Then QEMU will show like this,
+
+![](../attachments/images/bios.png)
+
+
+## Kernel boot
+
+## UEFI boot
+
+### Test UEFI boot
+
+aarch64,
+
+```sh
+efi="$PWD/UEFI/aarch64/QEMU_EFI.fd"
+
+qemu-system-aarch64 -monitor stdio -M virt -cpu cortex-a57 -m 1G -net none -bios $efi
+
+qemu-system-aarch64 -nographic -M virt -cpu cortex-a57 -m 1G -net none -bios $efi
+```
+
+x86_64,
+
+```sh
+efi="$PWD/UEFI/ovmf-x64/OVMF-pure-efi.fd"
+
+qemu-system-x86_64 -monitor stdio -m 1G -net none -bios $efi
+```
+
+Then QEMU will drop into the **UEFI** shell, like this following image show,
+
+![efi](../attachments/images/efi.png)
+
+Options in detail:
+
+- `-nographic`: Don't create a video for the VM, just use the terminal.
+:::info
+quit QEMU: `Ctrl+A X`.  
+enter QEMU monitor console: `Ctrl+A C`.  
+see at [How to quit the QEMU monitor when not using a GUI?](https://superuser.com/questions/1087859/how-to-quit-the-qemu-monitor-when-not-using-a-gui)
+:::
+
+- `-monitor stdio`: Put QEMU monitor console in the terminal, while guest OS kept in created video device.
+:::info
+switch between monitor console and guest OS: `Ctrl+Alt+1` or `Ctrl+Alt+2`.
+:::
+
+- `-net none`: Disable iPXE.
+
+### Boot x86_64 ISO image
+
+Boot x86_64 image in Windows,
+
+```sh
+efi="$PWD/UEFI/ovmf-x64/OVMF-pure-efi.fd"
+iso=ubuntu-22.04-live-server-amd64.iso
+```
+
+:::note
+`ubuntu-**-amd64.iso` support both **UEFI** and Legacy **BIOS** boot, QEMU use **BIOS** when the option `-bios` is not specified!
+:::
+
+1. Create a disk image to install the ubuntu OS,
+
+```sh
+qemu-img create -f qcow2 ubuntu-image.qcow2 20G
+```
+
+2. Boot to run the Ubuntu OS
+
+```sh
+qemu-system-x86_64 \
+    -monitor stdio \
+    -accel whpx \
+    -m 8G \
+    -smp 4 \
+    -drive file=ubuntu-image.qcow2 \
+    -bios $efi \
+    -cdrom $iso
+```
+
+Options in details,
+
+- `-accel whpx`: use hardware acceleration
+
+3. [?]Boot the installed Ubuntu OS
+
+```sh
+# Install OS into a disk image
+qemu-system-x86_64 \
+    -accel whpx \
+    -m 8G \
+    -smp 4 \
+    -bios $efi \
+    -drive file=ubuntu.qcow2,format=qcow2,if=virtio \
+```
+
+### Boot aarch64 ISO image
+
+Emulate aarch64 ISO image in Windows,
+
+```sh
+efi="$PWD/UEFI/aarch64/QEMU_EFI.fd"
+iso="ubuntu-22.04-live-server-arm64.iso"
+
 qemu-system-aarch64 \
     -monitor stdio \
     -machine virt \
     -cpu cortex-a57 \
-    -m 1G \
-    -bios $efi
-
-qemu-system-aarch64 \
-    -machine virt \
-    -cpu cortex-a57 \
-    -m 1G \
-    -nographic \
-    -bios $efi
-
-qemu-system-aarch64 \
-    -machine virt \
-    -cpu cortex-a57 \
-    -m 1G \
-    -nographic \
+    -m 4G \
+    -smp 4 \
+    -drive file=ubuntu.qcow2,format=raw,if=virtio \
     -bios $efi \
     -cdrom $iso
+```
 
+Emulate aarch64 ISO image in mac M1,
+
+```sh
 qemu-system-aarch64 \
     -monitor stdio \
     -machine virt \
@@ -179,108 +198,32 @@ qemu-system-aarch64 \
     -cpu host \
     -m 4G \
     -smp 4 \
-    -display default,show-cursor=on \
+    -drive file=ubuntu.qcow2,format=raw,if=virtio \
     -bios $efi \
     -cdrom $iso
+``` 
 
+Options in details,
+
+- `-accel hvf`: use hardware acceleration in mac M1.
+- `-cpu host`: use mac M1 arm CPU.
+
+### Boot a preinstalled image
+
+```sh
+efi="$PWD/UEFI/aarch64/QEMU_EFI.fd"
+iso="2020-02-13-raspbian-buster.img"
+iso="ubuntu-core-22-arm64+raspi.img"
+```
+
+```sh
 qemu-system-aarch64 \
     -monitor stdio \
-    -machine virt \
-    -accel hvf \
-    -cpu host \
-    -m 4G \
-    -smp 4 \
-    -display default,show-cursor=on \
-    -bios $efi \
-    -drive file=ubuntu-latest.raw,format=raw,if=virtio \
-    -cdrom $iso
-```
-
-```sh
-efi=/Users/frankchen/Documents/qemu/ovmf-x64/OVMF_CODE-pure-efi.fd
-
-qemu-system-x86_64 \
+    -machine raspi3b \
+    -cpu cortex-a57 \
     -m 1G \
-    -nographic \
-    -bios $efi
-```
-
-
-```sh
-qemu-system-aarch64 \
-    -cpu cortex-a57 \
-   -nographic \
-   -M virt\
-   -smp 4 \
-   -m 3000 \
-   -bios QEMU_EFI1.fd \
-   -device qemu-xhci \
-   -device usb-kbd \
-   -device usb-tablet \
-   -device intel-hda \
-   -device hda-duplex \
-   -drive file=ubuntu-latest.img,format=raw,if=virtio,cache=writethrough \
-   -cdrom ubuntu-core-22-arm64+raspi.img
-```
-
-```sh
-qemu-system-aarch64 \
-   -monitor stdio \
-   -cpu cortex-a57 \
-   -M virt,highmem=off \
-   -accel hvf \
-   -cpu host \
-   -smp 4 \
-   -m 3000 \
-   -bios QEMU_EFI1.fd \
-   -device virtio-gpu-pci \
-   -display default,show-cursor=on \
-   -device qemu-xhci \
-   -device usb-kbd \
-   -device usb-tablet \
-   -device intel-hda \
-   -device hda-duplex \
-   -drive file=ubuntu-latest.img,format=raw \
-   -drive if=none,file=ubuntu-22.04-live-server-arm64.iso,media=cdrom,id=cdrom
-```
-
-```sh
-qemu-system-aarch64 \
-   -monitor stdio \
-    -cpu cortex-a57 \
-   -M virt,highmem=off \
-   -accel hvf \
-   -cpu host \
-   -smp 4 \
-   -m 3000 \
-   -bios QEMU_EFI1.fd \
-   -device virtio-gpu-pci \
-   -display default,show-cursor=on \
-   -device qemu-xhci \
-   -device usb-kbd \
-   -device usb-tablet \
-   -device intel-hda \
-   -device hda-duplex \
-   -drive file=ubuntu-latest.img,format=raw,if=virtio,cache=writethrough \
-   -cdrom ubuntu-22.04-live-server-arm64.iso
-```
-
-```sh
-qemu-system-x86_64 \
-   -m 3000 \
-   -bios QEMU_EFI.fd \
-   -cdrom mantic-mini-iso-amd64.iso
-```
-
-
-```sh
-qemu-system-aarch64 -machine virt -serial stdio -cpu cortex-a53 -bios QEMU_EFI.fd
-```
-
-```sh
-qemu-system-aarch64 -machine virt -serial stdio -cpu cortex-a53 -bios QEMU_EFI1.fd
-```
-
-```sh
-qemu-system-aarch64 -machine virt -cpu cortex-a53 -bios QEMU_EFI.fd -m 3000 -cdrom ubuntu-core-22-arm64+raspi.img
+    -smp 4 \
+    -net none \
+    -bios $efi \
+    -sd $iso
 ```
