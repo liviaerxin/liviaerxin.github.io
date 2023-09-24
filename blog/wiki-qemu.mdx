@@ -42,7 +42,7 @@ https://xryan.net/p/212
 
 - [Ubuntu OS Images](https://cdimage.ubuntu.com/)
 - [Debian OS Images](https://cdimage.debian.org/)
-
+- [Raspberry PI OS Images](https://downloads.raspberrypi.org/)
 
 <!--truncate-->
 
@@ -211,19 +211,119 @@ Options in details,
 ### Boot a preinstalled image
 
 ```sh
+# linux
+fdisk -l ubuntu-core-22-arm64+raspi.img
+
+# osx
+hdiutil imageinfo ubuntu-core-22-arm64+raspi.img
+```
+
+```sh
 efi="$PWD/UEFI/aarch64/QEMU_EFI.fd"
 iso="2020-02-13-raspbian-buster.img"
 iso="ubuntu-core-22-arm64+raspi.img"
+iso="ubuntu-22.04-live-server-arm64.iso"
 ```
 
 ```sh
 qemu-system-aarch64 \
     -monitor stdio \
-    -machine raspi3b \
+    -machine virt \
     -cpu cortex-a57 \
     -m 1G \
     -smp 4 \
     -net none \
     -bios $efi \
-    -sd $iso
+    -drive file=$iso
+```
+
+### Boot linux kernel
+
+https://www.berrange.com/posts/2023/03/09/make-tiny-image-py-creating-tiny-initrds-for-testing-qemu-or-linux-kernel-userspace-behaviour/
+
+https://github.com/dhruvvyas90/qemu-rpi-kernel
+
+https://medicineyeh.wordpress.com/2016/03/29/buildup-your-arm-image-for-qemu/
+
+https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
+
+```sh
+kernel="$PWD/ubuntu-22.04-arm64-kernel/vmlinuz"
+rootfs="$PWD/ubuntu-22.04-arm64-kernel/initrd"
+```
+
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -cpu cortex-a57 \
+    -nographic \
+    -kernel $kernel
+```
+
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -cpu cortex-a57 \
+    -m 1G \
+    -nographic \
+    -kernel $kernel \
+    -initrd $rootfs
+```
+
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -cpu cortex-a57 \
+    -m 1G \
+    -nographic \
+    -kernel $kernel \
+    -initrd $rootfs \
+    -net none
+```
+
+```sh
+kernel="$PWD/rpi-kernel/kernel.img"
+rootfs="$PWD/rpi-kernel/initrd.img"
+img="$PWD/ubuntu-core-22-arm64+raspi.img"
+dtb="$PWD/rpi-kernel/bcm2710-rpi-3-b.dtb"
+
+qemu-system-aarch64 -machine virt \
+    -cpu cortex-a72 \
+    -m 1G -smp 4 \
+    -nographic \
+    -no-reboot \
+    -append "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 snap_core=core22_487.snap snap_kernel=pi-kernel_567.snap elevator=deadline" \
+    -kernel $kernel \
+    -initrd $rootfs
+    -sd $img
+```
+
+```sh
+qemu-system-aarch64 \
+    -M raspi3b \
+    -append "rw earlyprintk root=/dev/mmcblk0p1 rootdelay=1 dwc_otg.lpm_enable=0 rootfstype=ext4 loglevel=8 console=ttyAMA0,115200" \
+    -cpu cortex-a53 \
+    -dtb $dtb \
+    -drive id=hd-root,file=$img,format=raw,if=sd \
+    -kernel $kernel \
+    -m 1024 \
+    -serial mon:stdio \
+    -nographic
+```
+
+```sh
+qemu-system-aarch64 \
+    -M raspi3b \
+    -append "rw earlyprintk root=/dev/mmcblk0p1 rootdelay=1 dwc_otg.lpm_enable=0 rootfstype=ext4 loglevel=8 console=ttyAMA0,115200" \
+    -cpu cortex-a53 \
+    -dtb $dtb \
+    -drive id=hd-root,file=$img,format=raw,if=sd \
+    -kernel $kernel \
+    -m 1024 \
+    -serial mon:stdio \
+    -nographic
+```
+
+```sh
+qemu-system-arm -M raspi2  -kernel boot-ubuntu-core/kernel.img -initrd boot-ubuntu-core/initrd.img  -append "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty0 elevator=deadline"  -dtb boot-ubuntu-core/dtbs/bcm2709-rpi-2-b.dtb  -nographic  -sd ubuntu-core-16-pi2.img 
 ```

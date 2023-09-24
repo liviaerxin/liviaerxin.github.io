@@ -29,4 +29,4 @@ Below you can see an example showing a todo list and a timestamp.
 
 <!--truncate-->
 
-## Background
+## Resources

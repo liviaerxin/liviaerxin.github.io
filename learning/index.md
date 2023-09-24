@@ -3,8 +3,12 @@
 - Vcpkg
 - dotfiles
 
-## Frequent and Reliable Resources
+## Excellent Resources
+
+There are some very useful and reliable resources where I frequently enquire and review.
+
+[The Linux kernel user's and administrator's guide — The Linux Kernel  documentation](https://docs.kernel.org/admin-guide/)
+    - Exhaustive knowledge about Linux kernel
 
 [nixCraft](https://www.cyberciti.biz/)
-
-- Linux **Howto** documents
+    - Linux **Howto** document

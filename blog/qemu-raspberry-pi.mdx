@@ -1,0 +1,360 @@
+---
+authors:
+  - frank
+tags:
+  - qemu
+  - raspberry-pi
+  - osx
+description: QEMU emulate Raspberry Pi 3/4
+keywords:
+  - QEMU Raspberry Pi 3/4
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-23
+draft: false
+enableComments: true # for Gisqus
+---
+
+# QEMU Emulate Raspberry Pi 3 and 4
+
+In this blog, **QEMU** is employed to emulate **Raspberry Pi 3/4** in mac M1 host(it's also supposed to work in Windows/Linux). I will demonstrate **two** different ways to emulate **Raspberry Pi 3** and **Raspberry Pi 4** in respect. These two ways are different by using different **QEMU machines** as you would like to use:
+
+1. `-machine raspi3b`: raspberry pi 3b machine to emulate **Raspberry Pi 3**.
+2. `-machine virt`: general arm machine to emulate **Raspberry Pi 4**.
+
+For both of these two, we still need prepare some common steps before running **QEMU**:
+
+- Extract the appropriate kernel, device tree or root filesystem
+
+
+<!--truncate-->
+
+This blog will emulate Raspberry Pi using QEMU in mac M1 host using the new image `2023-05-03-raspios-bullseye-arm64-lite.img`.
+
+The default `user:pi` and `password:raspberry` have been removed from this image. In order to log in, we have to write `user` and `password` to the image before booting. These steps can be skipped when booting previous images.
+
+## Prerequisites
+
+- **Docker**
+  - be required in macOS
+  - can be skipped in Linux
+  - can use `wsl` as an alternative in Windows
+- **QEMU**
+  - `homebrew` install in macOS
+- **Raspberry Pi image**: `2023-05-03-raspios-bullseye-arm64-lite.img`
+
+Since I am in mac M1, and the `raspberry pi` image which contains a `fat` filesystem as boot and a `ext4` filesystem as OS, we need write some configuration into it. So I will use a **Docker Ubuntu** container to do the operation on the the filesystem. There some other tools to do the like of these operations:
+
+- `ext4fuse` is free and easy to install via `homebrew`, but it has limit as read-only access.
+- `ExtFS` from `Paragon` supports read-write access while you need pay for it.
+- `virtual machine`
+  - `Docker` in OSX make use of `virtual machine` while it is quick and flexible to use.
+
+## Raspberry Pi image
+
+```sh
+cd ~
+wget https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2023-05-03/2023-05-03-raspios-bullseye-arm64-lite.img.xz
+xz -d 2023-05-03-raspios-bullseye-arm64-lite.img.xz
+```
+
+## Docker Ubuntu container
+
+Mount the **folder** including `2023-05-03-raspios-bullseye-arm64-lite.img`
+
+```sh
+docker run -it -d --privileged -v $PWD:/qemu --name ubuntu ubuntu
+docekr exec -it ubuntu bash
+```
+
+## Extracting Kernel and device tree
+
+Operations all in Ubuntu container.
+
+```sh
+root@f36a3251391d:/qemu# fdisk -l 2023-05-03-raspios-bullseye-arm64-lite.img 
+Disk 2023-05-03-raspios-bullseye-arm64-lite.img: 1.96 GiB, 2101346304 bytes, 4104192 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x544c6228
+
+Device                                      Boot  Start     End Sectors  Size Id Type
+2023-05-03-raspios-bullseye-arm64-lite.img1        8192  532479  524288  256M  c W95 FAT32 (LBA)
+2023-05-03-raspios-bullseye-arm64-lite.img2      532480 4104191 3571712  1.7G 83 Linux
+```
+
+- The first partition is boot filesystem.
+- The second partition is real root filesystem.
+
+All the data we need is in the first partition, to do the operation is mounting it.
+
+The offset of the first partition: 8192 * 512 = 4194304,
+
+```sh
+root@f36a3251391d:/qemu# mount -o loop,offset=4194304 2023-05-03-raspios-bullseye-arm64-lite.img /mnt/rpi-boot/
+```
+
+
+```sh
+root@f36a3251391d:/qemu# ls -ls /mnt/rpi-boot/
+total 30244
+  20 -rwxr-xr-x 1 root root   18693 Apr  5 11:32 COPYING.linux
+   2 -rwxr-xr-x 1 root root    1594 Apr  5 11:32 LICENCE.broadcom
+  30 -rwxr-xr-x 1 root root   30390 Apr  5 11:32 bcm2710-rpi-2-b.dtb
+  32 -rwxr-xr-x 1 root root   32753 Apr  5 11:32 bcm2710-rpi-3-b-plus.dtb
+  32 -rwxr-xr-x 1 root root   32142 Apr  5 11:32 bcm2710-rpi-3-b.dtb
+  30 -rwxr-xr-x 1 root root   30285 Apr  5 11:32 bcm2710-rpi-cm3.dtb
+  32 -rwxr-xr-x 1 root root   31318 Apr  5 11:32 bcm2710-rpi-zero-2-w.dtb
+  32 -rwxr-xr-x 1 root root   31318 Apr  5 11:32 bcm2710-rpi-zero-2.dtb
+  52 -rwxr-xr-x 1 root root   52593 Apr  5 11:32 bcm2711-rpi-4-b.dtb
+  52 -rwxr-xr-x 1 root root   52682 Apr  5 11:32 bcm2711-rpi-400.dtb
+  38 -rwxr-xr-x 1 root root   38182 Apr  5 11:32 bcm2711-rpi-cm4-io.dtb
+  52 -rwxr-xr-x 1 root root   53202 Apr  5 11:32 bcm2711-rpi-cm4.dtb
+  50 -rwxr-xr-x 1 root root   50504 Apr  5 11:32 bcm2711-rpi-cm4s.dtb
+  52 -rwxr-xr-x 1 root root   52476 Apr  5 11:32 bootcode.bin
+   2 -rwxr-xr-x 1 root root     154 May  3 03:11 cmdline.txt
+   4 -rwxr-xr-x 1 root root    2109 May  3 02:53 config.txt
+  ...
+   2 -rwxr-xr-x 1 root root     145 May  3 03:11 issue.txt
+8028 -rwxr-xr-x 1 root root 8219600 Apr  5 11:32 kernel8.img
+  ...
+```
+
+
+To run QEMU we will need the **kernel** and **device tree**, so let’s copy them out:
+
+```sh
+root@f36a3251391d:/qemu# cp /mnt/rpi-boot/kernel8.img .
+root@f36a3251391d:/qemu# cp /mnt/rpi-boot/bcm2710-rpi-3-b.dtb .
+```
+
+## Setting up default user
+
+Operations all in docker container.
+
+Now in order to set up user and enable ssh in default, we need write files into `/userconf` and `/ssh` under the boot filesystem mounted as `/mnt/rpi-boot/`.
+
+Set up a default `user:pi` and `password:raspberry`.
+
+Hash password `raspberry` using `openssl`,
+
+```sh
+root@f36a3251391d:/qemu# openssl passwd
+Password: 
+Verifying - Password: 
+$1$d...AvcL$wqfUqTIauUP1TVJ/uU1td0
+```
+
+```sh
+root@f36a3251391d:/qemu# echo 'pi:$1$d...AvcL$wqfUqTIauUP1TVJ/uU1td0' | tee /mnt/rpi-boot/userconf
+```
+
+Enable `ssh`,
+
+```sh
+root@f36a3251391d:/qemu# touch /mnt/rpi-boot/ssh
+```
+
+```sh
+root@f36a3251391d:/qemu# umount /mnt/rpi-boot
+```
+
+## Running QEMU
+
+### Emulate Raspberry Pi 3
+
+Now switch back to the host macOS to run `QEMU`,
+
+Resize the image to the next power of 2 size,
+
+The original size,
+
+```sh
+❯ stat -f%z 2023-05-03-raspios-bullseye-arm64-lite.img
+2101346304
+```
+
+To resize to `4GB`,
+
+```sh
+qemu-img resize ./2023-05-03-raspios-bullseye-arm64-lite.img 4G
+```
+
+```sh
+qemu-system-aarch64 \
+    -machine raspi3b \
+    -cpu cortex-a72 \
+    -nographic \
+    -m 1G \
+    -smp 4 \
+    -dtb bcm2710-rpi-3-b.dtb \
+    -kernel kernel8.img \
+    -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rootdelay=1" \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+    -device usb-net,netdev=net0 \
+    -sd 2023-05-03-raspios-bullseye-arm64-lite.img
+```
+
+Options in detail:
+
+- `-machine raspi3b`: use raspberry pi 3 machine.
+- `-append`:
+  - `console=ttyAMA0`: output the **VM** std to **QEMU** console.
+  - `root=/dev/mmcblk0p2`: mount **real root filesystem** to `/dev/mmcblk0p2`(the second partition of `mmcblk0`) as we `-sd xx` will be mounted to `/dev/mmcblk0`.
+- `-netdev user,id=net0,hostfwd=tcp::2222-:22`: network mapping host port `2222` to the **VM** `22`
+- `-device usb-net,netdev=net0`: expose `netdev=net0` as `usb-net` in the raspberry pi 3 machine.
+- `-sd 2023-05-03-raspios-bullseye-arm64-lite.img`: `sd` drive is available in the raspberry pi 3 machine.
+
+### Emulate Raspberry Pi 4 with `virt`
+
+We will use generic virtual machine `virt` to act as `raspi4`, since there is no `raspi4` machine defined in QEMU official machines. However you can still use `raspi3` to act as `raspi4` as they are same!
+
+**Hardware Acceleration** can be enable in `virt` machine by using `-accel hvf` option in my **mac M1** host as it's **arm-based**.
+
+So `virt` will bring high performance and increase efficiency!
+
+After tuning options and searching from many resources, the operational setting for QEMU to emulate is,
+
+1. Use `ubuntu-22.04-preinstalled-server-arm64+raspi.img`, of which the default user is `ubuntu` and password is `ubuntu`.
+
+```sh
+kernel="$PWD/ubuntu-22.04-preinstalled-server-arm64+raspi-boot/vmlinuz"
+initrd="$PWD/ubuntu-22.04-preinstalled-server-arm64+raspi-boot/initrd.img"
+img="$PWD/ubuntu-22.04-preinstalled-server-arm64+raspi.img"
+```
+
+1. For `sd` device,
+
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -accel hvf \
+    -cpu host \
+    -smp 4 \
+    -m 4G \
+    -nographic \
+    -kernel $kernel \
+    -initrd $initrd \
+    -append "earlyprintk loglevel=8 root=/dev/sda2 rootfstype=ext4 rw console=ttyAMA0" \
+    -drive file=$img,format=raw,if=none,id=drive0 \
+    -device virtio-scsi-pci,id=scsi \
+    -device scsi-hd,drive=drive0,bus=scsi.0 \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
+```
+
+Options in detail:
+
+- `-accel hvf`: **hardware acceleration** in mac M1. Don't use in **x86_64** host.
+- `-cpu host`: change to `-cpu cortex-a72` when no **hardware acceleration** available such as in **x86_64** host.
+- `-append`
+  - `root=/dev/sda2`: the second partition of the `ubuntu-22.04-preinstalled-server-arm64+raspi.img` disk image hold the real root filesystem.
+
+1. For `vd` device,
+
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -accel hvf \
+    -cpu host \
+    -smp 4 \
+    -m 4G \
+    -nographic \
+    -kernel $kernel \
+    -initrd $initrd \
+    -append "earlyprintk loglevel=8 root=/dev/vda2 rootfstype=ext4 rw console=ttyAMA0" \
+    -drive file=$img,format=raw,if=none,id=drive0 \
+    -device virtio-blk-pci,drive=drive0 \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
+```
+
+1. For `nvme` device,
+
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -accel hvf \
+    -cpu host \
+    -smp 4 \
+    -m 4G \
+    -nographic \
+    -kernel $kernel \
+    -initrd $initrd \
+    -append "earlyprintk loglevel=8 root=/dev/nvme0n1p2 rootfstype=ext4 rw console=ttyAMA0" \
+    -drive file=$img,format=raw,if=none,id=drive0 \
+    -device nvme,drive=drive0,serial=deadbeaf1 \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
+```
+
+Options in detail:
+
+- `-initrd $initrd`
+  - the boot loader works using `vmlinuz initrd=initrd.img root=/dev/sda2` configuration.
+  - We can do without `-initrd` as the minimal kernel command line is `vmlinuz root=/dev/sda2`. Because we don't need the **initial RAM disk** to decrypt `disk`, use `raid` or other things before mount the real filesystem `/dev/sda2`.
+
+1. For `SATA`,
+
+-device ahci,id=ahci0 \
+-drive if=none,file=disk.img,format=raw,id=SATA1 \
+-device ide-hd,bus=ahci0.0,drive=SATA1
+root=/dev/nvme0n1p2
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -accel hvf \
+    -cpu host \
+    -smp 4 \
+    -m 4G \
+    -nographic \
+    -no-reboot \
+    -kernel $kernel \
+    -initrd $initrd \
+    -append "earlyprintk loglevel=8 root=/dev/nvme0n1p2 rootfstype=ext4 console=ttyAMA0" \
+    -drive file=$img,format=raw,if=none,id=drive0 \
+    -device nvme,drive=drive0,serial=deadbeaf \
+    -hda $img
+    -device virtio-scsi-pci,id=scsi0 \
+    -drive file=$img,format=raw,if=none,id=drive1 \
+    -device scsi-hd,drive=drive1,bus=scsi0.0 \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
+```
+
+## Test Raspberry Pi VM
+
+Log into the **Raspberry Pi** via `ssh` from the macOS host,
+
+```sh
+❯ ssh -p 2222 pi@localhost
+The authenticity of host '[localhost]:2222 ([127.0.0.1]:2222)' can't be established.
+ED25519 key fingerprint is SHA256:6igL6iaigBCszv8m6nyNl+tsB2siV/tL+TRQANC6nBw.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '[localhost]:2222' (ED25519) to the list of known hosts.
+pi@localhost's password: 
+Linux raspberrypi 6.1.21-v8+ #1642 SMP PREEMPT Mon Apr  3 17:24:16 BST 2023 aarch64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Fri Sep 22 16:30:58 2023
+
+SSH is enabled and the default password for the 'pi' user has not been changed.
+This is a security risk - please login as the 'pi' user and type 'passwd' to set a new password.
+
+pi@raspberrypi:~ $ 
+```
+
+## Resources
+
+[Emulating a Raspberry Pi in QEMU | InterruptEmulating a Raspberry Pi in QEMU](https://interrupt.memfault.com/blog/emulating-raspberry-pi-in-qemu)
+
+[How to emulate block devices with QEMU](https://blogs.oracle.com/linux/post/how-to-emulate-block-devices-with-qemu)
+
+[Emulation of block devices — Das U-Boot unknown version documentation](https://u-boot.readthedocs.io/en/latest/board/emulation/blkdev.html)
