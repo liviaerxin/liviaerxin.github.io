@@ -16,15 +16,18 @@ enableComments: true # for Gisqus
 
 # QEMU Emulate Raspberry Pi 3 and 4
 
-In this blog, **QEMU** is employed to emulate **Raspberry Pi 3/4** in mac M1 host(it's also supposed to work in Windows/Linux). I will demonstrate **two** different ways to emulate **Raspberry Pi 3** and **Raspberry Pi 4** in respect. These two ways are different by using different **QEMU machines** as you would like to use:
+In this blog, **QEMU** is employed to emulate **Raspberry Pi 3/4** in **mac M1** host(it's also supposed to work in **Windows/Linux** with a little tweak). I will demonstrate **two** different ways to emulate **Raspberry Pi 3** and **Raspberry Pi 4** in respect. These two ways are different by using different **QEMU machines** as you would like to use:
 
 1. `-machine raspi3b`: raspberry pi 3b machine to emulate **Raspberry Pi 3**.
 2. `-machine virt`: general arm machine to emulate **Raspberry Pi 4**.
 
+:::note
+In mac M1 with setting `-machine virt`, I use the hardware acceleration by `-accel hvf`. In Windows(x86_64), the hardware acceleration for `aarch64` is not available, so removing the hardware acceleration will work as well in Windows.
+:::
+
 For both of these two, we still need prepare some common steps before running **QEMU**:
 
 - Extract the appropriate kernel, device tree or root filesystem
-
 
 <!--truncate-->
 
@@ -216,15 +219,16 @@ So `virt` will bring high performance and increase efficiency!
 
 After tuning options and searching from many resources, the operational setting for QEMU to emulate is,
 
-1. Use `ubuntu-22.04-preinstalled-server-arm64+raspi.img`, of which the default user is `ubuntu` and password is `ubuntu`.
+1. Use `ubuntu-22.04.3-preinstalled-server-arm64+raspi.img`, of which the default user is `ubuntu` and password is `ubuntu`.
 
 ```sh
-kernel="$PWD/ubuntu-22.04-preinstalled-server-arm64+raspi-boot/vmlinuz"
-initrd="$PWD/ubuntu-22.04-preinstalled-server-arm64+raspi-boot/initrd.img"
-img="$PWD/ubuntu-22.04-preinstalled-server-arm64+raspi.img"
+kernel="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi-boot/vmlinuz"
+initrd="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi-boot/initrd.img"
+img="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi.img"
 ```
 
-1. For `sd` device,
+
+#### For `SCSI hard disk` storage device
 
 ```sh
 qemu-system-aarch64 \
@@ -249,9 +253,9 @@ Options in detail:
 - `-accel hvf`: **hardware acceleration** in mac M1. Don't use in **x86_64** host.
 - `-cpu host`: change to `-cpu cortex-a72` when no **hardware acceleration** available such as in **x86_64** host.
 - `-append`
-  - `root=/dev/sda2`: the second partition of the `ubuntu-22.04-preinstalled-server-arm64+raspi.img` disk image hold the real root filesystem.
+  - `root=/dev/sda2`: the second partition of the `ubuntu-22.04.3-preinstalled-server-arm64+raspi.img` disk image hold the real root filesystem.
 
-1. For `vd` device,
+#### For `virtual disk` storage device
 
 ```sh
 qemu-system-aarch64 \
@@ -270,7 +274,7 @@ qemu-system-aarch64 \
     -device virtio-net-pci,netdev=mynet
 ```
 
-1. For `nvme` device,
+#### For `NVME` storage device
 
 ```sh
 qemu-system-aarch64 \
@@ -295,17 +299,14 @@ Options in detail:
   - the boot loader works using `vmlinuz initrd=initrd.img root=/dev/sda2` configuration.
   - We can do without `-initrd` as the minimal kernel command line is `vmlinuz root=/dev/sda2`. Because we don't need the **initial RAM disk** to decrypt `disk`, use `raid` or other things before mount the real filesystem `/dev/sda2`.
 
-1. For `SATA`,
+#### For `SATA`
 
--device ahci,id=ahci0 \
--drive if=none,file=disk.img,format=raw,id=SATA1 \
--device ide-hd,bus=ahci0.0,drive=SATA1
-root=/dev/nvme0n1p2
 ```sh
-qemu-system-aarch64 \
-    -machine virt \
-    -accel hvf \
-    -cpu host \
+kernel="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi-boot/vmlinuz"
+initrd="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi-boot/initrd.img"
+img="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi.img"
+
+qemu-system-x86_64 \
     -smp 4 \
     -m 4G \
     -nographic \
@@ -315,12 +316,11 @@ qemu-system-aarch64 \
     -append "earlyprintk loglevel=8 root=/dev/nvme0n1p2 rootfstype=ext4 console=ttyAMA0" \
     -drive file=$img,format=raw,if=none,id=drive0 \
     -device nvme,drive=drive0,serial=deadbeaf \
-    -hda $img
-    -device virtio-scsi-pci,id=scsi0 \
-    -drive file=$img,format=raw,if=none,id=drive1 \
-    -device scsi-hd,drive=drive1,bus=scsi0.0 \
-    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
-    -device virtio-net-pci,netdev=mynet
+    -device virtio-net-pci,netdev=mynet \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22
+    -device virtio-scsi-pci \
+    -device scsi-hd,drive=hd \
+    -blockdev driver=raw,node-name=hd,file.driver=host_device,file.filename=$img
 ```
 
 ## Test Raspberry Pi VM

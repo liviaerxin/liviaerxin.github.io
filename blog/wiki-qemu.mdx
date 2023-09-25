@@ -46,6 +46,59 @@ https://xryan.net/p/212
 
 <!--truncate-->
 
+## Troubleshooting
+
+### QEMU Keyboard shortcuts
+
+- Switch between QEMU monitor console and the guest non-graphic OS
+  - `CTRL+a c`
+- Exit the guest non-graphic OS
+  - `CTRL+a x`
+- Switch between QEMU monitor console and the guest graphic OS
+  - `CTRL+ALT+1`, `CTRL+ALT+2`
+
+### Discover the VM device tree
+
+Enter the QEMU monitor console, using `info qtree` command,
+
+```sh
+$ info qtree
+
+ dev: gpex-pcihost, id ""
+    ...
+    bus: pcie.0
+      type PCIE
+      dev: virtio-scsi-pci, id ""
+        ...
+        bus: virtio-bus
+          type virtio-pci-bus
+          dev: virtio-scsi-device, id ""
+            ...
+            bus: scsi.0
+              type SCSI
+              dev: scsi-hd, id ""
+                drive = "hd"
+                ...
+      dev: nvme, id ""
+        drive = "drive0"
+        ...
+        bus: nvme-bus.0
+          type nvme-bus
+      dev: virtio-net-pci, id ""
+        ...
+        bus: virtio-bus
+          type virtio-pci-bus
+          dev: virtio-net-device, id ""
+            ...
+
+```
+
+### List supported devices
+
+```sh
+$ qemu-system-aarch64 -device help
+$ qemu-system-aarch64 -device scsi-hd,help
+```
 
 ## Create disk image
 
