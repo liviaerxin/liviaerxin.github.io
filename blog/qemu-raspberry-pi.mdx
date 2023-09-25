@@ -228,7 +228,9 @@ img="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi.img"
 ```
 
 
-#### For `SCSI hard disk` storage device
+#### For `SCSI hard disk`
+
+This storage device file will be named `/dev/sdX`,
 
 ```sh
 qemu-system-aarch64 \
@@ -254,8 +256,12 @@ Options in detail:
 - `-cpu host`: change to `-cpu cortex-a72` when no **hardware acceleration** available such as in **x86_64** host.
 - `-append`
   - `root=/dev/sda2`: the second partition of the `ubuntu-22.04.3-preinstalled-server-arm64+raspi.img` disk image hold the real root filesystem.
+- `-initrd $initrd`
+  - the boot loader works using configuration like `vmlinuz initrd=initrd.img root=/dev/sda2`.
 
 #### For `virtual disk` storage device
+
+This storage device file will be named `/dev/vdX`,
 
 ```sh
 qemu-system-aarch64 \
@@ -274,7 +280,9 @@ qemu-system-aarch64 \
     -device virtio-net-pci,netdev=mynet
 ```
 
-#### For `NVME` storage device
+#### For `NVMe` storage device
+
+This storage device file will be named `/dev/nvmeX`,
 
 ```sh
 qemu-system-aarch64 \
@@ -285,7 +293,6 @@ qemu-system-aarch64 \
     -m 4G \
     -nographic \
     -kernel $kernel \
-    -initrd $initrd \
     -append "earlyprintk loglevel=8 root=/dev/nvme0n1p2 rootfstype=ext4 rw console=ttyAMA0" \
     -drive file=$img,format=raw,if=none,id=drive0 \
     -device nvme,drive=drive0,serial=deadbeaf1 \
@@ -295,32 +302,69 @@ qemu-system-aarch64 \
 
 Options in detail:
 
-- `-initrd $initrd`
-  - the boot loader works using `vmlinuz initrd=initrd.img root=/dev/sda2` configuration.
-  - We can do without `-initrd` as the minimal kernel command line is `vmlinuz root=/dev/sda2`. Because we don't need the **initial RAM disk** to decrypt `disk`, use `raid` or other things before mount the real filesystem `/dev/sda2`.
+- no `-initrd $initrd`
+  - the boot loader works using configuration like `vmlinuz root=/dev/nvme0n1p2`.
+  - we directly mount the real filesystem `/dev/nvme0n1p2`, skipping to mount the **initial RAM disk**.
+  - I test other type storage device must binding `-initrd $initrd` while there is no need for `NVME`. In my assumption, those `storage devices` need to be configured in the `initramfs`.
 
-#### For `SATA`
+#### For `usb storage`
+
+This storage device file will be named `/dev/sdX`,
 
 ```sh
-kernel="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi-boot/vmlinuz"
-initrd="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi-boot/initrd.img"
-img="$PWD/ubuntu-22.04.3-preinstalled-server-arm64+raspi.img"
+qemu-system-aarch64 \
+    -machine virt \
+    -cpu cortex-a57 \
+    -accel hvf \
+    -smp 4 \
+    -m 4G \
+    -no-reboot \
+    -serial mon:stdio \
+    -display none \
+    -kernel $kernel \
+    -initrd $initrd \
+    -append "earlyprintk loglevel=8 root=/dev/sda2 rootfstype=ext4 console=ttyAMA0 raid=noautodetect" \
+    -device usb-ehci \
+    -drive file=$img,format=raw,if=none,id=disk1 \
+    -device usb-storage,drive=disk1 \
+    -drive file=$img,format=raw,if=none,id=disk2 \
+    -device ide-hd,drive=disk2 \
+    -device virtio-net-pci,netdev=mynet \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22
+```
+
+```sh
+qemu-system-x86_64 -m 4G -drive file=$img,if=none,id=disk1 \
+              -device ide-hd,drive=disk1,bootindex=4 \
+              -drive file=$img,if=none,id=disk2 \
+              -device virtio-blk-pci,drive=disk2,bootindex=3 \
+              -netdev type=user,id=net0 \
+              -device virtio-net-pci,netdev=net0,bootindex=2 \
+              -netdev type=user,id=net1 \
+              -device e1000,netdev=net1,bootindex=1
+```
+
+
+#### 
+
+https://mgalgs.io/2012/03/23/how-to-build-a-custom-linux-kernel-for-qemu.html
+
+```sh
+kernel="$PWD/mantic-mini-iso-amd64-boot/casper/vmlinuz"
+initrd="$PWD/mantic-mini-iso-amd64-boot/casper/initrd"
+img="$PWD/mantic-mini-iso-amd64.iso"
 
 qemu-system-x86_64 \
     -smp 4 \
     -m 4G \
-    -nographic \
     -no-reboot \
+    -nographic \
     -kernel $kernel \
     -initrd $initrd \
-    -append "earlyprintk loglevel=8 root=/dev/nvme0n1p2 rootfstype=ext4 console=ttyAMA0" \
-    -drive file=$img,format=raw,if=none,id=drive0 \
-    -device nvme,drive=drive0,serial=deadbeaf \
-    -device virtio-net-pci,netdev=mynet \
-    -netdev user,id=mynet,hostfwd=tcp::2222-:22
-    -device virtio-scsi-pci \
-    -device scsi-hd,drive=hd \
-    -blockdev driver=raw,node-name=hd,file.driver=host_device,file.filename=$img
+    -append "console=ttyS0 root=/dev/ram0" \
+    -cdrom $img \
+    -drive file=$img,if=none,id=disk1 \
+    -device ide-hd,drive=disk1
 ```
 
 ## Test Raspberry Pi VM
