@@ -315,57 +315,24 @@ This storage device file will be named `/dev/sdX`,
 qemu-system-aarch64 \
     -machine virt \
     -cpu cortex-a57 \
-    -accel hvf \
-    -smp 4 \
-    -m 4G \
-    -no-reboot \
-    -serial mon:stdio \
-    -display none \
-    -kernel $kernel \
-    -initrd $initrd \
-    -append "earlyprintk loglevel=8 root=/dev/sda2 rootfstype=ext4 console=ttyAMA0 raid=noautodetect" \
-    -device usb-ehci \
-    -drive file=$img,format=raw,if=none,id=disk1 \
-    -device usb-storage,drive=disk1 \
-    -drive file=$img,format=raw,if=none,id=disk2 \
-    -device ide-hd,drive=disk2 \
-    -device virtio-net-pci,netdev=mynet \
-    -netdev user,id=mynet,hostfwd=tcp::2222-:22
-```
-
-```sh
-qemu-system-x86_64 -m 4G -drive file=$img,if=none,id=disk1 \
-              -device ide-hd,drive=disk1,bootindex=4 \
-              -drive file=$img,if=none,id=disk2 \
-              -device virtio-blk-pci,drive=disk2,bootindex=3 \
-              -netdev type=user,id=net0 \
-              -device virtio-net-pci,netdev=net0,bootindex=2 \
-              -netdev type=user,id=net1 \
-              -device e1000,netdev=net1,bootindex=1
-```
-
-
-#### 
-
-https://mgalgs.io/2012/03/23/how-to-build-a-custom-linux-kernel-for-qemu.html
-
-```sh
-kernel="$PWD/mantic-mini-iso-amd64-boot/casper/vmlinuz"
-initrd="$PWD/mantic-mini-iso-amd64-boot/casper/initrd"
-img="$PWD/mantic-mini-iso-amd64.iso"
-
-qemu-system-x86_64 \
     -smp 4 \
     -m 4G \
     -no-reboot \
     -nographic \
     -kernel $kernel \
     -initrd $initrd \
-    -append "console=ttyS0 root=/dev/ram0" \
-    -cdrom $img \
-    -drive file=$img,if=none,id=disk1 \
-    -device ide-hd,drive=disk1
+    -append "earlyprintk loglevel=8 root=/dev/sda2 rootfstype=ext4 console=ttyAMA0 raid=noautodetect" \
+    -device usb-ehci \
+    -device usb-storage,drive=disk0 \
+    -drive file=$img,format=raw,if=none,id=disk0 \
+    -device virtio-net-pci,netdev=mynet \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22
 ```
+
+Options in detail:
+
+- `-device usb-ehci`: usb bus -> PCI bus
+- `-device usb-storage`: usb storage device -> usb bus
 
 ## Test Raspberry Pi VM
 

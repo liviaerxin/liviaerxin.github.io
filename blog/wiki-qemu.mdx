@@ -272,22 +272,26 @@ hdiutil imageinfo ubuntu-core-22-arm64+raspi.img
 ```
 
 ```sh
-efi="$PWD/UEFI/aarch64/QEMU_EFI.fd"
-iso="2020-02-13-raspbian-buster.img"
-iso="ubuntu-core-22-arm64+raspi.img"
-iso="ubuntu-22.04-live-server-arm64.iso"
+kernel="$PWD/TinyCore/boot/vmlinuz64"
+initrd=$"$PWD/TinyCore/boot/corepure64.gz"
+img=$"$PWD/TinyCorePure64-14.0.iso"
+efi="$PWD/UEFI/ovmf-x64/OVMF-pure-efi.fd"
+
+kernel="$PWD/linux_qemu/x86_64/bzImage"
+vmlinuz="$PWD/linux_qemu/x86_64/vmlinux"
+initrd="$PWD/linux_qemu/x86_64/rootfs.ext2"
+img="$PWD/linux_qemu/x86_64/rootfs.ext2"
 ```
 
 ```sh
-qemu-system-aarch64 \
-    -monitor stdio \
-    -machine virt \
-    -cpu cortex-a57 \
-    -m 1G \
-    -smp 4 \
-    -net none \
-    -bios $efi \
-    -drive file=$iso
+qemu-system-x86_64 \
+    -nographic \
+    -m 4G \
+    -kernel $kernel \
+    -initrd $img \
+    -append "console=ttyS0" \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
 ```
 
 ### Boot linux kernel
@@ -300,83 +304,103 @@ https://medicineyeh.wordpress.com/2016/03/29/buildup-your-arm-image-for-qemu/
 
 https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
 
+https://bootlin.com/pub/conferences/2013/kernel-recipes/rootfs-kernel-developer/rootfs-kernel-developer.pdf
+
+https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
+
 ```sh
-kernel="$PWD/ubuntu-22.04-arm64-kernel/vmlinuz"
-rootfs="$PWD/ubuntu-22.04-arm64-kernel/initrd"
+sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
 ```
 
 ```sh
-qemu-system-aarch64 \
-    -machine virt \
-    -cpu cortex-a57 \
+mkdir ~/linux-qemu
+cd ~/linux-qemu
+TOP=~/linux-qemu
+```
+
+```sh
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.55.tar.xz
+```
+
+
+```sh
+tar xvf linux-6.1.55.tar.xz
+cd linux-6.1.55
+```
+
+```sh
+# Use the default `x86_64` configuration file form `/x86/configs/x86_64_defconfig`
+make ARCH=x86_64 x86_64_defconfig 
+```
+
+```sh
+# Tweak some options for GDB and initramfs
+make menuconfig
+```
+
+```sh
+make -j8
+```
+
+Output kernel `arch/x86/boot/bzImage`.
+
+Extract `vmlinux` from `bzImage`,
+
+```sh
+./scripts/extract-vmlinux ./arch/x86_64/boot/bzImage >./arch/x86_64/boot/vmlinux
+```
+
+Build root
+
+```sh
+git clone https://github.com/buildroot/buildroot.git
+cd buildroot
+```
+
+```sh
+make menuconfig
+```
+
+Choose `x86_64` as Target Architecture and `ext4` root file system.
+
+```sh
+make -j8
+```
+
+The output rootfs is `./output/images/rootfs.ext4`
+
+```sh
+kernel="$PWD/linux_qemu/x86_64/bzImage"
+vmlinuz="$PWD/linux_qemu/x86_64/vmlinux"
+initrd="$PWD/linux_qemu/x86_64/rootfs.ext4"
+img="$PWD/linux_qemu/x86_64/rootfs.ext4"
+```
+
+```sh
+qemu-system-x86_64 \
     -nographic \
-    -kernel $kernel
+    -m 4G \
+    -kernel $kernel \
+    -hda $img \
+    -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0" \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
 ```
 
 ```sh
-qemu-system-aarch64 \
-    -machine virt \
-    -cpu cortex-a57 \
-    -m 1G \
+qemu-system-x86_64 \
     -nographic \
+    -m 4G \
+    -s -S \
     -kernel $kernel \
-    -initrd $rootfs
+    -hda $img \
+    -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0" \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
 ```
 
 ```sh
-qemu-system-aarch64 \
-    -machine virt \
-    -cpu cortex-a57 \
-    -m 1G \
-    -nographic \
-    -kernel $kernel \
-    -initrd $rootfs \
-    -net none
-```
+gdb ./vmlinux
 
-```sh
-kernel="$PWD/rpi-kernel/kernel.img"
-rootfs="$PWD/rpi-kernel/initrd.img"
-img="$PWD/ubuntu-core-22-arm64+raspi.img"
-dtb="$PWD/rpi-kernel/bcm2710-rpi-3-b.dtb"
-
-qemu-system-aarch64 -machine virt \
-    -cpu cortex-a72 \
-    -m 1G -smp 4 \
-    -nographic \
-    -no-reboot \
-    -append "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 snap_core=core22_487.snap snap_kernel=pi-kernel_567.snap elevator=deadline" \
-    -kernel $kernel \
-    -initrd $rootfs
-    -sd $img
-```
-
-```sh
-qemu-system-aarch64 \
-    -M raspi3b \
-    -append "rw earlyprintk root=/dev/mmcblk0p1 rootdelay=1 dwc_otg.lpm_enable=0 rootfstype=ext4 loglevel=8 console=ttyAMA0,115200" \
-    -cpu cortex-a53 \
-    -dtb $dtb \
-    -drive id=hd-root,file=$img,format=raw,if=sd \
-    -kernel $kernel \
-    -m 1024 \
-    -serial mon:stdio \
-    -nographic
-```
-
-```sh
-qemu-system-aarch64 \
-    -M raspi3b \
-    -append "rw earlyprintk root=/dev/mmcblk0p1 rootdelay=1 dwc_otg.lpm_enable=0 rootfstype=ext4 loglevel=8 console=ttyAMA0,115200" \
-    -cpu cortex-a53 \
-    -dtb $dtb \
-    -drive id=hd-root,file=$img,format=raw,if=sd \
-    -kernel $kernel \
-    -m 1024 \
-    -serial mon:stdio \
-    -nographic
-```
-
-```sh
-qemu-system-arm -M raspi2  -kernel boot-ubuntu-core/kernel.img -initrd boot-ubuntu-core/initrd.img  -append "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty0 elevator=deadline"  -dtb boot-ubuntu-core/dtbs/bcm2709-rpi-2-b.dtb  -nographic  -sd ubuntu-core-16-pi2.img 
+target remote localhost:1234
 ```
