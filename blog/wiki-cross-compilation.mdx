@@ -19,15 +19,160 @@ enableComments: true # for Gisqus
 
 # Cross Compilation
 
-Cross-Compilation Components:
+Cross-Compilation ecosystem involves the following:
 
-- Host System
-  - cross-compilation toolchain
-    - cross-compiler
-    - cross-linker
-    - system root(Target System Libraries and Header files)
-- Target System
+- host system
+  - cross-Compilation toolchain
+    - cross compiler
+    - cross linker
+    - cross debugger
+    - sysroot
+      - target system library files
+      - target system header files
+      - target system other files
+- target system
 
 <!--truncate-->
 
-## Background
+cross-compilation toolchain:
+
+- GCC
+- Buildroot
+- Yocto Project
+- Crosstool-NG
+- Linaro
+- Clang/LLVM
+
+## GCC
+
+Let's explore what a toolchain is like and what are needed to build something for a `aarch64` platform on `x86_64` debian-like host.
+
+### Obtaining a cross-compilation toolchain for `aarch64`
+
+For simplicity and in a super fast way, we will use a prebuilt and ready-on toolchain in `x86_64` Ubuntu.
+
+```sh
+apt install gcc make gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+```
+
+### Where is `cross compiler`
+
+We see `cross compiler` binary type in host is `x86-64`,
+
+```sh
+$ file /usr/bin/aarch64-linux-gnu-gcc-11
+/usr/bin/aarch64-linux-gnu-gcc-11: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=b1112487d0dcb759db32e15b8f40f28a05484272, for GNU/Linux 3.2.0, stripped
+```
+
+### Where is `sysroot`
+
+The `sysroot` locates in `/usr/aarch64-linux-gnu`,
+
+```sh
+$ tree --filelimit=100 /usr/aarch64-linux-gnu
+/usr/aarch64-linux-gnu
+├── bin
+│   ├── ar -> ../../bin/aarch64-linux-gnu-ar
+│   ├── as -> ../../bin/aarch64-linux-gnu-as
+│   ├── ld -> ../../bin/aarch64-linux-gnu-ld
+│   ├── ld.bfd -> ../../bin/aarch64-linux-gnu-ld.bfd
+│   ├── ld.gold -> ../../bin/aarch64-linux-gnu-ld.gold
+│   ├── nm -> ../../bin/aarch64-linux-gnu-nm
+│   ├── objcopy -> ../../bin/aarch64-linux-gnu-objcopy
+│   ├── objdump -> ../../bin/aarch64-linux-gnu-objdump
+│   ├── ranlib -> ../../bin/aarch64-linux-gnu-ranlib
+│   ├── readelf -> ../../bin/aarch64-linux-gnu-readelf
+│   └── strip -> ../../bin/aarch64-linux-gnu-strip
+├── include  [139 entries exceeds filelimit, not opening dir]
+└── lib
+    ├── Mcrt1.o
+    ├── Scrt1.o
+    ├── crt1.o
+    ├── crti.o
+    ├── crtn.o
+    ├── gcrt1.o
+    ├── grcrt1.o
+    ├── ld-linux-aarch64.so.1
+```
+
+As you see, the `binutils-aarch64-linux-gnu` will install `binutils` tools in `/usr/aarch64-linux-gnu/bin`,
+
+These `binutils` are also `x86_64` binaries,
+
+```sh
+ file $(readlink -f /usr/aarch64-linux-gnu/bin/ar)
+/usr/bin/aarch64-linux-gnu-ar: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=4f75b6dc6fe5ae92c78a51e6479ca2c65bbf5335, for GNU/Linux 3.2.0, stripped
+```
+
+While target libraries are `aarch64` type,
+
+```sh
+file /usr/aarch64-linux-gnu/lib/crt1.o
+/usr/aarch64-linux-gnu/lib/crt1.o: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), for GNU/Linux 3.7.0, not stripped
+```
+
+### Compile `hello.c`
+
+```sh
+$ aarch64-linux-gnu-gcc-11 hello.c -o a.out
+$ file a.out
+a.out: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=367c436db0697f16039d9249e4a4e809ef9e68b3, for GNU/Linux 3.7.0, not stripped
+```
+
+## Clang/LLVM
+
+[Cross compilation with Clang and LLVM tools](https://static.linaro.org/connect/bkk19/presentations/bkk19-210.pdf)
+
+[Cross compiling made easy, using Clang and LLVM · mcilloni's blog](https://mcilloni.ovh/2021/02/09/cxx-cross-clang/)
+
+```sh
+apt install lld clang llvm
+```
+
+```sh
+$ wget https://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/aarch64-linux-gnu/sysroot-glibc-linaro-2.25-2019.12-aarch64-linux-gnu.tar.xz
+
+$ tar -xvf sysroot-glibc-linaro-2.25-2019.12-aarch64-linux-gnu.tar.xz
+
+$ mv sysroot-glibc-linaro-2.25-2019.12-aarch64-linux-gnu aarch64-linux-gnu
+```
+
+```sh
+$ ll aarch64-linux-gnu
+total 20K
+drwxr-xr-x 2 11827 9000 4.0K Dec  4  2019 etc
+drwxr-xr-x 3 11827 9000 4.0K Dec  4  2019 lib
+drwxr-xr-x 2 11827 9000 4.0K Dec  4  2019 sbin
+drwxr-xr-x 8 11827 9000 4.0K Dec  4  2019 usr
+drwxr-xr-x 3 11827 9000 4.0K Dec  4  2019 var
+```
+
+
+```sh
+$ cat > hello.c << EOL
+#include <stdio.h>
+int main(int argc, char *argv[])
+{
+  printf("Hello cross-compilation world!\n");
+  return 0;
+}
+EOL
+```
+
+```sh
+sysroot=$PWD/aarch64-linux-gnu/usr
+```
+
+```sh
+clang --target=aarch64-linux-gnu  -fsanitize=undefined \
+    -fuse-ld=lld \
+    --rtlib=compiler-rt -stdlib=libc++ \
+    -nostdinc++ -nostdlib \
+    -I${sysroot}/usr/include/ \
+    -Wl,-L${sysroot}/usr/lib \
+    --sysroot=$sysroot \
+    --verbose \
+    hello.c -o hello
+```
+
+## Resources

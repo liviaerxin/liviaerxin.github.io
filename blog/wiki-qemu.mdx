@@ -370,18 +370,21 @@ make -j8
 The output rootfs is `./output/images/rootfs.ext4`
 
 ```sh
+rsync -L output/images/* ~/Documents/qemu/linux_qemu/x86_64
+```
+
+```sh
 kernel="$PWD/linux_qemu/x86_64/bzImage"
 vmlinuz="$PWD/linux_qemu/x86_64/vmlinux"
-initrd="$PWD/linux_qemu/x86_64/rootfs.ext4"
-img="$PWD/linux_qemu/x86_64/rootfs.ext4"
+initrd="$PWD/linux_qemu/x86_64/rootfs.cpio"
+img="$PWD/linux_qemu/x86_64/rootfs.ext2"
 ```
 
 ```sh
 qemu-system-x86_64 \
-    -nographic \
     -m 4G \
     -kernel $kernel \
-    -hda $img \
+    -initrd $initrd \
     -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0" \
     -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
     -device virtio-net-pci,netdev=mynet
@@ -403,4 +406,22 @@ qemu-system-x86_64 \
 gdb ./vmlinux
 
 target remote localhost:1234
+```
+
+
+```sh
+kernel="$PWD/linux_qemu/aarch64/bzImage"
+initrd="$PWD/linux_qemu/aarch64/rootfs.cpio"
+img="$PWD/linux_qemu/aarch64/rootfs.ext4"
+```
+
+```sh
+qemu-system-aarch64 \
+    -machine virt \
+    -cpu cortex-a53 \
+    -smp 4 \
+    -m 4G \
+    -nographic \
+    -kernel $kernel \
+    -append "earlyprintk loglevel=8 rootfstype=ext4 console=ttyAMA0"
 ```
