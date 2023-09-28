@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[6681],{69451:s=>{s.exports=JSON.parse('{"label":"initramfs","permalink":"/blog/tags/initramfs","allTagsPath":"/blog/tags","count":1}')}}]);
