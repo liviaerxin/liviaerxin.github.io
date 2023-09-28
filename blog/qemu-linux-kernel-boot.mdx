@@ -1,0 +1,170 @@
+---
+authors:
+  - frank
+tags:
+  - qemu
+  - kernel
+  - initramfs
+description: QEMU Linux Kernel Boot
+keywords:
+  - QEMU Linux Kernel Boot
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-09-26
+draft: false
+enableComments: true # for Gisqus
+---
+
+# QEMU Direct Linux Kernel Boot
+
+Use QEMU to launch a Linux kernel directly without having to make a fully bootable disk image. This is very useful for:
+
+- Linux kernel testing
+- root filesystem testing
+- arm system emulation
+
+Here, I will employ QEMU to emulate a minimal **Linux x86_64** platform as well as debugging with `GDB`, step by step:
+
+- Build **Linux x86_64** kernel
+- Build **Linux x86_64** rootfs(root filesystem)
+- Run QEMU
+- Debug with `GDB`
+
+
+```sh
+sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
+```
+
+```sh
+mkdir ~/linux-qemu
+cd ~/linux-qemu
+TOP=~/linux-qemu
+```
+
+```sh
+hdiutil create -size 20g -type SPARSE -fs "Case-sensitive HFS+" -volname brosx brosx.sparseimage
+hdiutil attach brosx.sparseimage
+```
+
+```sh
+hdiutil detach /Volumes/brosx -force
+```
+
+```sh
+brew install gpatch gcc flock attr libtool libart
+```
+
+```sh
+ln -s /opt/homebrew/bin/gcc-13 /opt/homebrew/bin/gcc
+n -s /opt/homebrew/bin/gcc-13 /opt/homebrew/bin/cc
+ln -s /opt/homebrew/bin/g++-13 /opt/homebrew/bin/g++
+ln -s /opt/homebrew/bin/g++-13 /opt/homebrew/bin/c++
+```
+
+```sh
+rm /opt/homebrew/bin/gcc /opt/homebrew/bin/cc /opt/homebrew/bin/g++ /opt/homebrew/bin/c++
+```
+
+## Build Linux kernel
+
+```sh
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.55.tar.xz
+```
+
+
+```sh
+tar xvf linux-6.1.55.tar.xz
+cd linux-6.1.55
+```
+
+```sh
+# Use the default `x86_64` configuration file form `/x86/configs/x86_64_defconfig`
+make ARCH=x86_64 x86_64_defconfig 
+```
+
+```sh
+# Tweak some options for GDB and initramfs
+make menuconfig
+```
+
+```sh
+make -j8
+```
+
+Output kernel `arch/x86/boot/bzImage`.
+
+Extract `vmlinux` from `bzImage`,
+
+```sh
+./scripts/extract-vmlinux ./arch/x86_64/boot/bzImage >./arch/x86_64/boot/vmlinux
+```
+
+## Build root filesystem
+
+```sh
+git clone https://github.com/buildroot/buildroot.git
+cd buildroot
+```
+
+```sh
+make menuconfig
+```
+
+Choose `x86_64` as Target Architecture and `ext4` root file system.
+
+```sh
+make -j8
+```
+
+The output rootfs is `./output/images/rootfs.ext4`
+
+```sh
+kernel="$PWD/linux_qemu/x86_64/bzImage"
+vmlinuz="$PWD/linux_qemu/x86_64/vmlinux"
+initrd="$PWD/linux_qemu/x86_64/rootfs.ext4"
+img="$PWD/linux_qemu/x86_64/rootfs.ext4"
+```
+
+```sh
+qemu-system-x86_64 \
+    -nographic \
+    -m 4G \
+    -kernel $kernel \
+    -hda $img \
+    -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0" \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
+```
+
+```sh
+qemu-system-x86_64 \
+    -nographic \
+    -m 4G \
+    -s -S \
+    -kernel $kernel \
+    -hda $img \
+    -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0" \
+    -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=mynet
+```
+
+```sh
+gdb ./vmlinux
+
+target remote localhost:1234
+```
+
+<!--truncate-->
+
+## Resources
+
+https://www.berrange.com/posts/2023/03/09/make-tiny-image-py-creating-tiny-initrds-for-testing-qemu-or-linux-kernel-userspace-behaviour/
+
+https://github.com/dhruvvyas90/qemu-rpi-kernel
+
+https://medicineyeh.wordpress.com/2016/03/29/buildup-your-arm-image-for-qemu/
+
+https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
+
+https://bootlin.com/pub/conferences/2013/kernel-recipes/rootfs-kernel-developer/rootfs-kernel-developer.pdf
+
+https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
