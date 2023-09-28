@@ -51,7 +51,7 @@ enableComments: true # for Gisqus
     // https://docs.microsoft.com/en-us/windows/communitytoolkit/mvvm/observableobject#wrapping-a-non-observable-model
     public class ObservableUser : ObservableObject
     {
-        private readonly User user;
+        private readonly User user;mvvm-application.png
 
         public ObservableUser(User user) => this.user = user;
 
@@ -65,7 +65,7 @@ enableComments: true # for Gisqus
 
 ## Principles
 
-![MVVM Application](../img/mvvm-application.png)
+![MVVM Application](../attachments/images/mvvm-application.png)
 
 - View-to-ViewModel one-to-one/many-to-one mapping
 - ViewModel-to-ViewModel communication
