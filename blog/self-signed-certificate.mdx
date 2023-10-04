@@ -1,0 +1,128 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/self-signed-certificate.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - Self Signed Certificate
+description: Self Signed Certificate
+keywords:
+  - Self Signed Certificate
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-10-04
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Generating self signed SSL/TLS certificate for private IP address or local domain
+
+<!--truncate-->
+
+## Creating certificate authority(CA)
+
+Generate `RootCA.key` and `RootCA.crt`:
+
+```sh
+openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout RootCA.key -out RootCA.crt -subj "/C=US/CN=Example-Root-CA"
+```
+
+## Generating local domain certificate
+
+### Generating a Certificate Signing Request(CSR)
+
+```conf title="/etc/hosts"
+127.0.0.1   localhost
+127.0.0.1   fake1.local
+127.0.0.1   fake2.local
+```
+
+```conf title="req.conf"
+[req]
+default_bits  = 2048
+distinguished_name = req_distinguished_name
+req_extensions = req_ext
+x509_extensions = v3_req
+prompt = no
+
+[req_distinguished_name]
+countryName = XX
+stateOrProvinceName = N/A
+localityName = N/A
+organizationName = Self-signed certificate
+commonName = 127.0.0.1: Self-signed certificate
+
+[req_ext]
+subjectAltName = @alt_names
+
+[v3_req]
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = 127.0.0.1
+DNS.1 = localhost
+DNS.2 = fake1.local
+DNS.3 = fake2.local
+```
+
+Generates `localhost.key` and `localhost.csr`:
+
+```sh
+openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -config req.conf
+# Or input from line
+# openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=localhost.local"
+```
+
+Verify the Certificate Signing Request(CSR) file `localhost.csr`:
+
+```sh
+openssl req -text -noout -verify -in localhost.csr
+```
+
+### Submiting the CSR to the local CA
+
+Generates certificate file `localhost.crt`:
+
+```sh
+openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out localhost.crt
+```
+
+Verify the `localhost.crt`:
+
+```sh
+openssl x509 -text -noout -verify -in localhost.crt
+```
+
+:::note
+Using the CA and Subject as the same one, the step of creating the local CA can be skipped.
+
+```sh
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config req.conf
+```
+
+:::
+
+## Using the certificate
+
+```sh
+npx http-server -p 8082 --ssl --cert localhost.crt --key localhost.key
+```
+
+https://127.0.0.1:8082/
+https://localhost:8082/
+
+
+## Trust the local CA
+
+Install CA certificate `RootCA.crt` into the system trust store.
+
+Windows
+Ubuntu
+macOS
+
+## Resources
+
+[How to create an HTTPS certificate for localhost domains · GitHub](https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8)
+
+[GitHub - FiloSottile/mkcert: A simple zero-config tool to make locally trusted development certificates with any names you'd like.](https://github.com/FiloSottile/mkcert)

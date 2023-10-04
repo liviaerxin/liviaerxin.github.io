@@ -164,13 +164,13 @@ $ ip addr show eth0
 ### Add proxy
 
 ```powershell
-netsh interface portproxy add v4tov4 listenport=8080 connectport=4200 connectaddress=127.0.0.1
+netsh interface portproxy add v4tov4 listenport=8082 connectport=8082 connectaddress=172.29.6.23,127.0.0.1
 ```
 
-### Add firewall rule
+### [Optional] Add firewall rule
 
 ```powershell
-netsh advfirewall firewall add rule name= "Open Port 8080" dir=in action=allow protocol=TCP localport=8080
+netsh advfirewall firewall add rule name= "Open Port 8082" dir=in action=allow protocol=TCP localport=8082
 ```
 
 ### Check current proxy
@@ -182,9 +182,9 @@ netsh interface portproxy show all
 ### Clean up
 
 ```powershell
-netsh interface portproxy delete v4tov4 listenport=8080
+netsh interface portproxy delete v4tov4 listenport=8082
 ```
 
 ```powershell
-netsh advfirewall firewall delete rule name="Open port 8080"
+netsh advfirewall firewall delete rule name="Open port 8082"
 ```
