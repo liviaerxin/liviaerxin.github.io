@@ -6,7 +6,9 @@ foam_template:
 authors:
   - frank
 tags:
-  - Self Signed Certificate
+  - openssl
+  - certificate
+  - best-practice
 description: Self Signed Certificate
 keywords:
   - Self Signed Certificate
@@ -16,11 +18,31 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# Generating self signed SSL/TLS certificate for private IP address or local domain
+# Generate self-signed SSL/TLS certificate for local IP address or local domain
+
+In real life, when we build our website and make it public, some paid or free CA(Certificate Authority) will help us sign a certificate for our website domain and enable SSL/TLS connections from user browser to our server.
+
+For secure reasons, the browser will only admit those servers's certificates signed from authorized CA, of which certificate is kept in your host system trust store.
+
+:::note
+One of the most popular Certificate Authorities is [Let's Encrypt](https://letsencrypt.org/), which is a free and non-profit CA.
+:::
+
+Here is an example, we will generate a local server certificate that is signed by a local CA. Finally, let Chrome can visit our local website without security warning.
+
+In brief, these steps we need to sign local sever certificate actually simulate how those CA sign certificates for public servers, as following:
+
+1. Create a local **Root CA**.
+2. Create a **CSR**(Certificate Signing Request) file for local server `127.0.0.1`.
+3. The local **Root CA** use the **CSR** to generate a **certificate** for local server `127.0.0.1`.
+4. Install the local **Root CA** into our system(Windows, Ubuntu or macOS) trust store.
+5. Run a simple **https** server to test local server **certificate**.
+
+For those official CA, they have to validate the domain is owned by the server before the `step 3`, and we can ignore `step 4` as they are already installed into the system or the browser trust store.
 
 <!--truncate-->
 
-## Creating certificate authority(CA)
+## Create local root Certificate Authority(CA)
 
 Generate `RootCA.key` and `RootCA.crt`:
 
@@ -28,9 +50,9 @@ Generate `RootCA.key` and `RootCA.crt`:
 openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout RootCA.key -out RootCA.crt -subj "/C=US/CN=Example-Root-CA"
 ```
 
-## Generating local domain certificate
+## Create local server certificate
 
-### Generating a Certificate Signing Request(CSR)
+### Generate Certificate Signing Request(CSR)
 
 ```conf title="/etc/hosts"
 127.0.0.1   localhost
@@ -38,7 +60,7 @@ openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout RootCA
 127.0.0.1   fake2.local
 ```
 
-```conf title="req.conf"
+```conf title="server.conf"
 [req]
 default_bits  = 2048
 distinguished_name = req_distinguished_name
@@ -69,23 +91,25 @@ DNS.3 = fake2.local
 Generates `localhost.key` and `localhost.csr`:
 
 ```sh
-openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -config req.conf
+openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -config server.conf
 # Or input from line
 # openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=localhost.local"
 ```
 
-Verify the Certificate Signing Request(CSR) file `localhost.csr`:
+Verify the Certificate Signing Request(CSR) `localhost.csr`:
 
 ```sh
 openssl req -text -noout -verify -in localhost.csr
 ```
 
-### Submiting the CSR to the local CA
+### Submit CSR to local root CA
 
-Generates certificate file `localhost.crt`:
+Employ local root CA to sign server certificate by using CSR `localhost.csr` with extensions.
+
+Generates `localhost.crt`,
 
 ```sh
-openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out localhost.crt
+openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -extensions req_ext -extfile server.conf -out localhost.crt
 ```
 
 Verify the `localhost.crt`:
@@ -94,11 +118,15 @@ Verify the `localhost.crt`:
 openssl x509 -text -noout -verify -in localhost.crt
 ```
 
+:::warning
+If `X509` extensions(`subjectAltName`) are missing from the certificate, the browser will still report security issues.
+:::
+
 :::note
 Using the CA and Subject as the same one, the step of creating the local CA can be skipped.
 
 ```sh
-openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config req.conf
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config server.conf
 ```
 
 :::
@@ -121,8 +149,18 @@ Windows
 Ubuntu
 macOS
 
+## Troubleshooting
+
+### Chrome **red** security warning
+
+1. Go to `Developer Tools`.
+2. Click `Security` tab.
+3. Check `Security overview` issues.
+
 ## Resources
 
 [How to create an HTTPS certificate for localhost domains · GitHub](https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8)
+
+[How to add X.509 extensions to certificate OpenSSL | GoLinuxCloud](https://www.golinuxcloud.com/add-x509-extensions-to-certificate-openssl/)
 
 [GitHub - FiloSottile/mkcert: A simple zero-config tool to make locally trusted development certificates with any names you'd like.](https://github.com/FiloSottile/mkcert)
