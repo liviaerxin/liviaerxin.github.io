@@ -160,7 +160,15 @@ EOL
 ```
 
 ```sh
-sysroot=$PWD/aarch64-linux-gnu/usr
+sysroot=~/Documents/sysroot/aarch64-linux-gnu/usr
+```
+
+```sh
+clang --target=aarch64-linux-gnu hello.c -o hello_aarch64 -v
+```
+
+```sh
+clang --target=aarch64-linux-gnu hello.c -o hello_aarch64 --sysroot=$sysroot -v
 ```
 
 ```sh
