@@ -144,3 +144,47 @@ sudo tcpdump -i any -c5 -nn dst 8.8.8.8
 ## USB Virtual Ethernet
 
 [An explanation on the USB virtual ethernet](https://forums.developer.nvidia.com/t/provide-internet-through-micro-usb-while-doing-ssh/111326/14)
+
+## Access WSL 2 from local area network(LAN)
+
+After enabling [systemd](https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/) in WSL 2, I have to forward the Windows host port to the WSL 2 distribution.
+
+### Find WSL 2 IP address that can be reached from Windows host
+
+```sh
+$ ip addr show eth0
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1420 qdisc mq state UP group default qlen 1000
+    link/ether 00:15:5d:98:b5:99 brd ff:ff:ff:ff:ff:ff
+    inet 172.29.6.23/20 brd 172.29.15.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::215:5dff:fe98:b599/64 scope link
+       valid_lft forever preferred_lft forever
+```
+
+### Add proxy
+
+```powershell
+netsh interface portproxy add v4tov4 listenport=8080 connectport=4200 connectaddress=127.0.0.1
+```
+
+### Add firewall rule
+
+```powershell
+netsh advfirewall firewall add rule name= "Open Port 8080" dir=in action=allow protocol=TCP localport=8080
+```
+
+### Check current proxy
+
+```powershell
+netsh interface portproxy show all
+```
+
+### Clean up
+
+```powershell
+netsh interface portproxy delete v4tov4 listenport=8080
+```
+
+```powershell
+netsh advfirewall firewall delete rule name="Open port 8080"
+```

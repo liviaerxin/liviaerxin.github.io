@@ -11,4 +11,4 @@ There are some very useful and reliable resources where I frequently enquire and
     - Exhaustive knowledge about Linux kernel
 
 [nixCraft](https://www.cyberciti.biz/)
-    - Linux **Howto** document
+    - Linux documents on  **How to** serials.
