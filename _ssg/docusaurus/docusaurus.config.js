@@ -116,9 +116,9 @@ const config = {
           path: '../../blog', // './blog' for local test
           blogTitle: 'Docusaurus blog!',
           blogDescription: 'A Docusaurus powered blog!',
-          postsPerPage: 'ALL',
-          blogSidebarTitle: 'Recent posts',
-          blogSidebarCount: 10,
+          // postsPerPage: 'ALL',
+          blogSidebarTitle: 'ALL posts',
+          blogSidebarCount: "ALL",
           showReadingTime: true,
           editUrl:
             'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md

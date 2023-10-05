@@ -40,9 +40,14 @@ In brief, these steps we need to sign local sever certificate actually simulate 
 
 For those official CA, they have to validate the domain is owned by the server before the `step 3`, and we can ignore `step 4` as they are already installed into the system or the browser trust store.
 
+And there is nice picture from [How to create your own self-signed root Certificate Authority(CA)](https://www.linkedin.com/pulse/how-create-your-own-self-signed-root-certificate-shankar-gomare/) to show the relationship between `CA`, `server` and `browser`.
+
+![](https://media.licdn.com/dms/image/C4E12AQGJ5hl3wTAyFg/article-inline_image-shrink_400_744/0/1589170084171?e=1701907200&v=beta&t=FaVSM-fIy4dc-SIftGYEuUc7GONcMLphssfteUKoWuA)
+
 <!--truncate-->
 
-## Create local root Certificate Authority(CA)
+
+## Create root Certificate Authority(CA)
 
 Generate `RootCA.key` and `RootCA.crt`:
 
@@ -50,15 +55,23 @@ Generate `RootCA.key` and `RootCA.crt`:
 openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout RootCA.key -out RootCA.crt -subj "/C=US/CN=Example-Root-CA"
 ```
 
+You can change `Example-Root-CA` to others or add more fields to CA.
+
 ## Create local server certificate
 
+Next, we should apply the local CA to sign a certificate for our local server, which will be accessed through the `localhost` or `127.0.0.1` from our local machine.
+
 ### Generate Certificate Signing Request(CSR)
+
+Set up custom DNS in `/etc/hosts`,
 
 ```conf title="/etc/hosts"
 127.0.0.1   localhost
 127.0.0.1   fake1.local
 127.0.0.1   fake2.local
 ```
+
+Prepare a `server.conf`,
 
 ```conf title="server.conf"
 [req]
@@ -102,7 +115,7 @@ Verify the Certificate Signing Request(CSR) `localhost.csr`:
 openssl req -text -noout -verify -in localhost.csr
 ```
 
-### Submit CSR to local root CA
+### Submit CSR to root CA
 
 Employ local root CA to sign server certificate by using CSR `localhost.csr` with extensions.
 
@@ -131,23 +144,30 @@ openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out l
 
 :::
 
-## Using the certificate
+## Use the server certificate
+
+Run up a node https server to use the generated local server certificate.
 
 ```sh
 npx http-server -p 8082 --ssl --cert localhost.crt --key localhost.key
 ```
 
-https://127.0.0.1:8082/
-https://localhost:8082/
+Then visit:
 
+- https://127.0.0.1:8082/
+- https://localhost:8082/
 
-## Trust the local CA
+The browser will give you security warning as the local **root CA** is not trusted in default.
 
-Install CA certificate `RootCA.crt` into the system trust store.
+## Trust the root CA
 
-Windows
-Ubuntu
-macOS
+Install CA certificate `RootCA.crt` into each system trust store or each browser.
+
+- Windows system trust store
+- Ubuntu system trust store
+- macOS system trust store
+
+Then visit again, the browser will show green!
 
 ## Troubleshooting
 

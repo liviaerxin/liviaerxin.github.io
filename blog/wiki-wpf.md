@@ -17,7 +17,7 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# WPF
+# Wiki WPF
 
 [GitHub - SingletonSean/wpf-tutorials: Tutorial source code for WPF concepts.](https://github.com/SingletonSean/wpf-tutorials)
 
