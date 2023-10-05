@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2967],{99431:e=>{e.exports=JSON.parse('{"permalink":"/blog/tags/osx","page":1,"postsPerPage":3,"totalPages":1,"totalCount":3,"blogDescription":"A Docusaurus powered blog!","blogTitle":"Docusaurus blog!"}')}}]);
