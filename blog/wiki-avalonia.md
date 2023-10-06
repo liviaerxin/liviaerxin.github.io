@@ -14,7 +14,7 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# Avalonia
+# Wiki Avalonia
 
 <!--truncate-->
 

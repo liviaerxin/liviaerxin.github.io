@@ -7,7 +7,7 @@ more_data:
     or: arrays
 ---
 
-# VPN
+# Wiki VPN
 
 [OpenVPN: how secure virtual private networks really work](https://cloudacademy.com/blog/openvpn-how-secure-virtual-private-networks-really-work/)
 > !!!Favorite explanation

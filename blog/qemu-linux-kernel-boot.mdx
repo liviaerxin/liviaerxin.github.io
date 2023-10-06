@@ -16,31 +16,32 @@ enableComments: true # for Gisqus
 
 # QEMU Direct Linux Kernel Boot
 
-Use QEMU to launch a Linux kernel directly without having to make a fully bootable disk image. This is very useful for:
-
-- Linux kernel testing
-- root filesystem testing
-- arm system emulation
-
-Here, I will employ QEMU to emulate a minimal **Linux x86_64** platform as well as debugging with `GDB`, step by step:
+Here, I will employ QEMU to emulate a minimal **Linux x86_64** platform with a minimal root filesystem from scratch, as well as debugging with `GDB`:
 
 - Build **Linux x86_64** kernel
 - Build **Linux x86_64** rootfs(root filesystem)
 - Run QEMU
 - Debug with `GDB`
 
+Why do I use QEMU to boot Linux kernel directly with skipping BIOS/UEFI boot procedures?
+
+Use QEMU to launch a Linux kernel directly without having to make a fully bootable disk image. This is very useful for:
+
+- Linux kernel testing
+- root filesystem testing
+- arm system emulation
+
 <!--truncate-->
 
+## Prerequisites
+
+On Ubuntu,
 
 ```sh
 sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
 ```
 
-```sh
-mkdir ~/linux-qemu
-cd ~/linux-qemu
-TOP=~/linux-qemu
-```
+On macOS, you need create a **Case Sensitive** filesystem and use **GNU GCC** instead of `Clang` the following ways:
 
 ```sh
 hdiutil create -size 20g -type SPARSE -fs "Case-sensitive HFS+" -volname brosx brosx.sparseimage
@@ -92,13 +93,16 @@ make menuconfig
 make -j8
 ```
 
-Output kernel `arch/x86/boot/bzImage`.
+Generate kernel file `./arch/x86/boot/bzImage`.
 
-Extract `vmlinux` from `bzImage`,
+:::note
+To extract `vmlinux` from `bzImage`,
 
 ```sh
 ./scripts/extract-vmlinux ./arch/x86_64/boot/bzImage >./arch/x86_64/boot/vmlinux
 ```
+
+:::
 
 ## Build root filesystem
 
@@ -117,7 +121,16 @@ Choose `x86_64` as Target Architecture and `ext4` root file system.
 make -j8
 ```
 
-The output rootfs is `./output/images/rootfs.ext4`
+Generate root filesystem disk `./output/images/rootfs.ext4`.
+
+## Run QEMU
+
+Copy `bzImage` and `rootfs.ext4` to any host machine with QEMU available.
+
+```sh
+rsync -l ./linux-6.1.55/arch/x86/boot/bzImage destination_directory/
+rsync -l ./buildroot/output/images/rootfs.ext4 destination_directory/
+```
 
 ```sh
 kernel="$PWD/linux_qemu/x86_64/bzImage"
@@ -131,11 +144,41 @@ qemu-system-x86_64 \
     -nographic \
     -m 4G \
     -kernel $kernel \
+    -append "earlyprintk loglevel=8 root=/dev/zero console=ttyS0"
+```
+
+```sh
+qemu-system-x86_64 \
+    -nographic \
+    -m 4G \
+    -kernel $kernel \
     -hda $img \
     -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0" \
     -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
     -device virtio-net-pci,netdev=mynet
 ```
+
+Default password: `root`
+
+## Debug Linux kernel
+
+```sh
+qemu-system-x86_64 \
+    -s -S \
+    -nographic \
+    -m 4G \
+    -kernel $kernel \
+    -append "earlyprintk loglevel=8 root=/dev/zero console=ttyS0 nokaslr"
+```
+
+Options in details,
+
+- `-s`: allows port `tcp::1234` for remote debug
+- `-S`: stop CPU until continue from GDB what is connected to tcp `1234` port
+- `-append`
+  - `nokaslr`: turn off **KASLR**
+
+Or with root filesystem,
 
 ```sh
 qemu-system-x86_64 \
@@ -144,29 +187,36 @@ qemu-system-x86_64 \
     -s -S \
     -kernel $kernel \
     -hda $img \
-    -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0" \
+    -append "earlyprintk loglevel=8 root=/dev/sda rootfstype=ext4 console=ttyS0 nokaslr" \
     -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
     -device virtio-net-pci,netdev=mynet
 ```
 
-```sh
-gdb ./vmlinux
+Enter `gdb`,
 
-target remote localhost:1234
+```sh
+$ gdb ./vmlinux
+```
+
+In `gdb` shell,
+
+```sh
+(gdb) target remote 10.6.64.243:1234
+Remote debugging using 10.6.64.243:1234
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x000000000000fff0 in ?? ()
+(gdb) continue
+Continuing.
 ```
 
 ## Resources
 
-https://www.berrange.com/posts/2023/03/09/make-tiny-image-py-creating-tiny-initrds-for-testing-qemu-or-linux-kernel-userspace-behaviour/
+[Daniel P. Berrangé  » Blog Archive   » make-tiny-image.py: creating tiny initrds for testing QEMU or Linux kernel/userspace behaviour](https://www.berrange.com/posts/2023/03/09/make-tiny-image-py-creating-tiny-initrds-for-testing-qemu-or-linux-kernel-userspace-behaviour/)
 
-https://github.com/dhruvvyas90/qemu-rpi-kernel
-
+[GitHub - dhruvvyas90/qemu-rpi-kernel: Qemu kernel for emulating Rpi on QEMU](https://github.com/dhruvvyas90/qemu-rpi-kernel)
 https://medicineyeh.wordpress.com/2016/03/29/buildup-your-arm-image-for-qemu/
 
-https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
+[Prepare the environment for developing Linux kernel with qemu. | by DaeSeok Youn | Medium](https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade)
 
-https://bootlin.com/pub/conferences/2013/kernel-recipes/rootfs-kernel-developer/rootfs-kernel-developer.pdf
-
-https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
-
-## CLang/LLVM
+[](https://bootlin.com/pub/conferences/2013/kernel-recipes/rootfs-kernel-developer/rootfs-kernel-developer.pdf)
