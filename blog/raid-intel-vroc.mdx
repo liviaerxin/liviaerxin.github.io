@@ -36,7 +36,7 @@ For creating **software RAID** on Ubuntu, go to see:
 
 On the premise machine, there are 2 NVMe SSDs and 8 SATA hard drives(HDDs), and also it ships with a in-box hardware-assisted RAID controller(**Intel VROC**) on the Intel CPU, which is supposed to keep overall advantages over **software RAID**.
 
-For me, I would like to use these 8 HDDs(sda, sdb, ..., sdh) to store data for long time, while retaining the balance between redundancy and performance. So here **RAID 5**(Stripping with Parity) comes into my mind.
+For me, I would like to use these 8 HDDs(`sda`, `sdb`, ..., `sdh`) to store data for long time, while retaining the balance between redundancy and performance. So here **RAID 5**(Stripping with Parity) comes into my mind.
 
 To leverage the power of **Intel VROC** in Ubuntu(Linux), you also need the `mdadm` command line tool to manage intel VROC which support RAID 0, RAID 1, RAID 5 and RAID 10
 
