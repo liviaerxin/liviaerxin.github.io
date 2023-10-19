@@ -63,11 +63,6 @@
           "title": "date",
           "name": "date",
           "type": "datetime"
-        },
-        {
-          "title": "last_update",
-          "name": "last_update",
-          "type": "datetime"
         }
       ]
     }

@@ -4,9 +4,8 @@ slug: doc-with-tags
 tags:
   - Demo
   - Getting started
-last_update:
-  date: 2023-05-30
-  author: custom author name
+date: 2023-05-30
+author: custom author name
 ---
 
 # Hello from Docusaurus

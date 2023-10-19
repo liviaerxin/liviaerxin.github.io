@@ -12,9 +12,8 @@ image: https://i.imgur.com/mErPwqL.png
 tags:
   - blog
   - docusaurus
-last_update:
-  date: 2023-06-26
-  author: frank
+date: 2023-06-26
+author: frank
 ---
 
 # Python Package Management

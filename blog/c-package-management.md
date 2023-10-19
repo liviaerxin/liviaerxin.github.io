@@ -14,9 +14,8 @@ tags:
   - c++
   - vcpkg
   - conan
-last_update:
-  date: 2023-06-26
-  author: frank
+date: 2023-06-26
+author: frank
 ---
 
 # C++ Package Management

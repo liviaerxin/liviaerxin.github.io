@@ -14,9 +14,8 @@ tags:
   - autoswitch
   - wifi
   - windows
-last_update:
-  date: 2023-06-01
-  author: frank
+date: 2023-06-01
+author: frank
 ---
 
 # WiFi AutoSwitch Windows

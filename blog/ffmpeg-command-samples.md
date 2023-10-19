@@ -14,7 +14,6 @@ tags:
   - cheat-sheet
   - ffmpeg
 date: 2023-07-06
-last_update: 2023-07-06
 ---
 
 # FFmpeg Command Samples

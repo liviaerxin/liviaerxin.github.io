@@ -10,9 +10,8 @@ keywords:
 image: https://i.imgur.com/mErPwqL.png
 tags:
   - code snippet
-last_update:
-  date: 2023-06-26
-  author: frank
+date: 2023-06-26
+author: frank
 ---
 
 # Code Snippet Management
