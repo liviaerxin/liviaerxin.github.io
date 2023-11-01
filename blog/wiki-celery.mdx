@@ -1,0 +1,73 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/wiki-celery.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - Wiki 
+  - Celery
+  - Best practice 
+description: Wiki Celery
+keywords:
+  - WikiCelery
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-10-30
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Wiki Celery
+
+What is the **Celery**? **Celery** is a simple, flexible, and reliable distributed system to process vast amounts of tasks. In practice,
+
+1. **Celery** can be used to execute long-running jobs behind web servers to let your servers handle requests/responses in non-blocking ways.
+2. **Celery** can do scheduled jobs.
+
+Here are some production-ready use cases for **Celery** I have encountered.
+
+<!--truncate-->
+
+## Different workers for different tasks
+
+Assuming a such situation:
+There is a worker `x` to only handle email tasks and a worker `y` to only handle machine learning related tasks.
+
+These are configurations for project `x`:
+
+```sh
+# Celery routing.
+app.conf.task_routes = {
+    'celery_app.email_tasks.*': {
+        'queue': 'email_service',
+    },
+}
+
+# Run celery.
+celery -A celery_app.email_tasks:app worker -l info -E -Q email_service
+```
+
+These are configurations for project `y`:
+
+```sh
+# Celery routing.
+app.conf.task_routes = {
+    'celery_app.ml_tasks.*': {
+        'queue': 'ml_service',
+    },
+}
+
+# Run celery.
+celery -A celery_app.ml_tasks:app worker -l info -E -Q ml_service
+```
+
+Details in explanation:
+
+1. Different workers handle their own queues for separate tasks.
+
+Look at []() for see a complete **Celery** project.
+
+## Resources
+
+https://docs.celeryq.dev/en/latest/index.html#

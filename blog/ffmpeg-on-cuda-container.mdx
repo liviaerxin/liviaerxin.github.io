@@ -83,3 +83,19 @@ import CodeBlock from '@theme/CodeBlock';
 import CodeSource from '!!raw-loader!../code-snippets/dockerfiles/nvidia-cuda-ffmpeg/Dockerfile';
 
 <CodeBlock language="yaml" title="nvidia-cuda-ffmpeg/Dockerfile">{CodeSource}</CodeBlock>
+
+## Known issues
+
+Nvidia Docker encoding stops after long running time with such error message: `CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected`.
+
+[[Issue]: NVidia Docker transcoding randomly stops working after 5 minutes to 4 hours later. · Issue #9287 · jellyfin/jellyfin · GitHub](https://github.com/jellyfin/jellyfin/issues/9287)
+
+Possible solution:
+
+Edit `/etc/defautls/grub`,
+
+```sh
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash systemd.unified_cgroup_hierarchy=0"
+```
+
+Then run `update-grub` and reboot.
