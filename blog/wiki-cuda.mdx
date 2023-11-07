@@ -51,7 +51,7 @@ NVIDIA CUDA software stack on WSL 2:
 
 ## Nvidia GPU Driver on Ubuntu
 
-### Find out whether the host machine have Nvidia GPU hardware.
+### Find out whether the host machine have Nvidia GPU hardware
 
 ```sh
 $ lspci | grep VGA
@@ -195,7 +195,7 @@ More `Dockerfile` examples:
 - [Dockerfile](../code-snippets/dockerfiles/nvidia-cuda-ffmpeg/Dockerfile)
 - [docker compose](../code-snippets/docker-compose/nvidia-cuda/docker-compose.yml)
 
-## FFmpeg in Nvidia CUDA Container
+## FFmpeg in Nvidia CUDA container
 
 https://developer.nvidia.com/ffmpeg
 
@@ -204,6 +204,11 @@ https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvid
 https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/
 
 [Install FFmpeg on Nvidia CUDA Container](./ffmpeg-on-cuda-container.mdx)
+
+## Known issues
+
+After random long running time, in Nvidia docker the FFmpeg encoding stops and error comes out: `CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected`.  
+[[Issue]: NVidia Docker transcoding randomly stops working after 5 minutes to 4 hours later. · Issue #9287 · jellyfin/jellyfin · GitHub](https://github.com/jellyfin/jellyfin/issues/9287)
 
 ## References
 
