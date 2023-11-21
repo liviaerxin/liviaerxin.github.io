@@ -242,6 +242,15 @@ Details in explanation:
 
 Look at [https://github.com/liviaerxin/fastapi-celery-ml](https://github.com/liviaerxin/fastapi-celery-ml) for see a complete **Celery** project.
 
+
+## Code Analysis
+
+```py
+from celery import signature
+sig = add.s(2, 2)
+sig.freeze()
+```
+
 ## Known issues
 
 [Result state is always PENDING in windows](https://github.com/celery/celery/issues/2146)
