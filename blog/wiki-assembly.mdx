@@ -1,0 +1,111 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/wiki-assembly.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
+authors:
+  - frank
+tags:
+  - Wiki Assembly
+description: Wiki Assembly
+keywords:
+  - Wiki Assembly
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-11-22
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Wiki Assembly
+
+Foam includes note templates!
+This allows you to easily create notes that have similar structure without having to use copy/paste :)
+
+Templates support the [VS Code's Snippet Syntax](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax), which means you can:
+
+- add variables to the newly created note
+- add tabstop to automatically navigate to the key parts of the note, just like a form
+Below you can see an example showing a todo list and a timestamp.
+
+<!--truncate-->
+
+```asm title="print.asm"
+; print.asm
+; nasm -f elf64 print.asm && ld print.o && ./a.out ; echo $?
+; objdump -d a.out
+section .data
+message db, "Welcome,   to, Segmentation, Faults!, "
+
+section .text
+
+global _start
+
+_printMessage:
+    mov rax, 4       ; System call number for sys_write
+    mov rbx, 1       ; File descriptor 1 is stdout
+    mov rcx, message ; Pointer to the message string
+    mov rdx, 32      ; Length of the message
+    int 0x80         ; Call kernel
+
+    ret ; Return from the function
+
+_exit:
+    mov rax, 1 ; System call number for sys_exit
+    mov rbx, 0 ; Exit code 0
+    int 0x80   ; Call kernel
+
+_start:
+    call _printMessage ; Call the print message function
+    mov  rax, 1        ; System call number for sys_exit
+    mov  rbx, 1        ; Exit code 0
+    int  0x80          ; Call kernel
+```
+
+```asm title="sum.asm"
+; sum.asm
+; nasm -f elf64 sum.asm && ld sum.o && ./a.out ; echo $?
+; objdump -d a.out
+section .text
+global _start
+
+; Function to calculate the sum of two integers
+sum:
+    mov rax, rdi   ; Move the first argument (a) to rax
+    add rax, rsi   ; Add the second argument (b) to rax
+    ret            ; Return with the result in rax
+
+_start:
+    ; Example usage of the sum function
+    mov rdi, 5     ; First argument: a = 5
+    mov rsi, 7     ; Second argument: b = 7
+
+    call sum       ; Call the sum function
+
+    ; The result is now in rax
+    ; It can be used or printed, depending on the context
+    mov rdi, rax   ; Exit code 0
+
+    ; Exit the program
+    mov rax, 60    ; System call number for sys_exit
+    syscall        ; Make the system call
+```
+
+## Resources
+
+https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
+
+http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html
+
+https://cs61.seas.harvard.edu/site/2018/Asm1/
+
+https://cs.lmu.edu/~ray/notes/nasmtutorial/
+
+https://web.stanford.edu/class/cs107/guide/x86-64.html
+
+https://www.cs.virginia.edu/~evans/cs216/guides/x86.html
+
+https://www.cs.uaf.edu/2016/fall/cs301/lecture/09_28_machinecode.html
+
+https://p403n1x87.github.io/getting-started-with-x86-64-assembly-on-linux.html
+
+https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html
