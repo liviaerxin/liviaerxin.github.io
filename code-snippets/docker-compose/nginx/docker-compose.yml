@@ -2,6 +2,7 @@
 # curl http://web1.docker.localhost
 # curl http://web2.docker.localhost
 # https://www.kubecost.com/kubernetes-devops-tools/traefik-vs-nginx/#configuring-traefik-vs-nginx-7
+# TODO: https://stackoverflow.com/questions/39420613/can-nginx-do-tcp-load-balance-with-ssl-termination
 version : "3"
 services :
   nginx-proxy:
