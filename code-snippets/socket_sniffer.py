@@ -86,11 +86,18 @@ def tcp_parser(raw_data: bytes):
     data = raw_data[offset:]
     return src_port, dest_port, seq, ack, flag, data
 
-def icmp_parser(raw_data:bytes):
-    pass
 
-def udp_parser(raw_data:bytes):
-    pass
+def icmp_parser(raw_data: bytes):
+    type, code, checksum = struct.unpack("! B B H", raw_data[0:4])
+    data = raw_data[4:]
+
+    return type, code, checksum, data
+
+
+def udp_parser(raw_data: bytes):
+    src_port, dest_port, length, checksum = struct.unpack("! H H H H", raw_data[0:8])
+    return src_port, dest_port, length, checksum
+
 
 # create a raw socket and bind it to the public interface
 s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
@@ -139,20 +146,20 @@ while True:
             print("\t\t\t - " + "URG: {}, ACK: {}, PSH:{}".format(flag[2], flag[3], flag[4]))
             print("\t\t\t - " + "RST: {}, SYN: {}, FIN:{}".format(flag[5], flag[6], flag[7]))
             print("\t\t - " + "TCP Data:")
-            print("\t\t\t - " + "{}".format(binascii.hexlify(data, "\x")))
+            print("\t\t\t - " + "{}".format(binascii.hexlify(data, " ")))
 
             if len(data) > 0:
                 # HTTP
                 if src_port == 80 or dest_port == 80:
                     print("\t\t - " + "HTTP Data:")
         elif protocol == 1:
-            icmp = icmp_parser(data)
-            print('\t -' + 'ICMP Packet:')
-            print('\t\t -' + 'Type: {}, Code: {}, Checksum:{},'.format(icmp[0], icmp[1],
-            icmp[2]))
-            print('\t\t -' + 'ICMP Data:')
-            
+            type, code, checksum, data = icmp_parser(data)
+            print("\t -" + "ICMP Packet:")
+            print("\t\t -" + "Type: {}, Code: {}, Checksum:{},".format(type, code, checksum))
+            print("\t\t -" + "ICMP Data:")
+            print("\t\t\t - " + "{}".format(binascii.hexlify(data, " ")))
+
         elif protocol == 17:
-            udp = udp_parser(data)
-            print('\t -' + 'UDP Segment:')
-            print('\t\t -' + 'Source Port: {}, Destination Port: {}, Length: {}'.format(udp[0], udp[1], udp[2]))
+            src_port, dest_port, length, checksum = udp_parser(data)
+            print("\t -" + "UDP Segment:")
+            print("\t\t -" + "Source Port: {}, Destination Port: {}, Length: {}".format(src_port, dest_port, checksum))
