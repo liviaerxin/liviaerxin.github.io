@@ -18,5 +18,9 @@ RUN apt-get update && \
 # Install pip for Python 3.8
 RUN wget https://bootstrap.pypa.io/get-pip.py && python3.8 get-pip.py && rm get-pip.py
 
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
+
 # Set the default command to Python 3.8 interpreter
 CMD ["python3.8"]

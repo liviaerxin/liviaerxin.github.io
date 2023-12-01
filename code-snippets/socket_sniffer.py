@@ -35,7 +35,7 @@ iface = "eth0"
 
 def get_mac_addr(raw_data: bytes) -> str:
     """
-    >>> binascii.hexlify(b'\x00\x15]e<\xdd', "-")                                                                                               
+    >>> binascii.hexlify(b'\x00\x15]e<\xdd', "-")
     b'00-15-5d-65-3c-dd'
     >>> binascii.hexlify(b'\x00\x15]e<\xdd')
     b'00155d653cdd'
@@ -48,11 +48,15 @@ def get_mac_addr(raw_data: bytes) -> str:
 def get_ip_addr(raw_data: bytes) -> str:
     # ".".join([str(b) for b in b'\xac\x1d\x06\x17']) -> '172.29.6.23'
     return ".".join([str(b) for b in raw_data])
+
+
 import zlib
+
+
 # Ethernet (Layer 2) header
 def ethernet_parser(raw_data: bytes):
     dest_mac, src_mac, ether_type = struct.unpack("! 6s 6s H", raw_data[:14])
-    
+
     dest_mac = get_mac_addr(dest_mac)
     src_mac = get_mac_addr(src_mac)
 
@@ -61,6 +65,7 @@ def ethernet_parser(raw_data: bytes):
     data = raw_data[14:-4]
 
     return dest_mac, src_mac, ether_type, data
+
 
 # IP (Layer 3) header
 def ipv4_parser(raw_data: bytes):
@@ -92,6 +97,7 @@ def ipv4_parser(raw_data: bytes):
         data,
     )
 
+
 # TCP (Layer 4) header
 def tcp_parser(raw_data: bytes):
     src_port, dest_port, seq, ack = struct.unpack("! H H L L", raw_data[0:12])
@@ -119,6 +125,7 @@ def tcp_parser(raw_data: bytes):
     data = raw_data[offset:]
     return src_port, dest_port, seq, ack, flag, data
 
+
 # ICMP (Layer 4) header
 def icmp_parser(raw_data: bytes):
     type, code, checksum = struct.unpack("! B B H", raw_data[0:4])
@@ -126,14 +133,17 @@ def icmp_parser(raw_data: bytes):
 
     return type, code, checksum, data
 
+
 # UDP (Layer 4) header
 def udp_parser(raw_data: bytes):
     src_port, dest_port, length, checksum = struct.unpack("! H H H H", raw_data[0:8])
     return src_port, dest_port, length, checksum
 
+
 # HTTP (Layer 7) header
 def http_parse(raw_data: bytes):
     pass
+
 
 # create a raw socket and bind it to the public interface
 s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
@@ -191,7 +201,7 @@ while True:
                 # HTTP
                 if src_port == 80 or dest_port == 80:
                     print("\t\t - " + "HTTP Data:")
-                    
+
         elif protocol == 1:
             type, code, checksum, data = icmp_parser(data)
             print("\t -" + "ICMP Packet:")

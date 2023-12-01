@@ -1,6 +1,7 @@
 import os
 import shutil
 
+
 def delete(path: str):
     """Delete a file or a directory
 
@@ -9,7 +10,7 @@ def delete(path: str):
 
     Raises:
         ValueError: Invalid path
-    """   
+    """
     # check if file or directory exists
     if os.path.isfile(path) or os.path.islink(path):
         os.remove(path)

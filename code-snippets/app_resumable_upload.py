@@ -194,7 +194,7 @@ async def home(request: Request):
         # The last chunk is b""
         chunk_size = len(chunk)
         print(f"chunk_size: {chunk_size}")
-            
+
     return {"message": "Hello World"}
 
 
@@ -251,9 +251,7 @@ async def upload(request: Request):
         uploadFile = Uploads_Cache[fileId]
         fileUri = uploadFile["fileUri"]
 
-        assert (
-            uploadFile["bytesReceived"] == startByte
-        ), "startByte must match record bytes!"
+        assert uploadFile["bytesReceived"] == startByte, "startByte must match record bytes!"
 
         fs = io.FileIO(fileUri, "a")
         print(f"File reopened: {fileUri}")

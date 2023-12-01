@@ -1,0 +1,18 @@
+FROM python:3.10-bullseye
+
+RUN apt update && apt-get install -y \
+    curl \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir bpython pytest black
+    # Note: we had to merge the two "pip install" package lists here, otherwise
+    # the last "pip install" command in the OP may break dependency resolution…
+
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+CMD [ "sleep", "infinity" ]

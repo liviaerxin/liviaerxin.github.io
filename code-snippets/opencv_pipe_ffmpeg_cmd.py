@@ -29,8 +29,8 @@ cap = cv2.VideoCapture(input_file)
 if not cap.isOpened():
     print("failed to read from file!")
     exit(1)
-    
-width  = cap.get(cv2.CAP_PROP_FRAME_WIDTH)   # float `width`
+
+width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # float `width`
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height`
 # DONT print any other logs which will go into the pipe and affect the ffmpeg
 # print(f"width x height: [{width} x {height}]")
@@ -45,5 +45,5 @@ while True:
     # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2YUV_I420)
     sys.stdout.buffer.write(frame.tobytes())
     # sys.stdout.flush()
-    
+
 cap.release()
