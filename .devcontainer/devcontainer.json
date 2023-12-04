@@ -14,7 +14,7 @@
 	// https://containers.dev/guide/dockerfile
 	"build": {
         // Path is relative to the devcontainer.json file.
-        "dockerfile": "Dockerfile.dev.py310"
+        "dockerfile": "Dockerfile.dev"
     },
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -32,5 +32,9 @@
 	// "remoteUser": "root"
 
 	// https://code.visualstudio.com/remote/advancedcontainers/start-processes
-	"overrideCommand": false
+	"overrideCommand": false,
+
+	// https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-from-docker#enabling-root-user-access-to-docker-in-the-container
+	"runArgs": ["--init", "--add-host=host.docker.internal:host-gateway"],
+	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ]
 }

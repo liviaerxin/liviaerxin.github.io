@@ -5,8 +5,8 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install required packages
-RUN apt-get update && \
-    apt-get install -y software-properties-common && \
+RUN apt update && \
+    apt install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa
 
 RUN apt update && \
@@ -22,6 +22,7 @@ RUN apt update && \
 # Install pip for Python 3.8
 RUN wget https://bootstrap.pypa.io/get-pip.py && python3.8 get-pip.py && rm get-pip.py
 
+# Upgrade `pip` and install Python packages
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt

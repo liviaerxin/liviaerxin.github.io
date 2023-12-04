@@ -46,10 +46,16 @@ How to Write Dockerfile for Dev containers?
 
 You can refer to this repo [GitHub - devcontainers/images: Repository for pre-built dev container images published under mcr.microsoft.com/devcontainers](https://github.com/devcontainers/images)
 
-
 What magics does the `Dev Containers` extension do when starting?
 
 1. Hook a default startup command `while sleep 1000; do :; done` to keep the container not exit. Disable this behavior by setting `overrideCommand: false`.
+
+How to run a container inside of Dev containers?
+
+- [Docker-in-Docker](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-in-docker)
+- [Docker-from-Docker](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-from-docker)
+
+For instance, I use the **Docker-in-Docker** method to always test/run Docker containers inside of Dev containers.  
 
 ### C/C++
 
