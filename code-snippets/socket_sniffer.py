@@ -155,7 +155,11 @@ while True:
     dest_mac, src_mac, ether_type, data = ethernet_parser(raw_data)
 
     print(f"\nEthernet Frame:")
-    print("Destination: {}, Source: {}, EtherType: {}".format(dest_mac, src_mac, hex(ether_type)))
+    print(
+        "Destination: {}, Source: {}, EtherType: {}".format(
+            dest_mac, src_mac, hex(ether_type)
+        )
+    )
 
     """Ether Type
     IPv4: 0x0800 
@@ -176,8 +180,18 @@ while True:
             data,
         ) = ipv4_parser(data)
         print("\t - " + "IPv4 Packet:")
-        print("\t\t - " + "Version: {}, Header Length: {}, TTL:{},".format(version, header_length, time_to_live))
-        print("\t\t - " + "Protocol: {}, Source: {}, Destination: {}".format(protocol, src_ip, dest_ip))
+        print(
+            "\t\t - "
+            + "Version: {}, Header Length: {}, TTL:{},".format(
+                version, header_length, time_to_live
+            )
+        )
+        print(
+            "\t\t - "
+            + "Protocol: {}, Source: {}, Destination: {}".format(
+                protocol, src_ip, dest_ip
+            )
+        )
 
         """IP protocol
         TCP: 6
@@ -188,11 +202,20 @@ while True:
         if protocol == 6:
             src_port, dest_port, seq, ack, flag, data = tcp_parser(data)
             print("\t - " + "TCP Segment:")
-            print("\t\t - " + "Source Port: {}, Destination Port: {}".format(src_port, dest_port))
+            print(
+                "\t\t - "
+                + "Source Port: {}, Destination Port: {}".format(src_port, dest_port)
+            )
             print("\t\t - " + "Sequence: {}, Acknowledgment: {}".format(seq, ack))
             print("\t\t - " + "Flags:")
-            print("\t\t\t - " + "URG: {}, ACK: {}, PSH:{}".format(flag[2], flag[3], flag[4]))
-            print("\t\t\t - " + "RST: {}, SYN: {}, FIN:{}".format(flag[5], flag[6], flag[7]))
+            print(
+                "\t\t\t - "
+                + "URG: {}, ACK: {}, PSH:{}".format(flag[2], flag[3], flag[4])
+            )
+            print(
+                "\t\t\t - "
+                + "RST: {}, SYN: {}, FIN:{}".format(flag[5], flag[6], flag[7])
+            )
             print("\t\t - " + "TCP Data:")
             print("\t\t\t - " + "{}".format(binascii.hexlify(data, " ")))
             # print("\t\t\t - " + "{}".format(data))
@@ -205,7 +228,10 @@ while True:
         elif protocol == 1:
             type, code, checksum, data = icmp_parser(data)
             print("\t -" + "ICMP Packet:")
-            print("\t\t -" + "Type: {}, Code: {}, Checksum:{},".format(type, code, checksum))
+            print(
+                "\t\t -"
+                + "Type: {}, Code: {}, Checksum:{},".format(type, code, checksum)
+            )
             print("\t\t -" + "ICMP Data:")
             print("\t\t\t - " + "{}".format(binascii.hexlify(data, " ")))
             # print("\t\t\t - " + "{}".format(data))
@@ -213,4 +239,9 @@ while True:
         elif protocol == 17:
             src_port, dest_port, length, checksum = udp_parser(data)
             print("\t -" + "UDP Segment:")
-            print("\t\t -" + "Source Port: {}, Destination Port: {}, Length: {}".format(src_port, dest_port, checksum))
+            print(
+                "\t\t -"
+                + "Source Port: {}, Destination Port: {}, Length: {}".format(
+                    src_port, dest_port, checksum
+                )
+            )

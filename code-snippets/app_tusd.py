@@ -53,7 +53,9 @@ html_content = """
 # fmt: on
 
 tus_version = "1.0.0"
-tus_extension = "creation,creation-defer-length,creation-with-upload,expiration,termination"
+tus_extension = (
+    "creation,creation-defer-length,creation-with-upload,expiration,termination"
+)
 tus_checksum_algorithm = "md5,sha1,crc32"
 max_size = 128849018880
 location = "http://127.0.0.1:8000/files"
@@ -300,7 +302,9 @@ async def delete_file(request: Request):
     pass
 
 
-async def _save_request_stream(request: Request, uuid: str, post_request: bool = False) -> FileMetadata | None:
+async def _save_request_stream(
+    request: Request, uuid: str, post_request: bool = False
+) -> FileMetadata | None:
     meta = _read_metadata(uuid)
     if not meta or not os.path.exists(os.path.join(files_dir, uuid)):
         return None

@@ -14,7 +14,7 @@
 	// https://containers.dev/guide/dockerfile
 	"build": {
         // Path is relative to the devcontainer.json file.
-        "dockerfile": "Dockerfile.py310"
+        "dockerfile": "Dockerfile.dev.py310"
     },
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
