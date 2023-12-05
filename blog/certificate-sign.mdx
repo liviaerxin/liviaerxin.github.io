@@ -71,9 +71,9 @@ Set up custom DNS in `/etc/hosts`,
 127.0.0.1   fake2.local
 ```
 
-Prepare a `server.conf`,
+Prepare a `localhost.conf`,
 
-```conf title="server.conf"
+```conf title="localhost.conf"
 [req]
 default_bits  = 2048
 distinguished_name = req_distinguished_name
@@ -104,7 +104,7 @@ DNS.3 = fake2.local
 Generates `localhost.key` and `localhost.csr`:
 
 ```sh
-openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -config server.conf
+openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -config localhost.conf
 # Or input from line
 # openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=localhost.local"
 ```
@@ -115,20 +115,26 @@ Verify the Certificate Signing Request(CSR) `localhost.csr`:
 openssl req -text -noout -verify -in localhost.csr
 ```
 
-### Submit CSR to root CA
+### Get local server certificate signed by root CA
 
-Employ local root CA to sign server certificate by using CSR `localhost.csr` with extensions.
+Submit **CSR** to the **root CA** to let the **root CA** to sign a certificate for our `locahost` server.
 
-Generates `localhost.crt`,
+Generates `localhost.crt` by using CSR `localhost.csr` with extensions,
 
 ```sh
-openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -extensions req_ext -extfile server.conf -out localhost.crt
+openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -extensions req_ext -extfile localhost.conf -out localhost.crt
+```
+
+View the `localhost.crt`:
+
+```sh
+openssl x509 -text -noout -in localhost.crt
 ```
 
 Verify the `localhost.crt`:
 
 ```sh
-openssl x509 -text -noout -verify -in localhost.crt
+openssl verify -verbose -CAfile RootCA.crt localhost.crt
 ```
 
 :::warning
@@ -139,7 +145,7 @@ If `X509` extensions(`subjectAltName`) are missing from the certificate, the bro
 Using the CA and Subject as the same one, the step of creating the local CA can be skipped.
 
 ```sh
-openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config server.conf
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.conf
 ```
 
 :::
