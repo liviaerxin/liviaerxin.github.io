@@ -206,7 +206,7 @@ sudo nano /etc/mdadm/mdadm.conf
 
 ## Manage RAID Array with mdadm
 
-Finding the RAID arrays,
+### Find all RAID arrays
 
 ```sh
 $ cat /proc/mdstat
@@ -221,21 +221,21 @@ md127 : inactive nvme0n1[1](S) nvme1n1[0](S)
 unused devices: <none>
 ```
 
-Querying for Information on RAID array,
+### Query information on a RAID array
 
 ```sh
 sudo mdadm --detail /dev/md0
 sudo mdadm --query /dev/md0
 ```
 
-Getting Information on individual physical Devices,
+### Query information on a physical disk drive
 
 ```sh
 sudo mdadm --query /dev/sda
 sudo mdadm --examine /dev/sda
 ```
 
-Stop RAID array,
+### Stop a RAID array
 
 ```sh
 sudo mdadm --stop /dev/md0
@@ -243,7 +243,7 @@ sudo mdadm --stop /dev/md0
 sudo mdadm --stop --scan
 ```
 
-Starting an Array,
+### Starting a RAID Array
 
 ```sh
 # This works if the array is defined in the configuration `/etc/mdadm/mdadm.conf` file.
@@ -253,7 +253,7 @@ sudo mdadm --assemble /dev/md0
 sudo mdadm --assemble /dev/md0 /dev/sda /dev/sdb
 ```
 
-Adding a Spare Device to an Array,
+### Adding spare devices to a RAID Array
 
 ```sh
 sudo mdadm /dev/md0 --add /dev/sde
@@ -289,7 +289,7 @@ nvme1n1     isw_raid_member 1.3.00
 sudo fdisk -l /dev/sda
 ```
 
-Delete partition and data in drive,
+### Delete partition and data in disk
 
 ```sh
 sudo dd if=/dev/zero of=/dev/sda  bs=512  count=1

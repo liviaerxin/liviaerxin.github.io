@@ -2,7 +2,7 @@
 
 - Vcpkg
 - dotfiles
-
+- ascii flow diagram
 ## Excellent Resources
 
 There are some very useful and reliable resources where I frequently enquire and review.

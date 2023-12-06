@@ -25,12 +25,66 @@ date: 2023-08-29
 
 [How to install Ubuntu with software RAID-1](https://www.servers.com/support/knowledge/linux-administration/how-to-install-ubuntu-with-software-raid-1)
 
+What is RAID?
+
+The Redundant Array of Independent Disks, commonly known as RAID, is a technology used to combine multiple physical disk drives into a single logical unit for the purpose of data storage and performance improvement. 
 
 This blog will demonstrate to set up **software RAID** on Ubuntu(It should also work on other Linux).
 
-To setup **Intel VROC RAID** on Ubuntu, go to see:
+To setup **Intel VROC RAID** on Ubuntu, go to see: [Intel VROC RAID on Ubuntu](./raid-intel-vroc.mdx).
 
-[Intel VROC RAID on Ubuntu](./raid-intel-vroc.mdx).
+The hierarchy of storage abstraction layers in Linux.
+
+```plaintext
+
+    +------------------------+
+    |   Application          |
+    |                        |
+    |open("/mnt/media/1.png")|
+    |                        |
+    +------------------------+
+
+
+
+    +------------------------+
+    |    Mount Point         |   Higher layer
+    |                        |        ^
+    |/dev/sda1 -> /mnt/media |        |
+    |/dev/sda2 -> /mnt/file  |        |
+    |                        |        |
+    +------------------------+        |
+                                      |
+    +------------------------+        |
+    |    Logical Volume      |        |
+    |                        |        |
+    | /dev/mapper/vg1-lg1,   |        |
+    | /dev/mapper/vg1-lg2,   |        |
+    +------------------------+        |
+                                      |
+    +------------------------+        |
+    |     File System        |        |
+    |                        |        |
+    |   ext4, Btrfs, etc     |        |
+    |                        |        |
+    +------------------------+        |
+                                      |
+    +------------------------+        |
+    |      Partition         |        |
+    |                        |        |
+    |  /dev/sda1, /dev/sda2  |        |
+    |                        |        |
+    +------------------------+        |
+                                      |
+                                      |
+    +------------------------+        |
+    |  Physical Disk Drive   |        |
+    |                        |        |
+    |    HDD /dev/hda        |  Lower layer
+    |    SSD /dev/sda        |
+    +------------------------+
+```
+
+The **RAID** is treated as **Logical Disk Drive** above the **Physical Disk Drive** layer. So you should do partitioning on it after being created.
 
 <!--truncate-->
 
@@ -38,7 +92,7 @@ To setup **Intel VROC RAID** on Ubuntu, go to see:
 
 Recently, there is a chance for me to install Ubuntu(server) OS on a Dell Precision xxx workstation which is includes 2 NVMe SSDs and 8 SATA hard drives(HDDs) and has in-box hardware-assisted RAID controller(**Intel VROC**). In the past, I just play cloud virtual machines or personal host with single disk.
 
-Storage is an important consideration coming up to my mind. So firstly, how to organize these disks to their roles:
+Configuring storage is a critical part of setting up a reliable workstation. So firstly, how to organize these following disks to their roles?
 
 - 2 SSDs hold the system to load quickly
 - 8 HDDs store data persistently
@@ -117,9 +171,9 @@ sudo mount /dev/md0 /mnt/md0
 
 Persist the RAID array configuration to make the system reassemble and mount the RAID array automatically after reboot.
 
-Edit `/etc/mdadm/mdadm.conf`:
+Append the line to `/etc/mdadm/mdadm.conf`:
 
-```sh title="/etc/mdadm/mdadm.conf"
+```sh
 sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
 ```
 
@@ -129,10 +183,29 @@ Make RAID array available in early boot stage:
 sudo update-initramfs -u
 ```
 
-Edit `/etc/fstab`:
+Persist the mount point, edit `/etc/fstab`:
 
-```sh title="/etc/fstab"
-echo '/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
+```conf title="/etc/fstab"
+/dev/md0  /mnt/md0  ext4  defaults,nofail,discard 0 0
+```
+
+or persist the mount point by using `UUID`, get `UUID` of the disk drive,
+
+```sh
+$ blkid /dev/md124
+/dev/md124: UUID="b7fa44f2-0f05-47a1-b4ef-e9ad306898de" BLOCK_SIZE="4096" TYPE="ext4"
+```
+
+then edit in `/etc/fstab`,
+
+```conf title="/etc/fstab"
+UUID=b7fa44f2-0f05-47a1-b4ef-e9ad306898de  /volume  ext4  defaults,nofail,discard 0 0
+```
+
+finally apply the new mount,
+
+```sh
+sudo mount -a
 ```
 
 ## Delete RAID Array with mdadm
@@ -174,7 +247,7 @@ sudo nano /etc/mdadm/mdadm.conf
 
 ## Manage RAID Array with mdadm
 
-### Finding the RAID arrays
+### Find the RAID arrays
 
 ```sh
 $ cat /proc/mdstat
@@ -189,14 +262,14 @@ md127 : inactive nvme0n1[1](S) nvme1n1[0](S)
 unused devices: <none>
 ```
 
-### Querying information on RAID array
+### Query information on RAID array
 
 ```sh
 sudo mdadm --detail /dev/md0
 sudo mdadm --query /dev/md0
 ```
 
-### Getting information on individual physical devices
+### Query information on individual physical devices
 
 ```sh
 sudo mdadm --query /dev/sda
@@ -211,7 +284,7 @@ sudo mdadm --stop /dev/md0
 sudo mdadm --stop --scan
 ```
 
-### Starting an RAID array
+### Start an RAID array
 
 ```sh
 # This works if the array is defined in the configuration `/etc/mdadm/mdadm.conf` file.
@@ -221,13 +294,13 @@ sudo mdadm --assemble /dev/md0
 sudo mdadm --assemble /dev/md0 /dev/sda /dev/sdb
 ```
 
-### Adding a spare device to an RAID array
+### Add a spare device to an RAID array
 
 ```sh
 sudo mdadm /dev/md0 --add /dev/sde
 ```
 
-### Checking devices
+### Check block devices
 
 ```sh
 $ lsblk -f
@@ -255,19 +328,43 @@ nvme1n1     isw_raid_member 1.3.00
 └─md127                         
 ```
 
-### Partitioning a disk
+### List UUID of devices
+
+```sh
+$ sudo blkid
+/dev/sdf: TYPE="isw_raid_member"
+/dev/nvme0n1: TYPE="isw_raid_member"
+/dev/sdd: TYPE="isw_raid_member"
+/dev/sdb: TYPE="isw_raid_member"
+/dev/sdg: TYPE="isw_raid_member"
+/dev/sde: TYPE="isw_raid_member"
+/dev/sdc: TYPE="isw_raid_member"
+/dev/md126p2: UUID="ff1f3640-e590-486b-8570-c34dfd7bd1de" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="07473e4a-9324-435d-9238-cf358cd9a6a9"
+/dev/md126p1: UUID="A636-3441" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="7eb27871-d9ad-4132-af06-7110948faf06"
+/dev/nvme1n1: TYPE="isw_raid_member"
+/dev/sda: TYPE="isw_raid_member"
+/dev/md124: UUID="b7fa44f2-0f05-47a1-b4ef-e9ad306898de" BLOCK_SIZE="4096" TYPE="ext4"
+/dev/sdh: TYPE="isw_raid_member"
+/dev/loop1: TYPE="squashfs"
+/dev/loop4: TYPE="squashfs"
+/dev/loop2: TYPE="squashfs"
+/dev/loop0: TYPE="squashfs"
+/dev/loop3: TYPE="squashfs"
+```
+
+### Partition a disk
 
 ```sh
 sudo fdisk -l /dev/sda
 ```
 
-### Creating file system
+### Create filesystem on disk
 
 ```sh
 sudo mkfs.ext4 -F /dev/sda
 ```
 
-### Deleting partition and data in disk
+### Delete partition and data in disk
 
 ```sh
 sudo dd if=/dev/zero of=/dev/sda  bs=512  count=1

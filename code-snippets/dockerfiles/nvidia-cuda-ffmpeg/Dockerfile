@@ -10,17 +10,17 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Build and Install `ffnvcodec`
-RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
-RUN cd nv-codec-headers && \
-    make install && \
-    cd -
+# Install FFmpeg 6.1
+RUN mkdir -p /opt
 
-# Build and Install `ffmpeg` with latest version
-RUN git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg/
-RUN cd ffmpeg && \
-    ./configure --enable-cuda --enable-cuvid --enable-nvdec --enable-nvenc --enable-nonfree --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-static --enable-shared && \
+RUN cd /opt/ && wget https://github.com/FFmpeg/nv-codec-headers/releases/download/n12.1.14.0/nv-codec-headers-12.1.14.0.tar.gz -O nv-codec-headers-12.1.14.0.tar.gz && tar -xf nv-codec-headers-12.1.14.0.tar.gz
+RUN cd /opt/nv-codec-headers-12.1.14.0 && \
+    make install PREFIX=/usr
+
+RUN cd /opt && wget https://ffmpeg.org/releases/ffmpeg-6.1.tar.xz -O ffmpeg-6.1.tar.xz && tar -xf ffmpeg-6.1.tar.xz
+RUN cd /opt/ffmpeg-6.1 && \
+    ./configure --enable-cuda --enable-cuvid --enable-nvdec --enable-nvenc --enable-nonfree --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --enable-libfreetype --enable-libharfbuzz --enable-libfontconfig --enable-libfribidi --enable-filter=drawtext && \
     make -j 8 && \
-    make install
+    make install PREFIX=/usr
 
 CMD ["ffmpeg", "-version"]
