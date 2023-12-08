@@ -1,0 +1,133 @@
+---
+authors:
+  - frank
+tags:
+  - wiki
+  - utf-8
+  - encode
+description: Wiki UTF8
+keywords:
+  - Wiki UTF8
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-12-08
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Wiki UTF-8
+
+UTF8 is character-to-bytes(1 to 4 bytes) encoding standard. 
+
+glyph,
+character,
+code point,
+variable-length bytes(1 to 4 bytes)
+
+The smallest unit of all texts we see on the screen is one character.
+
+## FAQ
+
+### How a character is displayed on the screen?
+
+software maps each character to its glyph(a grid of pixels), draw these pixels onto the screen.
+
+### How to find out whether the file uses UTF-8 or ASCII or other encoding schemas?
+
+It's not always foolproof because there is no universal mandate or requirement that all files must specify their encoding. But it's a good practice to add BOM(Byte Order Mark) at the beginning of a UTF-8 encoded file.
+
+### How can I check a UTF-8 file has a `BOM`?
+
+The file without `BOM`,
+
+```py
+>>> f.flush()
+>>> b'\xe2\x82\xac'.decode()
+'€'
+>>> '€'.encode()
+b'\xe2\x82\xac'
+>>> bom=b"\xef\xbb\xbf"
+>>> f=open("a.txt", "wb+")
+>>> f.write(b'\xe2\x82\xac')
+3
+>>> f.flush()
+```
+
+```sh
+$ file a.txt
+a.txt: Unicode text, UTF-8 text, with no line terminators
+```
+
+Add `BOM` onto the file,
+
+```py
+>>> f.seek(0)
+0
+>>> f.truncate(0)
+0
+>>> f.write(b'\xef\xbb\xbf\xe2\x82\xac')
+6
+>>> f.flush()
+```
+
+```sh
+$ file a.txt
+a.txt: Unicode text, UTF-8 (with BOM) text, with no line terminators
+$ hexdump -C a.txt
+00000000  ef bb bf e2 82 ac                                 |......|
+00000006
+```
+
+<!--truncate-->
+
+```py
+>>> import json
+>>> b=b'{"text": "\u4f60\u597d"}'
+>>> json.loads(b)
+{'text': '你好'}jsn
+>>> json.dumps(json.loads(b))
+'{"text": "\\u4f60\\u597d"}'
+>>> json.dumps(json.loads(b), ensure_ascii=False)
+'{"text": "你好"}'
+```
+
+```py
+>>> f=open("a.txt", "w+")
+>>> f.write(json.dumps(json.loads(b)))
+24
+>>> f.flush()
+```
+
+```sh
+$ cat a.txt
+{"text": "\u4f60\u597d"}#
+$  hexdump -C a.txt
+00000000  7b 22 74 65 78 74 22 3a  20 22 5c 75 34 66 36 30  |{"text": "\u4f60|
+00000010  5c 75 35 39 37 64 22 7d                           |\u597d"}|
+00000018
+```
+
+```py
+>>> f.seek(0)
+0
+>>> f.truncate(0)
+0
+>>> f.write(json.dumps(json.loads(b), ensure_ascii=False))
+14
+>>> f.flush()
+```
+
+```sh
+$ cat a.txt
+{"text": "你好"}#
+$ hexdump -C a.txt
+00000000  7b 22 74 65 78 74 22 3a  20 22 e4 bd a0 e5 a5 bd  |{"text": "......|
+00000010  22 7d                                             |"}|
+00000012
+```
+
+## Base64
+
+## 
+
+
+## Resources
