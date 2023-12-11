@@ -14,16 +14,24 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# Wiki UTF-8
-
-UTF8 is character-to-bytes(1 to 4 bytes) encoding standard. 
-
-glyph,
-character,
-code point,
-variable-length bytes(1 to 4 bytes)
+# Wiki Unicode
 
 The smallest unit of all texts we see on the screen is one character.
+
+In Unicode, a character maps to something called code point which is a magic number written as hex like: `U+20AC` and is still just a abstract layer.
+
+glyph,
+unicode character,
+unicode code point,
+variable-length bytes(1 to 4 bytes)
+
+How that code point is represented in memory or on disk?
+
+`UTF-8`, `UTF-16`, and `UTF-32` help translate unicode code point into binary data in 8-bit bytes which can be saved in disk or be transported in network.
+
+`UTF-8` is character-to-bytes(1 to 4 bytes) encoding standard across almost all system and application.
+
+<!--truncate-->
 
 ## FAQ
 
@@ -35,9 +43,29 @@ software maps each character to its glyph(a grid of pixels), draw these pixels o
 
 It's not always foolproof because there is no universal mandate or requirement that all files must specify their encoding. But it's a good practice to add BOM(Byte Order Mark) at the beginning of a UTF-8 encoded file.
 
+### Can I set UTF-16 as locale in Linux?
+
+No, you cannot. Linux use `UTF-8` encoding which is compatible with `ASCII`.
+
+### What happens when printing a UTF-16 file in Linux?
+
+```sh
+# >>> '€'.encode("utf16") -> b'\xff\xfe\xac '
+$ echo -n -e \\xff\\xfe\\xac\\x20 > a.txt
+$ hexdump -C a.txt
+00000000  ff fe ac 20                                       |... |
+00000004
+$ file a.txt
+a.txt: Unicode text, UTF-16, little-endian text, with no line terminators
+$ cat a.txt
+���
+$ iconv -f UTF-16LE -t UTF-8 a.txt
+€
+```
+
 ### How can I check a UTF-8 file has a `BOM`?
 
-The file without `BOM`,
+Create a file without `BOM`,
 
 ```py
 >>> f.flush()
@@ -57,7 +85,7 @@ $ file a.txt
 a.txt: Unicode text, UTF-8 text, with no line terminators
 ```
 
-Add `BOM` onto the file,
+Create a `BOM` adhere file,
 
 ```py
 >>> f.seek(0)
@@ -77,7 +105,22 @@ $ hexdump -C a.txt
 00000006
 ```
 
-<!--truncate-->
+### Why we can copy and paste the unicode characters into a shell?
+
+When we do copying on the screen, we're copying the character's binary data which is in the `os` memory not the code point inside memory.
+
+```sh
+# b'\xe2\x82\xac'.decode() -> '€'
+$ echo -e \\xe2\\x82\\xac | xclip -selection clipboard
+```
+
+Then you can use your mouse right click to copy to the shell and you will see `€`.
+
+### How a string is stored in memory when Python running?
+
+
+
+## Unicode in JSON
 
 ```py
 >>> import json
@@ -127,7 +170,11 @@ $ hexdump -C a.txt
 
 ## Base64
 
-## 
+## Python 
 
 
 ## Resources
+
+[The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!) – Joel on Software](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/)
+
+[Pragmatic Unicode | Ned Batchelder](https://nedbatchelder.com/text/unipain.html)
