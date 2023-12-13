@@ -16,14 +16,21 @@ enableComments: true # for Gisqus
 
 # Wiki Unicode
 
-The smallest unit of all texts we see on the screen is one character.
+The smallest unit of all texts we see on the screen is one character. But you may wonder about:
+
+1. How one character is displayed on the screen?
+2. How one character is kept in memory or disk in binary format(0 or 1)?
+
+Let's dive into the **Unicode** to solve these questions.
 
 In Unicode, a character maps to something called code point which is a magic number written as hex like: `U+20AC` and is still just a abstract layer.
 
-glyph,
-unicode character,
-unicode code point,
-variable-length bytes(1 to 4 bytes)
+| Layer       | Representation                      |
+|-------------|-------------------------------------|
+| screen      | glyph                               |
+| abstraction | unicode character                   |
+| abstraction | unicode code point                  |
+| disk        | variable-length bytes(1 to 4 bytes) |
 
 How that code point is represented in memory or on disk?
 
@@ -118,9 +125,13 @@ Then you can use your mouse right click to copy to the shell and you will see `â
 
 ### How a string is stored in memory when Python running?
 
-
-
 ## Unicode in JSON
+
+JSON(natively a text format) support the unicode character to be escaped or not. When **being escaped**, the character will be replaced with the unicode code point, then which will be represented in 6 or 8 ascii characters occupying 6 or 8 bytes. When **not being escaped**, the character will be represented as just one unicode character as itself occupying 1 to 4 bytes if using UTF-8.
+
+Escaping will cost more storage but will be compatible in ASCII-only environments, as escaping force all characters to be ASCII characters.
+
+Case 1: Characters escaped,
 
 ```py
 >>> import json
@@ -149,6 +160,8 @@ $  hexdump -C a.txt
 00000018
 ```
 
+Case 2: Characters not escaped,
+
 ```py
 >>> f.seek(0)
 0
@@ -169,6 +182,8 @@ $ hexdump -C a.txt
 ```
 
 ## Base64
+
+Base64 is binary-to-text encoding schema which make bytes data to be represented in ASCII characters to be human readable.
 
 ## Python 
 

@@ -12,7 +12,10 @@ class PyUnicodeObject(ctypes.Structure):
                 ("kind", ctypes.c_uint, 3),
                 ("compact", ctypes.c_uint, 1),
                 ("ascii", ctypes.c_uint, 1),
-                ("ready", ctypes.c_uint, 1),
+                ("statically_allocated", ctypes.c_uint, 1),
+                ("null", ctypes.c_uint, 24),
+                ("utf8_length", ctypes.c_ssize_t),
+                ("utf8", ctypes.c_char_p),
                 # ...
                 # ...
     ]

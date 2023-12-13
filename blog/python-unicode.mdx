@@ -1,0 +1,108 @@
+---
+authors:
+  - frank
+tags:
+  - Python
+  - Unicode
+description: Python Unicode
+keywords:
+  - Python Unicode
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-12-13
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Python Unicode
+
+Python string use `unicodeobject` which is implemented in `C` in CPython:
+
+- [unicodeobject.c](https://github.com/python/cpython/blob/main/Objects/unicodeobject.c)
+- [unicodeobject.h](https://github.com/python/cpython/blob/main/Include/cpython/unicodeobject.h)
+
+Python chooses one of these three kinds of data type to internally represent for a Unicode-characters string, so every Unicode character of the string has the same fixed-length: 1, 2 or 4,
+
+- UCS-1(1 byte), for ASCII characters
+- UCS-2(2 bytes), for Unicode characters between 0 and xxx
+- UCS-4(4 bytes), for Unicode characters between 0 and xxx
+
+## Why Python doesn't use UTF-8 encoding variable-length bytes in memory?
+
+
+<!--truncate-->
+
+A brief `PyUnicodeObject` struct from [unicodeobject.h](https://github.com/python/cpython/blob/3aea6c4823e90172c9bc36cd20dc51b295d8a3c4/Include/cpython/unicodeobject.h#L53):
+
+```c title="cpython/Include/cpython/unicodeobject.h"
+/* --- Unicode Type ------------------------------------------------------- */
+typedef struct {
+    Py_ssize_t ob_refcnt;
+    PyTypeObject *ob_type;
+    Py_ssize_t length; 
+    Py_hash_t hash;
+    struct {
+        unsigned int interned:2;
+        unsigned int kind:3;        /* 1: Py_UCS1, 2: Py_UCS2, 4: Py_UCS4 */
+        unsigned int compact:1;
+        unsigned int ascii:1;
+        unsigned int statically_allocated:1;
+        unsigned int :24;
+    } state;
+} PyASCIIObject;
+
+typedef struct {
+    PyASCIIObject _base;
+    Py_ssize_t utf8_length;     /* Number of bytes in utf8, excluding the * terminating \0. */
+    char *utf8;                 /* UTF-8 representation (null-terminated) */
+} PyCompactUnicodeObject;
+
+typedef struct {
+    PyCompactUnicodeObject _base;
+    union {
+        void *any;
+        Py_UCS1 *latin1;
+        Py_UCS2 *ucs2;
+        Py_UCS4 *ucs4;
+    } data;
+} PyUnicodeObject;
+```
+
+## Inspect the internal in a string in Python 3
+
+:::NOTE
+You keep the character being referred otherwise the `GC` may release that memory,
+
+```py
+>>> i=id("🤨")
+### the address may be released as "🤨" is not referred. 
+>>> PyUnicodeObject.from_address(i).kind
+1
+```
+
+:::
+
+```py
+>>> c="🤨"
+>>> u=PyUnicodeObject.from_address(id(c))
+>>> u.kind
+4
+>>> u.ascii
+0
+>>> u.ob_refcnt
+1
+>>> u.utf8_length
+140505899971928
+>>> u.statically_allocated
+1
+>>> u.length
+1
+>>> u.compact
+1
+```
+
+
+## Resources
+
+https://rushter.com/blog/python-strings-and-memory/
+
+https://tenthousandmeters.com/blog/python-behind-the-scenes-9-how-python-strings-work/
