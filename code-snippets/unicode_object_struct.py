@@ -13,9 +13,10 @@ class PyUnicodeObject(ctypes.Structure):
                 ("compact", ctypes.c_uint, 1),
                 ("ascii", ctypes.c_uint, 1),
                 ("statically_allocated", ctypes.c_uint, 1),
-                ("null", ctypes.c_uint, 24),
+                ("_padding", ctypes.c_uint, 24),
                 ("utf8_length", ctypes.c_ssize_t),
                 ("utf8", ctypes.c_char_p),
+                ("data", ctypes.c_char_p)
                 # ...
                 # ...
     ]
@@ -23,3 +24,8 @@ class PyUnicodeObject(ctypes.Structure):
 assert PyUnicodeObject.from_address(id("Hello")).kind == 1
 assert PyUnicodeObject.from_address(id("你好")).kind == 2
 assert PyUnicodeObject.from_address(id("🤨")).kind == 4
+
+s="hello world"
+su=PyUnicodeObject.from_address(id(s))
+
+# ctypes.string_at(su.data)

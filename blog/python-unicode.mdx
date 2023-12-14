@@ -22,18 +22,37 @@ Python string use `unicodeobject` which is implemented in `C` in CPython:
 
 Python chooses one of these three kinds of data type to internally represent for a Unicode-characters string, so every Unicode character of the string has the same fixed-length: 1, 2 or 4,
 
-- UCS-1(1 byte), for ASCII characters
-- UCS-2(2 bytes), for Unicode characters between 0 and xxx
-- UCS-4(4 bytes), for Unicode characters between 0 and xxx
+- UCS-1(1 byte), for ASCII characters between U+0000 and U+00FF
+- UCS-2(2 bytes), for Unicode characters between U+00FF and U+FFFF
+- UCS-4(4 bytes), for Unicode characters between U+00FFFF and U+10FFFF
+
+<!--truncate-->
 
 ## Why Python doesn't use UTF-8 encoding variable-length bytes in memory?
 
+1. Indexing into strings in Python is operated in a constant time, as it's based on the fixed-length encodings.
 
-<!--truncate-->
+## How other programming languages access string by index?
+
+- Go
+  - Iterating yields Unicode code point
+  - Indexing yields a byte
+- Rust
+  - Iteration yields Unicode code point(`method.chars()`) or byte(`method.bytes`)
+  - Indexing not supported
+- Python
+  - Iterating yields Unicode code point
+  - Indexing yields Unicode code point
+
+## An outline of the `PyUnicodeObject`
 
 A brief `PyUnicodeObject` struct from [unicodeobject.h](https://github.com/python/cpython/blob/3aea6c4823e90172c9bc36cd20dc51b295d8a3c4/Include/cpython/unicodeobject.h#L53):
 
 ```c title="cpython/Include/cpython/unicodeobject.h"
+typedef struct {
+    Py_ssize_t ob_refcnt;
+    PyTypeObject *ob_type;
+} PyObject
 /* --- Unicode Type ------------------------------------------------------- */
 typedef struct {
     Py_ssize_t ob_refcnt;
@@ -67,7 +86,36 @@ typedef struct {
 } PyUnicodeObject;
 ```
 
-## Inspect the internal in a string in Python 3
+Each Unicode character in string is represented by a Unicode code point(UCS1, UCS2 or UCS4). These code points are stored in the Unicode object's memory(1, 2 or 4 bytes).
+
+## How a Unicode string object is created?
+
+Invokes several internal C functions in such a sequence generally,
+
+```c
+PyObject *PyUnicode_FromStringAndSize(const char *str, Py_ssize_t size)
+
+PyObject *PyUnicode_DecodeUTF8Stateful(const char *str, Py_ssize_t size, const char *errors, Py_ssize_t *consumed)
+
+static PyObject *unicode_decode_utf8(const char *s, Py_ssize_t size, _Py_error_handler error_handler, const char *errors, Py_ssize_t *consumed)
+
+PyObject *PyUnicode_New(Py_ssize_t size, Py_UCS4 maxchar)
+
+static Py_ssize_t ascii_decode(const char *start, const char *end, Py_UCS1 *dest)
+
+ch = ucs2lib_utf8_decode(&s, end, writer.data, &writer.pos);
+
+// ucs2lib.h
+#define STRINGLIB(F)             ucs2lib_##F
+STRINGLIB(utf8_decode)(const char **inptr, const char *end,
+                       STRINGLIB_CHAR *dest,
+                       Py_ssize_t *outpos)
+
+```
+
+## Inspect Unicode string object in Python 3
+
+Let's examine the internal data struct of a string object in modern Python 3.
 
 :::NOTE
 You keep the character being referred otherwise the `GC` may release that memory,
@@ -103,6 +151,10 @@ You keep the character being referred otherwise the `GC` may release that memory
 
 ## Resources
 
-https://rushter.com/blog/python-strings-and-memory/
+[How Python saves memory when storing strings | Artem Golubin](https://rushter.com/blog/python-strings-and-memory/)
 
-https://tenthousandmeters.com/blog/python-behind-the-scenes-9-how-python-strings-work/
+[Python behind the scenes #9: how Python strings work](https://tenthousandmeters.com/blog/python-behind-the-scenes-9-how-python-strings-work/)
+
+https://nedbatchelder.com/text/unipain.html
+
+https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/
