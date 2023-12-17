@@ -22,9 +22,9 @@ Python string use `unicodeobject` which is implemented in `C` in CPython:
 
 Python chooses one of these three kinds of data type to internally represent for a Unicode-characters string, so every Unicode character of the string has the same fixed-length: 1, 2 or 4,
 
-- UCS-1(1 byte), for ASCII characters between U+0000 and U+00FF
-- UCS-2(2 bytes), for Unicode characters between U+00FF and U+FFFF
-- UCS-4(4 bytes), for Unicode characters between U+00FFFF and U+10FFFF
+- **UCS-1**(1 byte), for ASCII characters between U+0000 and U+00FF
+- **UCS-2**(2 bytes), for Unicode characters between U+00FF and U+FFFF
+- **UCS-4**(4 bytes), for Unicode characters between U+00FFFF and U+10FFFF
 
 <!--truncate-->
 
@@ -45,6 +45,11 @@ Python chooses one of these three kinds of data type to internally represent for
   - Indexing yields Unicode code point
 
 ## An outline of the `PyUnicodeObject`
+
+References are mainly from:
+
+- [ctypes — A foreign function library for Python — Python 3.12.1 documentation](https://docs.python.org/3/library/ctypes.html)
+- [unicodeobject.h](https://github.com/python/cpython/blob/3aea6c4823e90172c9bc36cd20dc51b295d8a3c4/Include/cpython/unicodeobject.h#L53)
 
 A brief `PyUnicodeObject` struct from [unicodeobject.h](https://github.com/python/cpython/blob/3aea6c4823e90172c9bc36cd20dc51b295d8a3c4/Include/cpython/unicodeobject.h#L53):
 
@@ -86,7 +91,7 @@ typedef struct {
 } PyUnicodeObject;
 ```
 
-Each Unicode character in string is represented by a Unicode code point(UCS1, UCS2 or UCS4). These code points are stored in the Unicode object's memory(1, 2 or 4 bytes).
+As it's known that each Unicode character in string is represented by a Unicode code point. In `PyUnicodeObject`, these code points are the encoding saved in the `data`, so `PyUnicodeObject` does not use the `UTF-8` encoding in the `data`.
 
 ## How a Unicode string object is created?
 

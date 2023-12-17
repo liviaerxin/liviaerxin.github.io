@@ -14,7 +14,7 @@ author: frank
 
 # Learn CMake
 
-It’s all about targets and properties
+In brief, **CMake** is all about **targets** and **properties**
 
 <!--truncate-->
 
@@ -62,7 +62,7 @@ cmake --install build --prefix "/my/custom/installation/path"
 
 It's recommended to use a default install layout as `GNUInstallDirs`.
 
-When setting `cmake --install build --prefix "./install`, the **install** tree will be like:
+A **install tree** will look like as below if you'd like all things to be installed inside the project via `cmake --install build --prefix "./install`.
 
 ```sh
 project_root
@@ -92,9 +92,9 @@ project_root
 
 A typical workflow of CMake includes `Configure`, `Build` and `Install` steps, combined with the above mentioned `Trees` concepts.
 
-`Configure` step will generate a sort of configuration files, the most important ones among them are `CMakeCache.txt`, `cmake_install.cmake` and `Makefile` if using `Make` as building system. With these generated configuration files, the later steps `Build` and `Install` will run according to them.
-`Build` step will generate the build binary directory.
-`Install` step will generate the install binary directory.
+1. `Configure` step will generate a sort of configuration files, the most important ones among them are `CMakeCache.txt`, `cmake_install.cmake` and `Makefile` if using `Make` as building system. With these generated configuration files, the later steps `Build` and `Install` will run according to them.
+2. `Build` step will generate the build binary directory.
+3. `Install` step will generate the install binary directory.
 
 ## How to make your package be found by others by `find_package()`
 
@@ -114,7 +114,128 @@ There are some useful and important CMake variables that will be introduced here
 
 `CMAKE_IGNORE_PATH`
 
-## References
+## `clang` FAQ
+
+### Find out `clang` include search path
+
+```sh
+❯ clang -x c -v -E /dev/null
+...
+#include "..." search starts here:
+#include <...> search starts here:
+ /opt/homebrew/Cellar/llvm/17.0.1/lib/clang/17/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk/usr/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk/System/Library/Frameworks (framework directory)
+End of search list.
+# 1 "/dev/null"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 420 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "/dev/null" 2
+```
+
+### Add include search path to `clang`
+
+Use environment variables `C_INCLUDE_PATH` for `c` and `CPLUS_INCLUDE_PATH` for `c++`.
+
+`clang`:
+
+```sh
+❯ C_INCLUDE_PATH=/opt/homebrew/include clang -x c -v -E /dev/null
+...
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/local/include
+ /opt/homebrew/include
+ /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+ /Library/Developer/CommandLineTools/usr/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)
+```
+
+`clang++`:
+
+```sh
+❯ CPLUS_INCLUDE_PATH=/opt/homebrew/include clang -x c++ -v -E /dev/null
+...
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/local/include
+ /opt/homebrew/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
+ /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+ /Library/Developer/CommandLineTools/usr/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)
+```
+
+Use `-I` flag,
+
+```sh
+❯ clang -x c -I/opt/homebrew/include -v -E /dev/null
+...
+#include "..." search starts here:
+#include <...> search starts here:
+ /opt/homebrew/include
+ /usr/local/include
+ /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+ /Library/Developer/CommandLineTools/usr/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)
+```
+
+### Find out `clang` library search paths
+
+```sh
+❯ clang -Xlinker -v
+...
+Library search paths:
+	/usr/local/lib
+Framework search paths:
+ld: Undefined symbols:
+  _main, referenced from:
+      <initial-undefines>
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+### Add library search path to `clang`
+
+Use environment variables `LIBRARY_PATH`,
+
+```sh
+❯ LIBRARY_PATH=$LIBRARY_PATH:/usr/lib clang -Xlinker -v
+...
+Library search paths:
+	.
+	/usr/lib
+	/usr/local/lib
+Framework search paths:
+ld: Undefined symbols:
+  _main, referenced from:
+      <initial-undefines>
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+Use `-L` flag:
+
+```sh
+❯ clang -L/opt/homebrew/lib -Xlinker -v
+```
+
+https://langui.sh/2015/07/24/osx-clang-include-lib-search-paths/
+
+## What is the difference? clang++ | clang -std=c++11
+
+## CMake FAQ
+
+### Add library search path to `CMake` globally in project
+
+1. `set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /opt/local/lib)`
+2. `LINK_DIRECTORIES(/opt/local/lib)`
+
+## Resources
 
 [CMake hands-on workshop — CMake Workshop](https://enccs.github.io/cmake-workshop/)
 [^rpath]: [RPATH handling from official cmake](https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling)

@@ -12,21 +12,50 @@ date: 2023-06-23
 author: frank
 ---
 
-# Wiki Vcpkg
+# Wiki vcpkg
 
-TODO: Fix qtbase tools/config in release/debug osx  
+`vcpkg` is cross-platform **C/C++ package manager**, and its peers include `conan`.
 
-https://github.com/microsoft/vcpkg/tree/master/ports/qtbase
+The most common type of package is a C/C++ library consisting of headers, source code, and binaries.
 
-https://learn.microsoft.com/en-us/vcpkg/maintainers/functions/vcpkg_cmake_config_fixup
+Some useful folders in `VCPKG_ROOT=/path/to/vcpkg` in `vcpkg`:
+
+How `vcpkg` install `fmt` library when calling `vcpkg install fmt` in classic mode?
+
+1. Download the source code `fmt.tar.gz` into `%VCPKG_ROOT%/downloads/` directory.
+2. **build tree** -> `%VCPKG_ROOT%/buildtrees`:
+    1. Put the source code under `%VCPKG_ROOT%/buildtrees/fmt/src/xxxx-xxxx.clean/` directory.
+    2. Create building directory: `%VCPKG_ROOT%/buildtrees/fmt/arm64-osx-dynamic-rel/`(`triplet`+`release/debug`) and then start building
+3. **package tree** -> `%VCPKG_ROOT%/package`:
+    1. Package `fmt` built library like `fmt.dylib`, its `header` files and `binaries`(tools) in **build tree** into `%VCPKG_ROOT%/packages/fmt_arm64-osx-dynamic/`
+4. **install tree** -> `%VCPKG_ROOT%/installed`:
+    1. Install `fmt`'s `libs`, `headers` and `tools` in **package tree** into `%VCPKG_ROOT%/installed/arm64-osx-dynamic/lib`, `%VCPKG_ROOT%/installed/arm64-osx-dynamic/include` and `%VCPKG_ROOT%/installed/arm64-osx-dynamic/tools` respectively.
+
+As it outlines, `vcpkg` builds each package separately in **build tree** and **package tree** stages and finally in **install tree** stage `reduce` all packages into the central set in `%VCPKG_ROOT%/installed/arm64-osx-dynamic/`.
 
 <!--truncate-->
 
-## Manifest Mode
+## Classic mode
 
-## Classic Mode
+Official saying: In Classic mode, vcpkg maintains a central **installed tree** inside the vcpkg instance built up by individual `vcpkg install` and `vcpkg remove` commands. This central set of packages can then be shared by any number of projects.
 
-## Useful Environment variables
+All packages are installed in a common `%VCPKG_ROOT%/installed` directory.
+
+### Classic mode how-to
+
+Just run `vcpkg install %package%` to use **classic mode** as the package will be installed into `%VCPKG_ROOT%/installed/`.
+
+## Manifest mode
+
+Official saying: In Manifest mode, vcpkg creates separate **installed trees** for each project and configuration. This allows separate projects to use different versions of libraries. The `vcpkg.json` file and optional `vcpkg-configuration.json` file form a project's manifest. The manifest declares the project's direct dependencies, version constraints, and registries used.
+
+All packages are installed in their own `${project}/vcpkg_installed` directory inside the `${project}` directory.
+
+### Manifest mode how-to
+
+Create `vcpkg.json` in the project, then run `vcpkg install` to use **manifest mode** as all the packages declared in `vcpkg.json` will be installed into `${project}/vcpkg_installed/`.
+
+## Useful environment variables for development
 
 `CURRENT_INSTALLED_DIR`
 `CURRENT_PACKAGES_DIR`
@@ -40,6 +69,25 @@ set(VCPKG_INCLUDE_DIR "${CURRENT_INSTALLED_DIR}/include")
 ```
 
 ## Tips and Tricks
+
+### How to specify a compiler fof `vcpkg install`?
+
+As `vcpkg` just use `cmake` toolchain to do install, how to set a specific compile is `cmake` things.
+
+A fast way is use `CC` and `CXX` environment variables.
+
+```sh
+export CC=gcc-4.2
+export CXX=/usr/bin/g++-4.2
+```
+
+See more ways at [iar - How to specify a compiler in CMake? - Stack Overflow](https://stackoverflow.com/questions/45933732/how-to-specify-a-compiler-in-cmake)
+
+### Install `*-osx-dynamic`
+
+```sh
+vcpkg install libpq --host-triplet=arm64-osx-dynamic --triplet=arm64-osx-dynamic
+```
 
 ### Reinstall packages without caching
 
@@ -62,18 +110,15 @@ rm -rf /opt/vcpkg/packages/
 rm -rf /opt/vcpkg/buildtrees/
 ```
 
-```sh
-```
-
 ### Clean up all caching packages
 
 ```sh
 rm -rf ~/.cache/vcpkg/archives/
 ```
 
-### `INSTALL_RPATH_USE_LINK_PATH` different behaviours in `manifest` and `classic` mode
+### `INSTALL_RPATH_USE_LINK_PATH` different behaviours in **manifest mode** and **classic mode**
 
-`INSTALL_RPATH_USE_LINK_PATH` will not work properly when being used in the `manifest` mode, because `CMake` will don't handle libraries located in `buildtree`:
+`INSTALL_RPATH_USE_LINK_PATH` will not work properly when being used in the **manifest mode**, because `CMake` will don't handle libraries located in `buildtree`:
 
 ```sh
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -82,7 +127,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 ```
 
-After `${PROJECT_NAME}` installed, in the `manifest` mode:
+After `${PROJECT_NAME}` installed, in the **manifest mode**:
 
 ```sh
 ❯ otoolll /Users/frankchen/Documents/vcpkg-qt-app/install/./helloworld.app/Contents/MacOS/helloworld
@@ -91,7 +136,7 @@ After `${PROJECT_NAME}` installed, in the `manifest` mode:
          path @executable_path/../Frameworks (offset 12)
 ```
 
-After `${PROJECT_NAME}` installed, in the `classic` mode:
+After `${PROJECT_NAME}` installed, in the **classic mode**:
 
 ```sh
 ❯ otoolll /Users/frankchen/Documents/vcpkg-qt-app/install/./helloworld.app/Contents/MacOS/helloworld
@@ -106,5 +151,12 @@ Load command 27
          path @executable_path/../Frameworks (offset 12)
 ```
 
-
 [wiki-cmake.mdx#RPATH in CMake](./wiki-cmake.mdx#RPATH in CMake)
+
+## Resources
+
+TODO: Fix qtbase tools/config in release/debug osx  
+
+https://github.com/microsoft/vcpkg/tree/master/ports/qtbase
+
+https://learn.microsoft.com/en-us/vcpkg/maintainers/functions/vcpkg_cmake_config_fixup

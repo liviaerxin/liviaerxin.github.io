@@ -1,28 +1,25 @@
 # Use the official Ubuntu base image
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Set environment variables to prevent interactive prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update package list and install required packages
-RUN apt update && \
-    apt install -y software-properties-common && \
-    add-apt-repository ppa:deadsnakes/ppa
-
-RUN apt update && \
-    apt upgrade -y && \
-    apt install -y \
+# Install `Python 3.8` and `pip`
+RUN apt update && apt upgrade -y && apt install -y \
+        curl \
+        build-essential \
+        software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt update && apt upgrade -y \
         python3.8 \
         python3.8-distutils \
         python3.8-dev \
-        wget \ 
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1 && \
-    rm -rf /var/lib/apt/lists/*
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install pip for Python 3.8
-RUN wget https://bootstrap.pypa.io/get-pip.py && python3.8 get-pip.py && rm get-pip.py
+RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.8 get-pip.py && rm get-pip.py
 
-# Upgrade `pip` and install Python packages
+# Install Python packages
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
