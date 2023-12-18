@@ -36,5 +36,35 @@
 
 	// https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-from-docker#enabling-root-user-access-to-docker-in-the-container
 	"runArgs": ["--init", "--add-host=host.docker.internal:host-gateway"],
-	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ]
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"TabNine.tabnine-vscode",
+				"bierner.emojisense",
+				"MichaelCurrin.auto-commit-msg",
+				"ms-python.black-formatter",
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cmake-tools",
+				"streetsidesoftware.code-spell-checker",
+				"cschlosser.doxdocgen",
+				"dbaeumer.vscode-eslint",
+				"foam.foam-vscode",
+				"mhutchie.git-graph",
+				"donjayamanne.githistory",
+				"bierner.github-markdown-preview",
+				"fabiospampinato.vscode-highlight",
+				"ms-vscode.makefile-tools",
+				"yzhang.markdown-all-in-one",
+				"fcrespo82.markdown-table-formatter",
+				"skn0tt.markdown-link-expander",
+				"unifiedjs.vscode-mdx",
+				"jebbs.plantuml",
+				"esbenp.prettier-vscode"
+			]
+		}
+	}
 }
