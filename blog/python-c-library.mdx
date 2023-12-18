@@ -1,0 +1,61 @@
+---
+authors:
+  - frank
+tags:
+  - Python
+  - C
+  - C++
+  - Shared library
+  - Dynamic library
+description: Python C
+keywords:
+  - Python C
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-12-18
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Python C Library
+
+How many ways Python can interact with C libraries?
+
+Two. There are two different modes totally.
+
+1. `ctypes` to load any dynamic library from a C libraries
+2. `import module` to import a dynamic library written using the Python C API
+
+
+Let's clarify the terminology a bit:
+
+1. `ctypes` to Load Dynamic Libraries (including any C library):
+  - `ctypes` is a foreign function interface (FFI) library in Python that allows you to call functions from dynamic/shared libraries written in languages like C.
+  - It can be used to load and call functions from C libraries (or any dynamic/shared libraries), and it's a more manual, low-level approach to interfacing with C code.
+  - Example with `ctypes`:
+  ```py
+  ```
+2. `import module` for Dynamic Libraries written in Python C API:
+   - If a C library is written using the Python C API and compiled as a Python extension module (`.pyd` on Windows or `.so` on Unix-like systems), you can use the import statement to `import` and use it in Python.
+   - This `Pythonic` approach typically provides a more seamless integration as it allows the C code to be treated as a native Python module.
+   - Example with `import module`:
+
+<!--truncate-->
+What's the file's name that Python look for when using `import module` to import C API libraries?
+
+Python will look for a shared library with a suitable name, as determined by the platform conventions.
+The shared library could be named something like `libexample.so` on Unix-like systems or `example.dll` on Windows. The `PyInit_example` function initializes the module.
+
+## Python `int` object
+
+Python uses a variable-size integer representation,
+- `Overhead size`: 24 bytes, including Python header object
+- `Data size`: 4 or 8 bytes, storing smaller `int` using 4 bytes and bigger `int` using 8 bytes.
+
+```py
+>>> sys.getsizeof(0x560f7ab1e1c0)
+32
+>>> sys.getsizeof(0xc0)
+28
+```
+
+## Resources

@@ -23,8 +23,8 @@ static PyMethodDef HelloMethods[] = {
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
-/* Create PyModuleDef stucture */
-static struct PyModuleDef helloStruct = {
+/* Create module definition */
+static struct PyModuleDef helloModule = {
     PyModuleDef_HEAD_INIT,
     "hello",
     "",
@@ -38,7 +38,9 @@ static struct PyModuleDef helloStruct = {
 
 
 /* Module initialization */
+// The initialization function must be named PyInit_name(), where name is the name of the module, 
+// and should be the only non-static item defined in the module file
 PyObject *PyInit_hello(void)
 {
-    return PyModule_Create(&helloStruct);
+    return PyModule_Create(&helloModule);
 }
