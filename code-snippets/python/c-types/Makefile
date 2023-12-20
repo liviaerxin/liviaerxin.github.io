@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -fPIC
-INCLUDE = -I/usr/include/python3.10
+INCLUDE = -I/usr/include/python3.10/
+LIBS = -L/usr/lib/x86_64-linux-gnu/ -lpython3.10
 
 # Get all source files with a .c file extension
 SOURCES = $(wildcard *.c)
@@ -16,12 +17,19 @@ EXECUTABLES = $(SOURCES:.c=.out)
 
 all: $(DYLIBS)
 
-# Rule to build object files
-$(OBJECTS): $(SOURCES)
+# Rule to build each object file
+%.o: %.c
 	$(CC) -c $(CFLAGS) $(INCLUDE) $< -o $@
 
-$(DYLIBS): $(OBJECTS)
+# Rule to build each shared library
+%.so: %.o
 	$(CC) -shared $< -o $@
 
+# Rule to build each executable
+exec: $(EXECUTABLES)
+
+%.out: %.o
+	$(CC) $< $(LIBS) -o $@
+
 clean:
-	rm -f $(OBJECTS) $(DYLIBS)
+	rm -f $(OBJECTS) $(DYLIBS) $(EXECUTABLES)

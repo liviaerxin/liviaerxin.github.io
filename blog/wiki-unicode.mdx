@@ -114,7 +114,7 @@ $ hexdump -C a.txt
 
 ### Why we can copy and paste the unicode characters into a shell?
 
-When we do copying on the screen, we're copying the character's binary data which is in the `os` memory not the code point inside memory.
+When we do copying on the screen, we're copying the character's UTF8 encoded **bytes** which is in the memory, not the **code point**.
 
 ```sh
 # b'\xe2\x82\xac'.decode() -> '€'
@@ -187,6 +187,90 @@ Base64 is binary-to-text encoding schema which make bytes data to be represented
 
 ## Python 
 
+## C application
+
+Let's have a look at how the **Unicode** is represented in a `C` executable file.
+
+1. `char`
+
+```sh
+cat > unicode.c << EOL
+#include <stdio.h>
+
+int main(){
+    printf("Hello, World 你好🤨!\n");
+    return 0;
+}
+EOL
+```
+
+```sh
+gcc unicode.c -o unicode.out
+```
+
+```sh
+root@112b172acfff:/workspaces/liviaerxin.github.io/# hexdump -C unicode.out | grep -A3 "Hello, World"
+00002000  01 00 02 00 48 65 6c 6c  6f 2c 20 57 6f 72 6c 64  |....Hello, World|
+00002010  20 e4 bd a0 e5 a5 bd f0  9f a4 a8 21 00 00 00 00  | ..........!....|
+00002020  01 1b 03 3b 34 00 00 00  05 00 00 00 00 f0 ff ff  |...;4...........|
+00002030  68 00 00 00 20 f0 ff ff  90 00 00 00 30 f0 ff ff  |h... .......0...|
+```
+
+View each character's **UTF8** encoding respectively,
+```py
+# utf-8 encoding bytes
+>>> "你".encode()
+b'\xe4\xbd\xa0'
+>>> "好".encode()
+b'\xe5\xa5\xbd'
+>>> "🤨".encode()
+b'\xf0\x9f\xa4\xa8'
+```
+
+So  `char` in the C output file stores the UTF8 encoding **bytes**, not the code points.
+
+2. `wide char`,
+
+```sh
+cat > unicode.c << EOL
+#include <stdio.h>
+#include <wchar.h>
+#include <locale.h>
+
+int main(int argc, char *argv[])
+{
+    setlocale(LC_ALL, "C.UTF-8");
+    wchar_t* msg = L"Hello, World 你好🤨!";
+    printf("%ls\n", msg);
+    return 0;
+}
+EOL
+```
+
+```sh
+root@112b172acfff:/workspaces/liviaerxin.github.io/# hexdump -C unicode.out
+00002000  01 00 02 00 00 00 00 00  43 2e 55 54 46 2d 38 00  |........C.UTF-8.|
+00002010  48 00 00 00 65 00 00 00  6c 00 00 00 6c 00 00 00  |H...e...l...l...|
+00002020  6f 00 00 00 2c 00 00 00  20 00 00 00 57 00 00 00  |o...,... ...W...|
+00002030  6f 00 00 00 72 00 00 00  6c 00 00 00 64 00 00 00  |o...r...l...d...|
+00002040  20 00 00 00 60 4f 00 00  7d 59 00 00 28 f9 01 00  | ...`O..}Y..(...|
+```
+
+```py
+# unicode code point
+>>> hex(ord("H"))
+'0x48'
+>>> hex(ord("你"))
+'0x4f60'
+>>> hex(ord("好"))
+'0x597d'
+>>> hex(ord("🤨"))
+'0x1f928'
+```
+
+`wchar` in the C output file stores the **code point**(also in **little endian**), not the UTF8 encoding **bytes**.
+
+In conclusion, `char` and `wchar` lead different encoding in **C**.
 
 ## Resources
 

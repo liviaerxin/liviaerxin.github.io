@@ -1,0 +1,33 @@
+---
+authors:
+  - frank
+tags:
+  - Python Celery
+description: Python Celery
+keywords:
+  - Python Celery
+image: https://i.imgur.com/mErPwqL.png
+date: 2023-12-20
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Python Celery
+
+What's **workflow** in Celery?
+
+In **Celery**, **workflow** is composed of multiple **tasks**, and a **task** is deemed to be a universal unit of the **workflow**, as a function in the program. In **Celery**, it's recommended to divide a long-running task into multiple short-running tasks. **workflow** comes out to help ease the orchestrations of the work, such as `chain()` three tasks.
+
+[A demo workflow](https://github.com/liviaerxin/fastapi-celery-ml/blob/main/app/examples/celery_workflow.py)
+
+<!--truncate-->
+
+## Resources
+
+https://blog.det.life/replacing-celery-tasks-inside-a-chain-b1328923fb02
+
+https://dev.to/akarshan/the-curious-case-of-celery-work-flows-39f7
+
+https://engineering.instawork.com/celery-eta-tasks-demystified-424b836e4e94
+
+https://docs.celeryq.dev/en/stable/userguide/canvas.html

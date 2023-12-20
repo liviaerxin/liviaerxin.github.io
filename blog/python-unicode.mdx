@@ -63,9 +63,10 @@ The `characters` data are 1-byte, 2-byte or 4-byte `code point`. The UnicodeObje
 References are mainly from:
 
 - [ctypes — A foreign function library for Python — Python 3.12.1 documentation](https://docs.python.org/3/library/ctypes.html)
-- [unicodeobject.h](https://github.com/python/cpython/blob/3aea6c4823e90172c9bc36cd20dc51b295d8a3c4/Include/cpython/unicodeobject.h#L53)
+- [unicodeobject.h](https://github.com/python/cpython/blob/3.10/Include/cpython/unicodeobject.h#L85-L244)
+- [unicodeobject.c](https://github.com/python/cpython/blob/3.10/Objects/unicodeobject.c)
 
-A brief `PyUnicodeObject` structure defined from [unicodeobject.h](https://github.com/python/cpython/blob/3aea6c4823e90172c9bc36cd20dc51b295d8a3c4/Include/cpython/unicodeobject.h#L53):
+A brief `PyUnicodeObject` structure defined from [unicodeobject.h](https://github.com/python/cpython/blob/3.10/Include/cpython/unicodeobject.h#L85-L244):
 
 ```c title="cpython/Include/cpython/unicodeobject.h"
 typedef struct {

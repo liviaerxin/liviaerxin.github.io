@@ -14,10 +14,10 @@ DYLIBS = $(SOURCES:_module.c=.so)
 all: $(DYLIBS)
 
 # Rule to build object files
-$(OBJECTS): $(SOURCES)
+%.o: %.c
 	$(CC) -c $(CFLAGS) $(INCLUDE) $< -o $@
 
-$(DYLIBS): $(OBJECTS)
+%.so: %.o
 	$(CC) -shared $< -o $@
 
 # `import hello` will search `hello.so` in Linux.
