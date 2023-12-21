@@ -15,7 +15,7 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# Python Unicode
+# Python Unicode String
 
 Python string use `unicodeobject` which is implemented in `C` in CPython:
 
@@ -42,11 +42,17 @@ The `characters` data are 1-byte, 2-byte or 4-byte `code point`. The UnicodeObje
 
 <!--truncate-->
 
-## Why Python doesn't use UTF-8 encoding variable-length bytes in memory?
+## FAQ
+
+### Why Python doesn't use UTF-8 encoding variable-length bytes in memory directly, why it will convert them to **UCS-2** or **UCS-4** data?
+
+Keep each character in a string in the same width in the data memory.
+
+What's the purpose?
 
 1. Indexing into strings in Python is operated in a constant time, as it's based on the fixed-length encodings.
 
-## How other programming languages access string by index?
+### How do other programming languages access character in a string by index?
 
 - Go
   - Iterating yields Unicode code point
@@ -57,6 +63,56 @@ The `characters` data are 1-byte, 2-byte or 4-byte `code point`. The UnicodeObje
 - Python
   - Iterating yields Unicode code point
   - Indexing yields Unicode code point
+
+### How a string in Python is printed on the screen?
+
+You may wonder why they have the same result on the terminal from Python output, assuming that the terminal is using the UTF-8 encoding.
+
+```py
+>>> "\xe9"
+'é'
+>>> "\u00e9"
+'é'
+>>> 'é'
+'é'
+```
+When Python prints string, here the `print()` is used in default in Python IDE.
+
+1. create `PyObject`. When the string is `\xe9` or `\u00e9`, the Python interpret they as the **code point** of which `0xe9` is `233` in decimal. And convert it in `PyUnicodeObject` of which  stores data use `UCS-1` as `0xe9` is one byte.  
+2. print the `PyUnicodeObject`. As the system locale uses UTF-8 Encoding, Python will convert `UCS-1` data to utf-8 encoding bytes, which is `b'\xc3\xa9'`.
+    ```py
+    >>> 'é'.encode()
+    b'\xc3\xa9'
+    ```
+3. send bytes to the terminal emulator. `b'\xc3\xa9'` is sent to the terminal which uses the UTF-8 encoding. `b'\xc3\xa9'` in utf-8 is decode as code point `\u00e9` which represent the character `é`. 
+4. draw character. The terminal emulator draw the glyph `é` on the screen as you see.
+
+If the terminal using `latin-1`, `"\xe9"` will be show as `Ã©` in the terminal.
+
+### How to write raw bytes to the terminal from Python?
+
+As you see above, Python print strings:
+
+1. firstly strings are encoded to utf-8 bytes.
+2. secondly these bytes are sent to the terminal.
+
+Sometimes, you may want to write raw bytes in the terminal directly to see how the terminal represents these bytes on the screen.
+
+```sh
+➜  ~ python3 -c 'import sys; sys.stdout.buffer.write(b"\xc3\xa9")'
+é
+```
+
+UTF-8 terminal represent bytes `b"\xc3\xa9"` to character `é`.
+
+```sh
+➜  ~ python3 -c 'import sys; sys.stdout.buffer.write(b"\xe9")'
+�
+```
+
+UTF-8 terminal can not represent bytes `b"\xe9"` to any known character, as `b"\xe9"` is not a valid utf-8 encoding bytes.
+
+[python - Python3 print raw byte - Stack Overflow](https://stackoverflow.com/questions/42179786/python3-print-raw-byte)
 
 ## An outline of the `PyUnicodeObject`
 
@@ -396,7 +452,7 @@ data: 0, 0x00000000,
 I can't produce it in Python3.10, maybe you can try python2.7. 
 
 
-All codes are at [object layout](../code-snippets/object_reflection.py)
+All codes are at [object layout](../code-snippets/python/c-types/UnicodeObject.py)
 
 ## Resources
 

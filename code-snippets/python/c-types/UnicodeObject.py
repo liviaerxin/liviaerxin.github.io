@@ -4,12 +4,19 @@ import ctypes
 
 assert ctypes.cast(id(42), ctypes.py_object).value == 42
 
-# It's recommended to go to see [python 3.10 unicodeobject.h](https://github.com/python/cpython/blob/3.10/Include/cpython/unicodeobject.h#L85-L244)
-class PyASCIIObject(ctypes.Structure):
-    # internal fields of the string object
+# [unicodeobject.h](https://github.com/python/cpython/blob/3.10/Include/cpython/unicodeobject.h#L85-L244)
+# [unicodeobject.c](https://github.com/python/cpython/blob/3.10/Objects/unicodeobject.c)
+# [PyObject](https://github.com/python/cpython//blob/3.10/Include/object.h#L105-L109)
+
+class PyObject(ctypes.Structure):
     _fields_ = [
         ("ob_refcnt", ctypes.c_long),
         ("ob_type", ctypes.c_void_p),
+    ]
+    
+class PyASCIIObject(PyObject):
+    # internal fields of the string object
+    _fields_ = [
         ("length", ctypes.c_ssize_t),
         ("hash", ctypes.c_ssize_t),
         ("interned", ctypes.c_uint, 2),
@@ -48,6 +55,8 @@ class PyUnicodeObject(PyCompactUnicodeObject):
         ("data", _Data),
     ]
     
+print(ctypes.sizeof(PyASCIIObject))
+
 # assert PyUnicodeObject.from_address(id("Hello")).kind == 1
 # assert PyUnicodeObject.from_address(id("你好")).kind == 2
 # assert PyUnicodeObject.from_address(id("🤨")).kind == 4
@@ -82,7 +91,7 @@ data = ctypes.cast(data_addr, ctypes.POINTER(ctypes.c_uint16))
 print(f"data: {data[0]}, {data[0]:#06x}, {chr(data[0])}")
 print(f"data: {data[1]}, {data[1]:#06x}, {chr(data[1])}")
 print(f"data: {data[2]}, {data[2]:#06x}, {chr(data[2])}")
-print(f"data: {data[3]}, {data[3]:#06x}, {chr(data[3])}")
+print(f"NULL: {data[3]}, {data[3]:#06x}, {chr(data[3])}")
 
 
 # 3. compact: kind[4], compact[1], ascii[0], ready[1]
@@ -101,7 +110,7 @@ data = ctypes.cast(data_addr, ctypes.POINTER(ctypes.c_uint32))
 print(f"data: {data[0]}, {data[0]:#010x}, {chr(data[0])}")
 print(f"data: {data[1]}, {data[1]:#010x}, {chr(data[1])}")
 print(f"data: {data[2]}, {data[2]:#010x}, {chr(data[2])}")
-print(f"data: {data[3]}, {data[3]:#010x}, {chr(data[3])}")
+print(f"NULL: {data[3]}, {data[3]:#010x}, {chr(data[3])}")
 
 # 4. legacy string: kind[2], compact[0], ascii[0] is deprecated
 # I can't produce it in Python3.10, maybe you can try python2.7
