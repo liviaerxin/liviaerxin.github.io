@@ -1,17 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 
 typedef struct
 {
     size_t length;
-    char data[1]; // size is same as the size of a address, 8 bytes in 64-bits system.
+    char data[1]; // flexible array member, NULL terminated in last element
 } String;
 
-String *string_new(const char *str)
+/* Using String_SIZE instead of sizeof(String) saves 7 bytes per string in 64 bit machine
+ */
+#define String_SIZE (offsetof(String, data) + 1)
+
+String *string_new_with_size(const char *str, size_t len)
 {
-    size_t len = strlen(str);
-    String *s = malloc(sizeof(String) + len);
+    String *s = malloc(String_SIZE + len);
 
     if (s == NULL)
     {
@@ -25,6 +29,12 @@ String *string_new(const char *str)
     return s;
 }
 
+String *string_new(const char *str)
+{
+    size_t len = strlen(str);
+    return string_new_with_size(str, len);
+}
+
 void string_free(String *s)
 {
     free(s);
@@ -33,6 +43,8 @@ void string_free(String *s)
 int main()
 {
     printf("Struct String Size: %zu\n", sizeof(String));
+    printf("Struct String Size: %zu\n", String_SIZE);
+
     String *s = string_new("Hello world!");
 
     if (s != NULL)
@@ -41,6 +53,30 @@ int main()
         printf("Data: %s\n", s->data);
 
         string_free(s);
+    }
+
+    // Array of pointers to String struct, don't use an array of String struct as it allocate fixed memory
+    printf("\nArray of pointers to String Struct \n");
+    int array_size = 3;
+    String *myArray[array_size];
+
+    for (int i = 0; i < array_size; ++i)
+    {
+        int size_for_w = i + 10; // Vary the size of the flexible array
+        myArray[i] = string_new_with_size("Hello world! Hello world! Hello world!", size_for_w);
+    }
+
+    // Access and print elements
+    for (int i = 0; i < array_size; ++i) {
+        printf("Element %d:\n", i);
+        printf("Length: %zu\n", myArray[i]->length);
+        printf("  Data: %s\n", myArray[i]->data);
+
+    }
+
+    // Free allocated memory
+    for (int i = 0; i < array_size; ++i) {
+        free(myArray[i]);
     }
 
     return 0;

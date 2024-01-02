@@ -26,6 +26,7 @@
     "*.wxss": "css",
     "*.wxs": "javascript",
     "*.mdx": "markdown",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "stdint.h": "c"
   }
 }
