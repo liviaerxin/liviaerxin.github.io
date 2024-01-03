@@ -18,14 +18,12 @@ enableComments: true # for Gisqus
 
 # Wiki Assembly
 
-Foam includes note templates!
-This allows you to easily create notes that have similar structure without having to use copy/paste :)
+Why `Assembly` language is critical elementary foundation to the whole programming language from the lower-level language `C`, `Go`, `Rust`?
 
-Templates support the [VS Code's Snippet Syntax](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax), which means you can:
+1. The most low-level language that is closely tied to the hardware such as `CPU`.
+   1. `Assembly` language is written to follow the `CPU` execution logic directly.
+2. `Assembly` language facilities a deeper understanding of computer architecture such as how the `CPU` functions.
 
-- add variables to the newly created note
-- add tabstop to automatically navigate to the key parts of the note, just like a form
-Below you can see an example showing a todo list and a timestamp.
 
 <!--truncate-->
 
@@ -90,9 +88,41 @@ _start:
     syscall        ; Make the system call
 ```
 
+## Assembly Instructions
+
+## Assembly Opcodes
+
+[Intel x86 Assembler Instruction Set Opcode Table](http://sparksandflames.com/files/x86InstructionChart.html)
+
+Assembly instructions are human readable representation of the assembly `Opcode` which hex codes.
+
+## Assembly Oprands
+
+### Register Operands
+### Memory Operands
+### Immediate Operands
+
+## Bootstrap a Compiler
+
+1. Write a compiler C1 for language X in language Y
+2. Use the compiler C1 to write compiler C2 for language X in language X
+3. Now C2 is a fully self hosting environment.
+
+[Compilers: Principles, Techniques, and Tools - Wikipedia](http://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools)
+
+1. Bootstrapping initial compiler `C1`:
+   1. A small and simple compiler is created manually in machine code or written in a lower-level language like `assembly` language.
+   2. [Option*] Translate the `assembly` language into machine code manually if it's not written in machine code.
+   3. The initial compiler is just capable enough to understand a subset of the target language `C` it is supposed to compile.
+2. Use the initial compiler `C1` to compile the compiler `C2` written in language `C` while the `C2` is also supposed to compile language `C`.
+3. Now compiler `C2` a fully self-compilation.
+
+
 ## Resources
 
-https://cs.lmu.edu/~ray/notes/nasmtutorial/
+https://gist.github.com/mikesmullin/6259449
+
+https://cs.lmu.edu/~ray/notes/nasmtasutorial/
 
 https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
 

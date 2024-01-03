@@ -22,12 +22,42 @@ In **Celery**, **workflow** is composed of multiple **tasks**, and a **task** is
 
 <!--truncate-->
 
+## Construct a workflow
+
+## Avoid running synchronous subtasks within a task
+
+## Asynchronous tasks with a task
+
+```py
+@app.task(bind=True)
+def update_page_info(self, url):
+    # fetch_page -> parse_page -> store_page
+    chain = fetch_page.s(url) | parse_page.s() | store_page_info.s(url)
+    # chain()
+    self.replace(chain)
+
+@app.task()
+def fetch_page(url):
+    return myhttplib.get(url)
+
+@app.task()
+def parse_page(page):
+    return myparser.parse_document(page)
+
+@app.task(ignore_result=True)
+def store_page_info(info, url):
+    PageInfo.objects.create(url=url, info=info)
+```
+
+## Monitor the workflow
+
+
 ## Resources
 
-https://blog.det.life/replacing-celery-tasks-inside-a-chain-b1328923fb02
+[Designing Dynamic Workflows with Celery and Python | by Marin Aglić | Data Engineer Things](https://blog.det.life/replacing-celery-tasks-inside-a-chain-b1328923fb02)
 
-https://dev.to/akarshan/the-curious-case-of-celery-work-flows-39f7
+[The Curious Case of Celery Work-flows](https://dev.to/akarshan/the-curious-case-of-celery-work-flows-39f7)
 
-https://engineering.instawork.com/celery-eta-tasks-demystified-424b836e4e94
+[Celery ETA Tasks Demystified. At Instawork, we use Celery to queue… | by Oleg Pesok | Instawork Engineering](https://engineering.instawork.com/celery-eta-tasks-demystified-424b836e4e94)
 
-https://docs.celeryq.dev/en/stable/userguide/canvas.html
+[Canvas: Designing Work-flows — Celery 5.3.6 documentation](https://docs.celeryq.dev/en/stable/userguide/canvas.html)
