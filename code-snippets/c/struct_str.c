@@ -42,6 +42,7 @@ void string_free(String *s)
 
 int main()
 {
+    //
     printf("Struct String Size: %zu\n", sizeof(String));
     printf("Struct String Size: %zu\n", String_SIZE);
 
@@ -51,7 +52,7 @@ int main()
     {
         printf("Length: %zu\n", s->length);
         printf("Data: %s\n", s->data);
-
+        printf("Size: %zu\n", sizeof(*s));
         string_free(s);
     }
 
