@@ -53,8 +53,8 @@ _start:
     mov rdx, rcx                           ; Number of bytes to process
     call lexer                             ; Call the lexer function
 
-    mov rdi, lexeme_buffer                 ; Buffer address
-    mov rsi, lexeme_length               ; Length of the lexeme
+    mov rdi, err_msg                 ; Buffer address
+    mov rsi, err_msg_len               ; Length of the lexeme
     call print
 
     ; Write the assembly code to the output file
@@ -171,14 +171,11 @@ exit_error:
 
 print:
     ; Print a string
-    mov rax, rdi
-    mov rdi, rsi
-    mov rsi, rax                ; Buffer address
-    mov rdx, rdi            ; Number of bytes to write
-    mov rdi, 1                      ; File descriptor: STDOU
+    ; Function to print a string with a specified size
+    ; Parameters: rdi - address of the string, rsi - size of the string
+    mov rsi, rdi
+    mov rdx, rsi            ; size of the string
+    mov rdi, 1              ; file descriptor: STDOUT (1)
 
-    mov rax, 1                      ; syscall: write
-    syscall
-
-    mov rax, 60                     ; syscall: exit
+    mov rax, 1              ; syscall: write
     syscall
