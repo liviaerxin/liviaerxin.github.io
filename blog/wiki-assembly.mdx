@@ -18,13 +18,30 @@ enableComments: true # for Gisqus
 
 # Wiki Assembly
 
-Why `Assembly` language is critical elementary foundation to the whole programming language from the lower-level language `C`, `Go`, `Rust`?
+Why `Assembly` language is important to to learn?
 
 1. The most low-level language that is closely tied to the hardware such as `CPU`.
-   1. `Assembly` language is written to follow the `CPU` execution logic directly.
-2. `Assembly` language facilities a deeper understanding of computer architecture such as how the `CPU` functions.
+   - `Assembly` code implements a symbolic (human-readable) representation of the binary machine code.
+   - `Assembly` language is written to follow the `CPU` execution logic directly.
+2. `Assembly` language facilities a deeper understanding how `CPU` actually do its job.
 
+Why `Assembly` language is critical elementary foundation to other higher-level language, E.g. `C`?
 
+`Assembly` code is the important medium for compiling `C` code to machine code.
+When `C` program being compiled to an binary object file, the `GCC` compiler will do following:
+
+1. `C` code will be compiled into `Assembly` code
+2. `Assembly` code will be translated into machine code
+
+Is `Assembly` language cross-platform?
+
+No, `Assembly` language is specific in the specific platform. E.g. `X86` CPU-architecture has its own `Assembly` instruction sets as well as the `arm` CPU.
+
+`Assembly` is CPU-dependent as machine code is CPU-dependent, while `C` language is CPU-independent for cross-platform.
+
+Is the first version of `GCC` written in `Assembly`?
+
+No, `C` started with the `BCPL` language, [](https://stackoverflow.com/questions/18125490/how-was-the-first-c-compiler-written)
 <!--truncate-->
 
 ```asm title="print.asm"
@@ -88,15 +105,17 @@ _start:
     syscall        ; Make the system call
 ```
 
-## Assembly Instructions
+## Assembly Instructions Set
+
+Assembly instructions are human readable representation of the assembly `Opcode` which hex codes.
 
 ## Assembly Opcodes
 
 [Intel x86 Assembler Instruction Set Opcode Table](http://sparksandflames.com/files/x86InstructionChart.html)
 
-Assembly instructions are human readable representation of the assembly `Opcode` which hex codes.
-
 ## Assembly Oprands
+
+Data area
 
 ### Register Operands
 ### Memory Operands
@@ -104,19 +123,34 @@ Assembly instructions are human readable representation of the assembly `Opcode`
 
 ## Bootstrap a Compiler
 
-1. Write a compiler C1 for language X in language Y
-2. Use the compiler C1 to write compiler C2 for language X in language X
-3. Now C2 is a fully self hosting environment.
+```sh
+C1  + L1  -> C20
+C20 + L2u -> C21
+C21 + L2  -> C22
+C22 + L2  -> C23
+C23 + L2  -> C24
+```
+
+1. Write a bootstrap compiler `C20` to understand language `L2u`(a subset of language `L2`) in using existed language `L1` and its corresponding compiler `C1`.
+2. Use the compiler `C20` and language `L2u` to write the compiler `C21` to understand language `L2`.
+3. Now `C21` is a fully self-hosted compiler, as well as its descendants `C22`, `C23`, and `C24`.
 
 [Compilers: Principles, Techniques, and Tools - Wikipedia](http://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools)
 
-1. Bootstrapping initial compiler `C1`:
-   1. A small and simple compiler is created manually in machine code or written in a lower-level language like `assembly` language.
+What's the bootstrap compiler for `C1`?
+
+There is no need to use a compiler `C1` + `L1` if you write the bootstrap compiler `C20` in machine code. This solves the chicken-and-egg problem totally for programming languages.
+
+1. Bootstrapping initial compiler `C20`:
+   1. A small and simple compiler is created manually in machine code or written in `assembly` language.
    2. [Option*] Translate the `assembly` language into machine code manually if it's not written in machine code.
    3. The initial compiler is just capable enough to understand a subset of the target language `C` it is supposed to compile.
-2. Use the initial compiler `C1` to compile the compiler `C2` written in language `C` while the `C2` is also supposed to compile language `C`.
-3. Now compiler `C2` a fully self-compilation.
+2. Use the initial compiler `C20` to compile the compiler `C21` written in language `C` while the `C21` is also supposed to compile language `C`.
+3. Now compiler `C21` a fully self-compilation.
 
+[Strange Loops: Ken Thompson and the Self-referencing C Compiler | ScienceBlogs](https://scienceblogs.com/goodmath/2007/04/15/strange-loops-dennis-ritchie-a)
+
+[Bootstrapping (compilers) - Wikipedia](https://en.wikipedia.org/wiki/Bootstrapping_%28compilers%29)
 
 ## Resources
 
