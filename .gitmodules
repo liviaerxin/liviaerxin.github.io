@@ -1,3 +1,7 @@
 [submodule "code-snippets/assembly"]
 	path = code-snippets/assembly
 	url = https://github.com/liviaerxin/hello-assembly.git
+
+[submodule "code-snippets/c"]
+	path = code-snippets/c
+	url = https://github.com/liviaerxin/hello-c.git
