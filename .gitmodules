@@ -1,0 +1,3 @@
+[submodule "code-snippets/assembly"]
+	path = code-snippets/assembly
+	url = https://github.com/liviaerxin/hello-assembly.git
