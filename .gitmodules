@@ -17,3 +17,7 @@
 [submodule "code-snippets/python"]
 	path = code-snippets/python
 	url = https://github.com/liviaerxin/hello-python.git
+
+[submodule "code-snippets/cpp"]
+	path = code-snippets/cpp
+	url = https://github.com/liviaerxin/hello-cpp.git
