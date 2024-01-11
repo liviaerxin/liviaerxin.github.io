@@ -9,3 +9,6 @@
 [submodule "code-snippets/dockerfiles"]
 	path = code-snippets/dockerfiles
 	url = https://github.com/liviaerxin/hello-dockerfiles.git
+
+[submodule "code-snippets/docker-compose"]
+	path = code-snippets/docker-compose
