@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
           submodules: recursive # a submodule require another submodule
           # submodules: true # just submodules required by main repo
       - uses: actions/setup-node@v3
