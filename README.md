@@ -73,10 +73,26 @@ git submodule update --init --recursive
 
 After first clone,
 
-Force to pull the latest commit of sub repos regardless of whether the main repo refers to the latest commit of these sub repos.
+Pull the latest commits for submodules
 
 ```sh
 git submodule foreach git pull
+```
+
+or
+
+```sh
+git submodule update --remote --rebase
+#or
+git submodule update --remote --merge
+```
+
+only `git submodule update --remote` will update all commits and check the latest commit of submodule but do not move the submodule `main` branch to the commit. So using `--rebase` or `--merge` to merge the `main` branch into the branch `origin/main`.
+
+Pull the commits pointed by the parent repo for submodules
+
+```sh
+git submodule update
 ```
 
 ## Swizzling
