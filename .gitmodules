@@ -12,3 +12,4 @@
 
 [submodule "code-snippets/docker-compose"]
 	path = code-snippets/docker-compose
+	url = https://github.com/liviaerxin/hello-docker-compose.git
