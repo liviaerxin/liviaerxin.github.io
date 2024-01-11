@@ -5,3 +5,7 @@
 [submodule "code-snippets/c"]
 	path = code-snippets/c
 	url = https://github.com/liviaerxin/hello-c.git
+
+[submodule "code-snippets/dockerfiles"]
+	path = code-snippets/dockerfiles
+	url = https://github.com/liviaerxin/hello-dockerfiles.git
