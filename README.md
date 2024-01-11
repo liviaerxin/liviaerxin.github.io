@@ -55,6 +55,30 @@ npm run serve --prefix _ssg/docusaurus
 
 [Docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
 
+## Submodules
+
+First time,
+
+```sh
+git clone --recursive https://github.com/liviaerxin/liviaerxin.github.io.git
+```
+
+or
+
+```sh
+git clone https://github.com/liviaerxin/liviaerxin.github.io.git
+cd liviaerxin.github.io.git
+git submodule update --init --recursive
+```
+
+After first clone,
+
+Force to pull the latest commit of sub repos regardless of whether the main repo refers to the latest commit of these sub repos.
+
+```sh
+git submodule foreach git pull
+```
+
 ## Swizzling
 
 Here're `@docusaurus/theme-classic` components being customized by swizzling,
