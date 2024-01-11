@@ -44,6 +44,27 @@ Is the first version of `GCC` written in `Assembly`?
 No, `C` started with the `BCPL` language, [](https://stackoverflow.com/questions/18125490/how-was-the-first-c-compiler-written)
 <!--truncate-->
 
+## Assembler
+
+- GNU assembler (GAS) 
+  - x86-64 GNU assembler 
+    * AT&T syntax
+  - aarch64 GNU assembler
+    * aarch64/arm64 syntax
+- Clang Assembler
+  - external Assembler
+    - GNU Assembler
+  - LLVM’s integrated assembler
+  - [](https://clang.llvm.org/docs/Toolchain.html#assembler)  
+- Netwide assembler (NASM)
+  * Intel syntax
+  * x86-64
+    * macOS
+    * linux
+    * windows
+- MASM
+  * Intel syntax
+
 ```asm title="print.asm"
 ; print.asm
 ; nasm -f elf64 print.asm && ld print.o && ./a.out ; echo $?
