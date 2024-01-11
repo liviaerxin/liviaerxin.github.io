@@ -24,17 +24,17 @@ author: frank
 Limit only one access to an endpoint at a time with `asyncio.Lock` in `asyncio` in **FastAPI**.
 
 import CodeBlock from '@theme/CodeBlock';
-import CodeSource from '!!raw-loader!../code-snippets/app_request_lock.py';
+import CodeSource from '!!raw-loader!../code-snippets/python/app_request_lock.py';
 
-<CodeBlock language="python" title="../code-snippets/app_request_lock.py">{CodeSource}</CodeBlock>
+<CodeBlock language="python" title="../code-snippets/python/app_request_lock.py">{CodeSource}</CodeBlock>
 
 > NOTE: The `asyncio.Lock` only take effect in the `asyncio` loop level, if using `unicorn` to run server in multiple processes, it can not lock the request! 
 
 No limitation.
 
-import CodeSource1 from '!!raw-loader!../code-snippets/app_request_nolock.py';
+import CodeSource1 from '!!raw-loader!../code-snippets/python/app_request_nolock.py';
 
-<CodeBlock language="python" title="../code-snippets/app_request_nolock.py">{CodeSource1}</CodeBlock>
+<CodeBlock language="python" title="../code-snippets/python/app_request_nolock.py">{CodeSource1}</CodeBlock>
 
 
 Limit only one access to an endpoint at a time with `thread.Lock`
@@ -52,6 +52,6 @@ Run a background service behind the FastAPI server:
 [Coroutines and Tasks — Python 3.11.4 documentation](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel)
 [Event Loop — Python 3.11.4 documentation](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.create_task)
 
-import CodeSourceAppBackgroundService from '!!raw-loader!../code-snippets/app_background_service.py';
+import CodeSourceAppBackgroundService from '!!raw-loader!../code-snippets/python/app_background_service.py';
 
-<CodeBlock language="python" title="../code-snippets/app_background_service.py">{CodeSourceAppBackgroundService}</CodeBlock>
+<CodeBlock language="python" title="../code-snippets/python/app_background_service.py">{CodeSourceAppBackgroundService}</CodeBlock>
