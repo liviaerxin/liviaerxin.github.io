@@ -1,3 +1,0 @@
-# Example configuration for Black. [More](https://github.com/psf/black/blob/main/pyproject.toml)
-[tool.black]
-line-length = 120
