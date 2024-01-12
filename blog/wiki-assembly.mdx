@@ -65,7 +65,8 @@ No, `C` started with the `BCPL` language, [](https://stackoverflow.com/questions
 - MASM
   * Intel syntax
 
-### 
+### XXX
+
 ```asm title="print.asm"
 ; print.asm
 ; nasm -f elf64 print.asm && ld print.o && ./a.out ; echo $?
@@ -127,21 +128,57 @@ _start:
     syscall        ; Make the system call
 ```
 
-## Assembly Instructions Set
+## Section
 
-Assembly instructions are human readable representation of the assembly `Opcode` which hex codes.
+## Label
 
-## Assembly Opcodes
+## Instruction
+
+Assembly instructions are human readable representation of the machine code as CPU can only understand the machine code.
+
+Instruction: Opcode + Oprand 
+
+
+### Instruction Opcode
 
 [Intel x86 Assembler Instruction Set Opcode Table](http://sparksandflames.com/files/x86InstructionChart.html)
 
-## Assembly Oprands
+### Instruction Oprand
 
 Data area
 
-### Register Operands
-### Memory Operands
-### Immediate Operands
+#### Register Operand
+#### Memory Operand
+#### Immediate Operand
+
+### Instruction Encoding
+
+Assembler will encode the human-readable instruction into machine code.
+
+- In `aarch64`, the encoding instruction is fixed-size(4 bytes) machine code.
+- In `x86_64`, the encoding instruction is non-fixed-size(up to 16 bytes) machine code.
+
+[Encoding Real x86 Instructions](http://www.c-jump.com/CIS77/CPU/x86/lecture.html)
+
+In order to load 32-bit integer, `x86_64` need only one instruction while more instructions are needed for `aarch64` to do that.
+
+Let's have a glimpse on the impact of the fixed/non-fixed encoding.
+
+Load 32-bit `0x1a2b3c4d` in `x86_64`,
+
+```asm
+mov   rdi, 0x1a2b3c4d
+```
+
+Load 32-bit `0x1a2b3c4d` in `aarch64`, the immediate value must be less than 8-bit.
+
+```asm
+mov   eax, 
+```
+
+## NASM x86_64 cheat sheet
+
+## GAS aarch64 cheat sheet
 
 ## Bootstrap a compiler for new language
 
