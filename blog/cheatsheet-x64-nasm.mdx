@@ -1,0 +1,76 @@
+---
+authors:
+  - frank
+tags:
+  - Cheatsheet x64 NASM
+description: Cheatsheet x64 NASM
+keywords:
+  - Cheatsheet x64 NASM
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-01-14
+draft: false
+enableComments: true # for Gisqus
+---
+
+# x64 NASM Cheat Sheet
+
+## Registers
+
+| Register                   | Low 32-bits | Low 16-bits | Low 8-bit | High 8-bits | Calling convention         | Callee-saved? |
+|----------------------------|-------------|-------------|-----------|-------------|----------------------------|---------------|
+| General-purpose registers: |
+| `%rax`                     | `%eax`      | `%ax`       | `%al`     | `%ah`       | Return value (accumulator) | No            |
+| `%rbx`                     | `%ebx`      | `%bx`       | `%bl`     | `%bh`       | -                          | Yes           |
+| Special-purpose registers: |
+| `%rsp`                     | `%esp`      | `%sp`       | `%spl`    | –           | Stack pointer              | Yes           |
+
+## Data
+
+| Definition size    | Definition instruction |
+|--------------------|------------------------|
+| 8 bit              | `db`                   |
+| 16 bit             | `dw`                   |
+| 32 bit             | `dd`                   |
+| 64 bit             | `ddq`/`do`             |
+| float              | `dd`                   |
+| double             | `dq`                   |
+| extended precision | `dt`                   |
+
+<!--truncate-->
+## Program structure
+
+- `global <entry>` -> exposes entry point
+- `extern <function>` -> declares a function in another linked .o file (e.g. C
+  function, other asm file)
+- `section <sectiontype>` -> sets section, usually:
+  - `.text` -> program code
+  - `.data` -> data
+
+The program entry point of a standalone program is the label `_start`.  When
+compiled with gcc, C provides `_start`, which inits and then jumps to `main`,
+which should then be implemented by the program.
+
+## Syscalls
+
+- put syscall number in EAX (e.g. on Linux: 60 for exit, 1 for write to stdout)
+- put arguments in the registers (see above) like when calling a C function
+- execute the `syscall` instruction
+
+## Calling C functions
+
+## Assemble
+
+- Assemble: `nasm -felf64 -o <object> <filename>`
+- Link with ld: `ld -o <output> <object>`
+- Link with gcc: `gcc -o <output> <object>`
+
+
+## Resources
+
+[Assembly 1: Basics – CS 61 2018](https://cs61.seas.harvard.edu/site/2018/Asm1/)
+
+[CS107 Guide to x86-64](https://web.stanford.edu/class/cs107/guide/x86-64.html)
+
+[x64 NASM Cheat Sheet · GitHub](https://gist.github.com/justinian/385c70347db8aca7ba93e87db90fc9a6)
+
+[nasmtutorial](https://cs.lmu.edu/~ray/notes/nasmtutorial/)

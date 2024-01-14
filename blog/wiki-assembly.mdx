@@ -130,6 +130,15 @@ _start:
 
 ## Section
 
+1. `.text` Section:
+   - `.text` section is generally read-only. It is typically used for storing executable code, and it is not intended to be modified during program execution.
+   - `.text` section contains the machine code instructions that the processor will execute.
+   - `.text` section contains global constant data.
+
+2. `.data` Section:
+   - `.data` section is writable. It is used for storing initialized data that can be modified during the execution of the program.
+   - `.data` section contains global variable data.
+
 ## Label
 
 ## Instruction
@@ -139,41 +148,64 @@ Assembly instructions are human readable representation of the machine code as C
 Instruction: Opcode + Oprand 
 
 
-### Instruction Opcode
+### Opcode
 
 [Intel x86 Assembler Instruction Set Opcode Table](http://sparksandflames.com/files/x86InstructionChart.html)
 
-### Instruction Oprand
+### Oprand
 
 Data area
 
 #### Register Operand
-#### Memory Operand
+
+```asm
+mov   rdi, rsi
+```
+
 #### Immediate Operand
+
+```asm
+mov   rdi, 0x21
+mov   rdi, 5
+mov   edi, 0x21314151
+```
+
+in `aarch64`, the immediate value is subject to:
+- Arithmetic instructions (add{s}, sub{s}, cmp, cmn) take a 12-bit unsigned immediate with an optional 12-bit left shift.
+- Move instructions (movz, movn, movk) take a 16-bit immediate optionally shifted to any 16-bit-aligned position within the register.
+- Address calculations (adr, adrp) take a 21-bit signed immediate, although there's no actual syntax to specify it directly - to do so you'd have to resort to assembler expression trickery to generate an appropriate "label".
+- Logical instructions (and{s}, orr, eor, tst) take a "bitmask immediate".
+
+#### Memory Operand
+
+```asm
+mov   rdi, [sdi]
+```
 
 ### Instruction Encoding
 
 Assembler will encode the human-readable instruction into machine code.
 
-- In `aarch64`, the encoding instruction is fixed-size(4 bytes) machine code.
-- In `x86_64`, the encoding instruction is non-fixed-size(up to 16 bytes) machine code.
+- In `aarch64`, the encoding instruction is **fixed-size**(4 bytes) machine code.
+- In `x86_64`, the encoding instruction is **non-fixed-size**(up to 16 bytes) machine code.
 
 [Encoding Real x86 Instructions](http://www.c-jump.com/CIS77/CPU/x86/lecture.html)
 
-In order to load 32-bit integer, `x86_64` need only one instruction while more instructions are needed for `aarch64` to do that.
+Let's have a glimpse on the impact of the **fixed/non-fixed** encoding.
 
-Let's have a glimpse on the impact of the fixed/non-fixed encoding.
+In order to load 32-bit integer, `x86_64` need only **one** instruction while more instructions are needed for `aarch64` to do that.
 
-Load 32-bit `0x1a2b3c4d` in `x86_64`,
+Load a 32-bit integer `0x1a2b3c4d` in `x86_64`,
 
 ```asm
-mov   rdi, 0x1a2b3c4d
+mov     rid, 0x1a2b3c4d
 ```
 
-Load 32-bit `0x1a2b3c4d` in `aarch64`, the immediate value must be less than 8-bit.
+Load a 32-bit integer 32-bit `0x1a2b3c4d` in `aarch64`(the immediate value in `mov` must be in the range of `16-bit`, so it needs **two** instructions),
 
 ```asm
-mov   eax, 
+movz    x1, 0x3c4d
+movk    x1, 0x1a2b, lsl 16
 ```
 
 ## NASM x86_64 cheat sheet

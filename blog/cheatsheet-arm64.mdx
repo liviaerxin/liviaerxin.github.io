@@ -1,0 +1,107 @@
+---
+authors:
+  - frank
+tags:
+  - Cheatsheet ARM64
+description: Cheatsheet ARM64
+keywords:
+  - AArch64 
+  - ARM64
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-01-14
+draft: false
+enableComments: true # for Gisqus
+---
+
+# ARM64/AArch64 Cheat Sheet
+
+## Registers
+
+| Register                   | Low 32-bits | Calling convention |
+|----------------------------|-------------|--------------------|
+| General-purpose registers: |
+| `x0`                       | `w0`        |                    |
+| `x1`                       | `w1`        |                    |
+| `x2`                       | `w2`        |                    |
+| Special-purpose registers: |
+| `xzr`                      | `wzr`       | Zero register      |
+| `sp`                       | -           | Stack pointer      |
+<!--truncate-->
+
+## Data type
+
+| Definition size | Definition instruction |
+|-----------------|------------------------|
+| 8 bit           | `byte`                 |
+| 16 bit          | `hword`                |
+| 32 bit          | `word`                 |
+| 64 bit          | `dword`                |
+
+## Move
+
+`movz` + `movk`
+
+```asm
+// Load the 64-bit integer `0x1a2b3c4d1a2b3c4d` from the immediate
+movz     x1, #0x3c4d
+movk    x1, #0x1a2b, lsl #16
+movk    x1, #0x3c4d, lsl #32
+movk    x1, #0x1a2b, lsl #48
+```
+
+## Load
+ 
+| Load instruction   | Purpose     |
+|--------------------|-------------|
+| `ldr    x0, [x1]`  | load 64-bit |
+| `ldr    w0, [x1]`  | load 32-bit |
+| `ldrh    w0, [x1]` | load 16-bit |
+| `ldrb    w0, [x1]` | load 8-bit  |
+
+```asm
+.data
+    int32_var:  .word   0x1a2b3c4d
+```
+
+`adr`
+
+```asm
+adr	    x20, int32_var
+ldr     x2, [x20]
+```
+
+`adrp` + `add`
+
+```asm
+adrp	x20, int32_var
+add     x20, x20, :lo12:int32_var
+ldr    x2, [x20]
+```
+
+in macOS m1,
+
+```asm
+adrp	x20, int32_var@PAGE
+add     x20, x20, int32_var@PAGEOFF
+ldr    x2, [x20]
+```
+
+## Store
+
+## Resources
+
+[ios-resources/bits/arm64.md at master · Siguza/ios-resources · GitHub](https://github.com/Siguza/ios-resources/blob/master/bits/arm64.md)
+
+[asm_book/section_1/regs/ldr.md at main · pkivolowitz/asm_book · GitHub](https://github.com/pkivolowitz/asm_book/blob/main/section_1/regs/ldr.md)
+
+[Exploring AArch64 assembler – Chapter 5](https://thinkingeek.com/2016/11/13/exploring-aarch64-assembler-chapter-5/)
+
+https://peterdn.com/post/2020/08/22/hello-world-in-arm64-assembly/
+
+https://gpanders.com/blog/exploring-mach-o-part-1/
+
+https://iitd-plos.github.io/col718/ref/arm-instructionset.pdf
+
+https://modexp.wordpress.com/2018/10/30/arm64-assembly/#registers
+
+https://stackoverflow.com/questions/41906688/what-are-the-semantics-of-adrp-and-adrl-instructions-in-arm-assembly
