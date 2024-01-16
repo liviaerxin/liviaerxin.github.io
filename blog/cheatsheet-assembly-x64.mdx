@@ -1,0 +1,190 @@
+---
+authors:
+  - frank
+tags:
+  - cheat sheet 
+  - x64
+  - nasm
+  - gas
+description: x64 NASM Cheat Sheet
+keywords:
+  -  x64 NASM cheat sheet
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-01-14
+draft: false
+enableComments: true # for Gisqus
+---
+
+# x64 Assembly Cheat Sheet
+
+Including two main assembler:
+
+- GNU Assembler(GAS): AT&T syntax
+- NASM: Intel syntax
+
+## Registers
+
+| Register         | Low 32-bits | Low 16-bits | Low 8-bit | High 8-bits | Calling convention        | Callee-saved? |
+|------------------|-------------|-------------|-----------|-------------|---------------------------|---------------|
+| General-purpose: |
+| `%rax`           | `%eax`      | `%ax`       | `%al`     | `%ah`       | Return value              | No            |
+| `%rbx`           | `%ebx`      | `%bx`       | `%bl`     | `%bh`       | -                         | Yes           |
+| `%rcx`           | `%ecx`      | `%cx`       | `%cl`     | `%ch`       | 4th argument              | Yes           |
+| `%rdx`           | `%edx`      | `%dx`       | `%dl`     | `%dh`       | 3th argument              | Yes           |
+| `%rsi`           | `%esi`      | `%si`       | `%sil`    | -           | 2st argument              | No            |
+| `%rdi`           | `%edi`      | `%di`       | `%dil`    | -           | 1st argument              | No            |
+| `%r8`            | `%r8d`      | `%r8w`      | `%r8b`    | -           | 5th argument              | No            |
+| `%r9`            | `%r9d`      | `%r9w`      | `%r9b`    | -           | 6th argument              | No            |
+| `%r10`           | `%r10d`     | `%r10w`     | `%r10b`   | -           | -                         | No            |
+| `%r11`           | `%r11d`     | `%r11w`     | `%r11b`   | -           | -                         | No            |
+| `%r12`           | `%r12d`     | `%r12w`     | `%r12b`   | -           | -                         | Yes           |
+| `%r13`           | `%r13d`     | `%r13w`     | `%r13b`   | -           | -                         | Yes           |
+| `%r14`           | `%r14d`     | `%r14w`     | `%r14b`   | -           | -                         | Yes           |
+| `%r15`           | `%r15d`     | `%r15w`     | `%r15b`   | -           | -                         | Yes           |
+| Special-purpose: |
+| `%rsp`           | `%esp`      | `%sp`       | `%spl`    | –           | Stack pointer             | Yes           |
+| `%rbp`           | `%ebp`      | `%bp`       | `%bpl`    | –           | Base pointer              | Yes           |
+| `%rip`           | `%eip`      | `%ip`       | -         | –           | Instruction pointer       | -             |
+| `%rflags`        | `%eflags`   | `%flags`    | -         | –           | Flags and condition codes | No            |
+
+## Data Type
+
+| Definition size    | NASM       | -       | GAS                    | suffix |
+|--------------------|------------|---------|------------------------|--------|
+| 8 bit              | `db`       | `BYTE`  | `byte`                 | `b`    |
+| 16 bit             | `dw`       | `WORD`  | `short`/`word`/`2byte` | `w`    |
+| 32 bit             | `dd`       | `DWORD` | `long`/`int`/`4byte`   | `l`    |
+| 64 bit             | `ddq`/`do` | `QWORD` | `quad`/`8byte`         | `q`    |
+| float              | `dd`       | -       | -                      |
+| double             | `dq`       | -       | -                      |
+| extended precision | `dt`       | -       | -                      |
+| string             | -          | -       | `ascii`/`asciz`        | -      |
+
+```asm
+.data
+  int8 .db 0x7f
+  msg .db 0x7f, 'E', 'L', 'F', 1, 1, 1, 0
+```
+
+```asm
+.data
+  int8 .byte 0x7f
+  msg .byte 0x7f, 'E', 'L', 'F', 1, 1, 1, 0
+  ms  .asciz "ELF"
+  ms  .ascii "ELF", 0x0
+```
+
+## Memory and Addressing Modes
+
+```asm
+mov eax, [ebx]	; Move the 4 bytes in memory at the address contained in EBX into EAX
+mov [var], ebx	; Move the contents of EBX into the 4 bytes at memory address var. (Note, var is a 32-bit constant).
+mov eax, [esi-4]	; Move 4 bytes at memory address ESI + (-4) into EAX
+mov [esi+eax], cl	; Move the contents of CL into the byte at address ESI+EAX
+mov edx, [esi+4*ebx]    	; Move the 4 bytes of data at address ESI+4*EBX into EDX
+```
+
+```asm
+mov (%ebx), %eax	/* Load 4 bytes from the memory address in EBX into EAX. */
+mov %ebx, var(,1)	/* Move the contents of EBX into the 4 bytes at memory address var.
+(Note, var is a 32-bit constant). */
+mov -4(%esi), %eax	/* Move 4 bytes at memory address ESI + (-4) into EAX. */
+mov %cl, (%esi,%eax,1)   	/* Move the contents of CL into the byte at address ESI+EAX. */
+mov (%esi,%ebx,4), %edx     	/* Move the 4 bytes of data at address ESI+4*EBX into EDX. */
+```
+
+## Size Directives in `mov`
+
+```asm
+mov BYTE [ebx], 2	; Move 2 into the single byte at the address stored in EBX.
+mov WORD [ebx], 2	; Move the 16-bit integer representation of 2 into the 2 bytes starting at the address in EBX.
+mov DWORD [ebx], 2    	; Move the 32-bit integer representation of 2 into the 4 bytes starting at the address in EBX.
+```
+
+```asm
+movb $2, (%ebx)	/* Move 2 into the single byte at the address stored in EBX. */
+movw $2, (%ebx)	/* Move the 16-bit integer representation of 2 into the 2 bytes starting at the address in EBX. */
+movl $2, (%ebx)     	/* Move the 32-bit integer representation of 2 into the 4 bytes starting at the address in EBX. */
+```
+
+```asm
+movsbl %al, %edx    # copy 1-byte %al, sign-extend into 4-byte %edx
+movzbl %al, %edx    # copy 1-byte %al, zero-extend into 4-byte %edx
+```
+
+## Common instructions
+
+### Mov and lea
+
+```asm
+mov src, dst              # general form of instruction dst = src
+mov $0, %eax              # %eax = 0
+movb %al, 0x409892        # write to address 0x409892 low-byte of %eax
+mov 8(%rsp), %eax         # %eax = value read from address %rsp + 8
+
+lea 0x20(%rsp), %rdi      # %rdi = %rsp + 0x20 (no dereference!)
+lea (%rdi,%rdx,1), %rax   # %rax = %rdi + %rdx
+```
+
+## Stack operation
+
+```asm
+push %rbx         # push value of %rbx onto stack
+pushq $0x3        # push immediate value 3 onto stack
+sub $0x10, %rsp   # adjust stack pointer to set aside 16 more bytes
+
+pop %rax          # pop topmost value from stack into register %rax
+add $0x10, %rsp   # adjust stack point to remove topmost 16 bytes
+```
+
+## Calling Convention
+
+```asm
+mov $0x3, %rdi    # first arg is passed in %rdi
+mov $0x7, %rsi    # second arg is passed in %rsi
+callq binky       # transfers control to function binky
+```
+
+<!--truncate-->
+## Program structure
+
+- `global <entry>` -> exposes entry point
+- `extern <function>` -> declares a function in another linked .o file (e.g. C
+  function, other asm file)
+- `section <sectiontype>` -> sets section, usually:
+  - `.text` -> program code
+  - `.data` -> data
+
+The program entry point of a standalone program is the label `_start`.  When
+compiled with gcc, C provides `_start`, which inits and then jumps to `main`,
+which should then be implemented by the program.
+
+
+## Syscalls
+
+- put syscall number in EAX (e.g. on Linux: 60 for exit, 1 for write to stdout)
+- put arguments in the registers (see above) like when calling a C function
+- execute the `syscall` instruction
+
+## Calling C functions
+
+## Assemble
+
+- Assemble: `nasm -felf64 -o <object> <filename>`
+- Link with ld: `ld -o <output> <object>`
+- Link with gcc: `gcc -o <output> <object>`
+
+
+## Resources
+
+[Assembly 1: Basics – CS 61 2018](https://cs61.seas.harvard.edu/site/2018/Asm1/)
+
+[CS107 Guide to x86-64](https://web.stanford.edu/class/cs107/guide/x86-64.html)
+
+[x64 NASM Cheat Sheet · GitHub](https://gist.github.com/justinian/385c70347db8aca7ba93e87db90fc9a6)
+
+[nasmtutorial](https://cs.lmu.edu/~ray/notes/nasmtutorial/)
+
+[gasexamples](https://cs.lmu.edu/~ray/notes/gasexamples/)
+
+[Guide to x86 Assembly](https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html)
