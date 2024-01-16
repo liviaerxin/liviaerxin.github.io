@@ -3,7 +3,9 @@ authors:
   - frank
 tags:
   - docker
+  - docker compose
   - best practice
+  - cheat sheet
 description: Docker Useful Commands
 keywords:
   - docker

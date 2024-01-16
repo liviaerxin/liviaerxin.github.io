@@ -1,5 +1,16 @@
 ---
-tags: [network, network/diagnosis, netstat, route, traceroute]
+authors:
+  - frank
+tags:
+  - network
+  - cheat sheet
+description: Network Cheat Sheet
+keywords:
+  - Network Cheat Sheet 
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-01-16
+draft: false
+enableComments: true # for Gisqus
 ---
 
 # Network Cheat Sheet
