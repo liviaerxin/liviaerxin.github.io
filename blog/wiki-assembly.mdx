@@ -128,16 +128,69 @@ _start:
     syscall        ; Make the system call
 ```
 
-## Section
+## Memory Layout
 
-1. `.text` Section:
+The structure of an assembly file generally consists of serval section:
+
+- `.text` section:
    - `.text` section is generally read-only. It is typically used for storing executable code, and it is not intended to be modified during program execution.
    - `.text` section contains the machine code instructions that the processor will execute.
    - `.text` section contains global constant data.
-
-2. `.data` Section:
+- `.data` section:
    - `.data` section is writable. It is used for storing initialized data that can be modified during the execution of the program.
    - `.data` section contains global variable data.
+- `.bss` section: 
+  - It's mostly the same with `.data` section except it's used for storing uninitialized data 
+- `.rodata` section:
+  - It is used for read-only data, such as constant strings.
+
+Here's a simple example illustrating the use of these sections:
+
+
+```asm
+.section .text
+.global _start
+
+_start:
+    // Code goes here
+
+.section .data
+my_data:
+    .word 42   // Initialized data
+
+.section .bss
+my_uninitialized_data:
+    .skip 4    // Uninitialized data, occupies 4 bytes
+
+.section .rodata
+my_string:
+    .asciz "Hello, World!"  // Read-only data
+```
+
+A compiled program's memory layout consists of these segments.
+A running program's memory layout consists of these segments, and also `heap` and `stack` memory.
+
+## Memory Layout of a Running Program
+
+A running program typically consists of serval segments or sections, each serving a specific purpose but common sections include:
+
+- `Stack`:
+  - Stores local variables and function call information.
+  - Memory is automatically allocated and de-allocated as functions are called and return.
+  - Register(`sp` in `arm64`, stack pointer) is used to manage and point to the stack memory.
+  - Size is limited(may lead to **stack overflow**).
+    - set via `ulimit -s` in linux.
+- `Heap`:
+  - Dynamic memory managed by programmer at runtime.
+  - Memory is allocated and deallocated explicitly using functions like `malloc`/`free` in `C`, and `new`/`delete` in `C++`, `brk` system call in `assembly` etc.
+  - Store dynamic data that can be shared across functions. Data lifecycle is not bound to functions.
+  - Size is much larger than the stack,
+- `Data`(`.data`, `.bss`):
+  - Stores global variables/constants, separated into initialized and uninitialized
+- `Text`(`.text`): 
+  - Stores the code being executed
+
+[CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/fa2022/resources/stack-heap/)
 
 ## Label
 
