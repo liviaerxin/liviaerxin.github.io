@@ -121,3 +121,10 @@ git submodule foreach git pull origin main
 git submodule update --recursive --remote
 ```
 
+## Discard local commits
+
+Assume your local repo has 10 commits ahead of the `origin/main`, and you want to move back to the `origin/main`.
+
+```sh
+git reset --hard origin/main
+```

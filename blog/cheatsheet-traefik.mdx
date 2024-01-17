@@ -1,0 +1,63 @@
+---
+authors:
+  - frank
+tags:
+  - Cheatsheet Traefik
+description: Cheatsheet Traefik
+keywords:
+  - Cheatsheet Traefik
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-01-17
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Traefik Cheat Sheet
+
+I use `traefik` in my docker compose project frequently as it is more briefly directive than `nginx` and quick to spin up.
+
+<!--truncate-->
+
+## Redirect root path `/` to a subpath
+
+The goal is to redirect root path `/` to sub path `/mtr` that's an ingress for a web service:
+
+- `http://127.0.0.1` -> `http://127.0.0.1/mtr`
+- `http://127.0.0.1` -> `http://127.0.0.1/mtr`
+- `https://127.0.0.1/something` -> no redirect
+
+It works for **Traefik 2.0**
+
+```yml
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - 80:80
+      - 8080:8080 # Web UI Port
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.domain.entrypoints=web
+      - traefik.http.routers.domain.rule=Path(`/`)
+      - traefik.http.routers.domain.service=noop@internal
+      - traefik.http.routers.domain.middlewares=to-web-frontend@docker
+      - traefik.http.middlewares.to-web-frontend.redirectregex.permanent=true
+      - traefik.http.middlewares.to-web-frontend.redirectregex.regex=^http://([^/]+)/?$ # http://127.0.0.1
+      - traefik.http.middlewares.to-web-frontend.redirectregex.replacement=http://$${1}/mtr # http://127.0.0.1/mtr # http://127.0.0.1 -> http://127.0.0.1/mtr
+
+  web-frontend:
+    image:  traefik/whoami:v2.10
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.web-frontend.entrypoints=web
+      - traefik.http.routers.web-frontend.rule=PathPrefix(`/mtr`) # match `http://127.0.0.1/mtr` -> ingress `/mtr`
+```
+
+## Resources
