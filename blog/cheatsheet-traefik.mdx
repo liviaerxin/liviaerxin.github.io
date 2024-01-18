@@ -14,7 +14,15 @@ enableComments: true # for Gisqus
 
 # Traefik Cheat Sheet
 
-I use `traefik` in my docker compose project frequently as it is more briefly directive than `nginx` and quick to spin up.
+Here are quick references for using `Traefik`.
+
+I use `Traefik` in my docker compose project more frequently than using `Nginx`, as it has such advantages:
+- Simply to use and fast to spin up
+  - Configuration relies on platform syntax(like `Docker labels` or `Kubernetes annotations`), while `Nginx` uses its own syntax and directives.
+  - Configuration can just sit in `docker-compose.yml`, but `Nginx` always uses a dedicate configuration file(`/etc/nginx/nginx.conf`).
+- Dynamic configuration:
+  - Changes to the configuration require a restart of the `Nginx` process
+  - Changes to the configuration require a restart of its corresponding service, not the `Traefik` process
 
 <!--truncate-->
 
@@ -61,3 +69,8 @@ services:
 ```
 
 ## Resources
+
+
+[URL Redirect abc.com to xyz.com - Traefik v2 (latest) - Traefik Labs Community Forum](https://community.traefik.io/t/url-redirect-abc-com-to-xyz-com/8084)
+
+[Traefik redirect / (root) to sub path with Docker labels · GitHub](https://gist.github.com/kekru/d088be6a3fa844089ae62d80c077bb38)
