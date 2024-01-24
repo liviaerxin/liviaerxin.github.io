@@ -24,6 +24,10 @@ I use `Traefik` in my docker compose project more frequently than using `Nginx`,
   - Changes to the configuration require a restart of the `Nginx` process
   - Changes to the configuration require a restart of its corresponding service, not the `Traefik` process
 
+[How a Request is processed in Traefik](https://doc.traefik.io/traefik/assets/img/middleware/overview.png)
+
+Entrypoint -> Router -> Middleware 1 -> Middleware 2 -> ... -> Service
+
 <!--truncate-->
 
 ## Redirect root path `/` to a subpath
@@ -52,20 +56,40 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - traefik.enable=true
+      # Redirection from `http://xxx.com` to `http://xxx.com/foo`
       - traefik.http.routers.domain.entrypoints=web
       - traefik.http.routers.domain.rule=Path(`/`)
       - traefik.http.routers.domain.service=noop@internal
-      - traefik.http.routers.domain.middlewares=to-web-frontend@docker
-      - traefik.http.middlewares.to-web-frontend.redirectregex.permanent=true
-      - traefik.http.middlewares.to-web-frontend.redirectregex.regex=^http://([^/]+)/?$ # http://127.0.0.1
-      - traefik.http.middlewares.to-web-frontend.redirectregex.replacement=http://$${1}/mtr # http://127.0.0.1/mtr # http://127.0.0.1 -> http://127.0.0.1/mtr
+      - traefik.http.routers.domain.middlewares=to-foo@docker
+      - traefik.http.middlewares.to-foo.redirectregex.permanent=true
+      - traefik.http.middlewares.to-foo.redirectregex.regex=^http://([^/]+)/?$
+      - traefik.http.middlewares.to-foo.redirectregex.replacement=http://$${1}/foo
 
-  web-frontend:
-    image:  traefik/whoami:v2.10
+  foo:
+    image:  traefik/whoami:v1.10
+    hostname: foo.com
     labels:
       - traefik.enable=true
-      - traefik.http.routers.web-frontend.entrypoints=web
-      - traefik.http.routers.web-frontend.rule=PathPrefix(`/mtr`) # match `http://127.0.0.1/mtr` -> ingress `/mtr`
+      # just to ingress `http://xxx.com/foo`
+      - traefik.http.routers.foo.entrypoints=web
+      - traefik.http.routers.foo.rule=PathPrefix(`/foo`)
+```
+
+## Route a prefix to a service
+
+Match a request with a prefix `/bar`, strip the prefix and route it to the **bar** service,
+
+```yml
+  bar:
+    image:  traefik/whoami:v1.10
+    hostname: bar.com
+    labels:
+      - traefik.enable=true
+      # ingress `http://xxx.com/bar/xyz` and send `http://xxx.com/xyz` to `bar` service
+      - traefik.http.routers.bar.entrypoints=web
+      - traefik.http.routers.bar.rule=PathPrefix(`/bar`)
+      - traefik.http.routers.bar.middlewares=bar-strip-prefix@docker
+      - traefik.http.middlewares.bar-strip-prefix.stripprefix.prefixes=/bar
 ```
 
 ## Resources
