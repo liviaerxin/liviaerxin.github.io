@@ -12,9 +12,9 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# Traefik Cheat Sheet
+# Traefik Docker Cheat Sheet
 
-Here are quick references for using `Traefik`.
+Here are quick references for using `Traefik` on `Docker` containers.
 
 I use `Traefik` in my docker compose project more frequently than using `Nginx`, as it has such advantages:
 - Simply to use and fast to spin up
@@ -24,7 +24,7 @@ I use `Traefik` in my docker compose project more frequently than using `Nginx`,
   - Changes to the configuration require a restart of the `Nginx` process
   - Changes to the configuration require a restart of its corresponding service, not the `Traefik` process
 
-[How a Request is processed in Traefik](https://doc.traefik.io/traefik/assets/img/middleware/overview.png)
+![How a Request is processed in Traefik](https://doc.traefik.io/traefik/assets/img/middleware/overview.png)
 
 Entrypoint -> Router -> Middleware 1 -> Middleware 2 -> ... -> Service
 
@@ -80,16 +80,35 @@ services:
 Match a request with a prefix `/bar`, strip the prefix and route it to the **bar** service,
 
 ```yml
-  bar:
-    image:  traefik/whoami:v1.10
-    hostname: bar.com
-    labels:
-      - traefik.enable=true
-      # ingress `http://xxx.com/bar/xyz` and send `http://xxx.com/xyz` to `bar` service
-      - traefik.http.routers.bar.entrypoints=web
-      - traefik.http.routers.bar.rule=PathPrefix(`/bar`)
-      - traefik.http.routers.bar.middlewares=bar-strip-prefix@docker
-      - traefik.http.middlewares.bar-strip-prefix.stripprefix.prefixes=/bar
+bar:
+  image:  traefik/whoami:v1.10
+  hostname: bar.com
+  labels:
+    - traefik.enable=true
+    # ingress `http://xxx.com/bar/xyz` and send `http://xxx.com/xyz` to `bar` service
+    - traefik.http.routers.bar.entrypoints=web
+    - traefik.http.routers.bar.rule=PathPrefix(`/bar`)
+    - traefik.http.routers.bar.middlewares=bar-strip-prefix@docker
+    - traefik.http.middlewares.bar-strip-prefix.stripprefix.prefixes=/bar
+```
+
+## Specify a custom port for the container
+
+By default, Traefik used the first exposed port of a container, if a container exposes multiple ports, set `traefik.http.services.xxx.loadbalancer.server.port` to override that port.
+
+```yml
+bar12345:
+  image:  traefik/whoami:v1.10
+  hostname: bar12345.com
+  environment:
+    WHOAMI_PORT_NUMBER: 12345
+  labels:
+    - traefik.enable=true
+    - traefik.http.routers.bar12345.entrypoints=web
+    - traefik.http.routers.bar12345.rule=PathPrefix(`/bar12345`)
+    - traefik.http.routers.bar12345.service=bar12345
+    # Tell Traefik to use the port 12345 to connect to `bar12345` service
+    - traefik.http.services.bar12345.loadbalancer.server.port=12345
 ```
 
 ## Resources
