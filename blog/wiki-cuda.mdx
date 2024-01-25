@@ -19,39 +19,33 @@ date: 2023-06-29
 author: frank
 ---
 
-# Wiki CUDA
+# Wiki NVIDIA Driver and CUDA Library
 
 Ecosystem:
 
 Hardware:
 
-- GPU(Hardware)
+- NVIDIA GPU(Hardware)
 
 Software:
 
-- Nvidia GPU Driver
+- NVIDIA Driver(GPU, Graphics Card)
   - libnvidia-encode.so
 - CUDA Toolkit
   - libnvcuvid.so
   - libcuda.so
 - cuDNN library
-- Nvidia Container Toolkit
+- NVIDIA Container Toolkit
   - libnvidia-container.so
 
 <!--truncate-->
 
 ![CUDA Components](https://docs.nvidia.com/deploy/cuda-compatibility/graphics/CUDA-components.png)
 
-## CUDA on WSL
 
-NVIDIA CUDA software stack on WSL 2:
+## NVIDIA Driver on Ubuntu
 
-![NVIDIA CUDA software stack on WSL 2](https://docs.nvidia.com/cuda/wsl-user-guide/_images/wsl-launch-upt-0625-rz.png)
-
-
-## Nvidia GPU Driver on Ubuntu
-
-### Find out whether the host machine have Nvidia GPU hardware
+### Find out whether the host machine have NVIDIA GPU hardware
 
 ```sh
 $ lspci | grep VGA
@@ -87,7 +81,7 @@ graphics card:
 Primary display adapter: #94
 ```
 
-### Check which GPU Driver being used
+### Check which NVIDIA driver being used
 
 Ubuntu is using **open-source Nouveau drivers**
 
@@ -110,13 +104,13 @@ Ubuntu is not using the **proprietary NVIDIA drivers**
 $ lsmod | grep nvidia
 ```
 
-### Install the Nvidia GPU driver
+### Install the NVIDIA driver
 
 [Ubuntu Linux Install Nvidia Driver (Latest Proprietary Driver)](https://www.cyberciti.biz/faq/ubuntu-linux-install-nvidia-driver-latest-proprietary-driver)
 
 [Install Nvidia Beta Drivers via PPA Repository](https://phoenixnap.com/kb/install-nvidia-drivers-ubuntu#ftoc-heading-11)
 
-### Verify the Nvidia GPU driver
+### Verify the NVIDIA driver
 
 ```sh
 nvidia-smi
@@ -128,17 +122,64 @@ nvidia-smi --query-gpu=driver_version --format=csv
 dconfig -p | grep nvidia
 ```
 
-## Nvidia CUDA on Ubuntu
+### Reload NVIDIA driver
+
+Get related drivers,
+
+```sh
+lsmod | grep nvidia
+```
+
+Unload drivers,
+
+```sh
+sudo rmmod nvidia_drm
+sudo rmmod nvidia_modeset
+sudo rmmod nvidia_uvm
+```
+
+```sh
+sudo rmmod nvidia
+```
+
+Load NVIDIA driver again,
+
+```sh
+nvidia-smi
+```
+
+
+[cuda - Nvidia NVML Driver/library version mismatch - Stack Overflow](https://stackoverflow.com/questions/43022843/nvidia-nvml-driver-library-version-mismatch#comment73133147_43022843)
+
+Prevent updating NVIDIA driver,
+
+```sh
+sudo apt-mark hold nvidia-driver-535
+sudo apt-mark hold nvidia-dkms-535
+sudo apt-mark hold nvidia-utils-535
+```
+
+[updates - How to prevent updating of a specific package? - Ask Ubuntu](https://askubuntu.com/questions/18654/how-to-prevent-updating-of-a-specific-package)
+
+## NVIDIA CUDA Toolkit on WSL
+
+NVIDIA CUDA software stack on WSL 2:
+
+![NVIDIA CUDA software stack on WSL 2](https://docs.nvidia.com/cuda/wsl-user-guide/_images/wsl-launch-upt-0625-rz.png)
+
+## NVIDIA CUDA Toolkit on Ubuntu
 
 [Official documentation: CUDA installation](https://docs.nvidia.com/cuda/)
 
 [How to Install CUDA on Ubuntu 22.04 LTS](https://linuxhint.com/install-cuda-on-ubuntu-22-04-lts)
 
-## Nvidia CUDA Container Toolkit
+## NVIDIA Container Toolkit
+
+Build and run containers leveraging NVIDIA GPUs, already including **CUDA Toolkit**.
+
+![NVIDIA Container Toolkit](https://cloud.githubusercontent.com/assets/3028125/12213714/5b208976-b632-11e5-8406-38d379ec46aa.png)
 
 [](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
-
-## Nvidia CUDA Container
 
 Prerequisites on Host Machine:
 
@@ -195,7 +236,7 @@ More `Dockerfile` examples:
 - [Dockerfile](../code-snippets/dockerfiles/nvidia-cuda-ffmpeg/Dockerfile)
 - [docker compose](../code-snippets/docker-compose/nvidia-cuda/docker-compose.yml)
 
-## FFmpeg in Nvidia CUDA container
+## FFmpeg in NVIDIA CUDA container
 
 https://developer.nvidia.com/ffmpeg
 
