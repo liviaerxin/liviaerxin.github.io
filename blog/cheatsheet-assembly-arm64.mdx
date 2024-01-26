@@ -40,9 +40,11 @@ enableComments: true # for Gisqus
 | 32 bit          | `word`                 |
 | 64 bit          | `dword`                |
 
-## Move
+## Load from immediate
 
-`movz` + `movk`
+`movz`/`mov` + `movk`
+
+Load the 64-bit integer `0x1a2b3c4d1a2b3c4d` from the immediate,
 
 ```asm
 // Load the 64-bit integer `0x1a2b3c4d1a2b3c4d` from the immediate
@@ -52,7 +54,7 @@ movk    x1, #0x3c4d, lsl #32
 movk    x1, #0x1a2b, lsl #48
 ```
 
-## Load
+## Load from label
  
 | Load instruction   | Purpose     |
 |--------------------|-------------|
@@ -61,24 +63,41 @@ movk    x1, #0x1a2b, lsl #48
 | `ldrh    w0, [x1]` | load 16-bit |
 | `ldrb    w0, [x1]` | load 8-bit  |
 
+Assume the 32-bit data in `.data` section,
+
 ```asm
 .data
     int32_var:  .word   0x1a2b3c4d
 ```
 
-`adr`
+`adr`: shift by byte(±1M, one instruction), the assembler will do:
+- calculate the PC-relative offset from the current `adr` instruction to the label `int32_var` in bytes.
+- encode the offset in the `adr` instruction.
 
 ```asm
 adr	    x20, int32_var
 ldr     x2, [x20]
 ```
 
-`adrp` + `add`
+`adrp` + `add`: shift by 4KB page(±4G, two instructions), the assembler will do:
+- calculate the PC-relative offset from the current `adr` instruction to the label `int32_var` in page.
+  - calculate the PC-relative offset in bytes.
+  - divide the byte offset using 4096(or right shift 12 bits), now the quotient is page offset
+- encode the page offset in the `adrp` instruction.
+- encode the lower 12 bits in the `add` instruction.
+
 
 ```asm
 adrp	x20, int32_var
 add     x20, x20, :lo12:int32_var
 ldr    x2, [x20]
+```
+
+or more simply,
+
+```asm
+adrp	x20, int32_var
+ldr    x2, [x20, :lo12:int32_var]
 ```
 
 in macOS m1,
