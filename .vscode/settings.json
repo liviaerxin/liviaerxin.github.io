@@ -27,6 +27,10 @@
     "*.wxs": "javascript",
     "*.mdx": "markdown",
     "stdio.h": "c",
-    "stdint.h": "c"
+    "stdint.h": "c",
+    "random": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c"
   }
 }
