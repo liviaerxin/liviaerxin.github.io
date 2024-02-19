@@ -1,0 +1,119 @@
+---
+authors:
+  - frank
+tags:
+  - Wiki 
+  - Compiler
+description: Introduction for writing a Compiler in practice
+keywords:
+  - Writing Compiler
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-02-19
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Wiki Compiler
+
+# Overview
+
+Let's have a look at the functions that a compiler should be able to build.
+
+1. lexer(Lexical analysis)
+   - generate tokens from source code
+2. parser
+   - construct abstract syntax tree(AST) from tokens
+3. code generation
+   - generate low-level code, such as assembly code or machine code
+
+## Interpreter vs compiler
+
+an **interpreter** also does `lexer` and `parser` jobs as a compiler does in step 1 and 2, but instead of generating low-level code, the **interpreter** generates the results.
+
+## Bootstrap a compiler for new language
+
+New programming language and its corresponding compiler is mainly developed from an existing language. The progress is called **bootstrapping**, which can be summarized as,
+
+```sh
+C1  + L1  -> C20
+C20 + L2u -> C21
+C21 + L2  -> C22
+C22 + L2  -> C23
+C23 + L2  -> C24
+```
+
+`L1` : an existing language 
+`C1` : an existing compiler for language `L1`
+`C20`: a compiler written in language `L1` for language `L2u`
+`C21`: a compiler written in language `L2u` for language `L2`
+`L2u`: is subset of language `L2`
+
+Bootstrapping stage:
+
+1. Write a bootstrap compiler `C20` to understand language `L2u`(a subset of language `L2`) in using existed language `L1` and its corresponding compiler `C1`.
+2. Use the compiler `C20` and language `L2u` to write the compiler `C21` to understand language `L2`.
+3. Now `C21` is a fully self-hosted compiler, as well as its descendants `C22`, `C23`, and `C24`.
+
+### Where did the existing compiler `C1` come from?
+
+There is no need to use a compiler `C1` + `L1` if you write the bootstrap compiler `C20` in machine code. This solves the chicken-and-egg problem totally for programming languages.
+
+1. Bootstrapping initial compiler `C20`:
+   1. A small and simple compiler is created manually in machine code or written in `assembly` language.
+   2. [Option*] Translate the `assembly` language into machine code manually if it's not written in machine code.
+   3. The initial compiler is just capable enough to understand a subset of the target language `C` it is supposed to compile.
+2. Use the initial compiler `C20` to compile the compiler `C21` written in language `C` while the `C21` is also supposed to compile language `C`.
+3. Now compiler `C21` a fully self-compilation.
+
+[Strange Loops: Ken Thompson and the Self-referencing C Compiler | ScienceBlogs](https://scienceblogs.com/goodmath/2007/04/15/strange-loops-dennis-ritchie-a)
+
+[Bootstrapping (compilers) - Wikipedia](https://en.wikipedia.org/wiki/Bootstrapping_%28compilers%29)
+
+[Compilers: Principles, Techniques, and Tools - Wikipedia](http://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools)
+
+### Implementations
+
+Interpreter:
+
+- [GitHub - rswier/c4: C in four functions](https://github.com/rswier/c4)
+- [GitHub - lotabout/write-a-C-interpreter: Write a simple interpreter of C. Inspired by c4 and largely based on it.](https://github.com/lotabout/write-a-C-interpreter)
+
+Self-hosted Compiler:
+
+- [GitHub - DoctorWkt/acwj: A Compiler Writing Journey](https://github.com/DoctorWkt/acwj)
+- [GitHub - certik/bcompile: Bootstrapping a simple compiler from nothing](https://github.com/certik/bcompile)
+
+The basic knowledge of `lexer` and `parser` is critical and necessary for developing a programming language, 
+- `flex/lex`
+- `yacc/parser`
+
+### Compiler for a subset of C language bootstrapping from Python
+
+Recently, I am becoming interested in building a `lexer`, `parser` and `code generator` to try to create a mini language and deep insight of how `GCC` or `Clang/LLVM` do their jobs.
+
+For educational purposes, learning in practice is my favorite approach to grasp an overview.
+
+Let's do it!
+
+Prerequisites:
+
+- Python for writing the bootstrap compiler 
+
+I use [ply](https://ply.readthedocs.io/_/downloads/en/latest/pdf/), a pure Python implementation of the `lex` and `yacc` tools to facilitate me to write the bootstrap compiler for the subset of C language.
+
+
+### Compiler for a subset of C language bootstrapping from C
+
+Prerequisites:
+
+- An existing `GCC` for writing the bootstrap compiler
+
+Here are some popular tutorials from [GitHub - DoctorWkt/acwj: A Compiler Writing Journey](https://github.com/DoctorWkt/acwj).
+
+You can also refer [GitHub - lotabout/write-a-C-interpreter](https://github.com/lotabout/write-a-C-interpreter) although I prefer classifying it as **interpreter** not a complete compiler.
+
+### Compiler bootstrapping from assembly
+
+### Compiler bootstrapping from HEX
+
+[GitHub - certik/bcompile: Bootstrapping a simple compiler from nothing](https://github.com/certik/bcompile)
