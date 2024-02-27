@@ -26,13 +26,75 @@ Let's have a look at the functions that a compiler should be able to build.
 3. code generation
    - generate low-level code, such as assembly code or machine code
 
-## Interpreter vs compiler
+## Parser
 
-an **interpreter** also does `lexer` and `parser` jobs as a compiler does in step 1 and 2, but instead of generating low-level code, the **interpreter** generates the results.
+`BNF` syntax is used to for computer to understand the expression, and is a critical concept to be followed to sequently parse the tokens to AST tree. Certainly, only one loop on the tokens is enough, which makes it very efficient.
 
-## Bootstrap a compiler for new language
+`BNF` syntax for arithmetic operations grammar, including `+`, `-`, `*`, `\`, and `u-`(unary `-`) .
 
-New programming language and its corresponding compiler is mainly developed from an existing language. The progress is called **bootstrapping**, which can be summarized as,
+```sh
+expression  :   term
+            |   expression `+` expression
+            |   expression `-` expression
+
+term        :   factor
+            |   term `*` term
+            |   term `/` term
+
+factor      :   NUMBER
+            |   `(` expression `)`
+            |   `u-`factor
+            |   `u+`factor
+
+```
+
+`BNF` syntax for arithmetic operations and variable assignment.
+
+```sh
+expression  :   term
+            |   expression `+` expression
+            |   expression `-` expression
+
+term        :   factor
+            |   term `*` term
+            |   term `/` term
+            |   term `%` term
+
+factor      :   NUMBER
+            |   ID
+            |   `(` expression `)`
+            |   `u-`factor
+            |   `u+`factor
+            |   assignment
+
+assignment  :   ID `=` expression
+```
+
+In addition, `BNF` can also be applied to define regular expressions:
+
+```sh
+expression      :   term
+                |   term `|` term
+
+term            :   factor
+                |   term term
+
+factor          :   atom
+                |   atom `*`
+
+atom            :   CHAR
+                | `(` expression `)`
+
+CHAR            : any valid character except meta characters (e.g., "*", "|", "(")
+```
+
+## Difference between Compiler and Interpreter
+
+an **interpreter** also does `lexer` and `parser` jobs as a compiler does in step 1 and 2, but instead of generating low-level code, the **interpreter** generates the results directly.
+
+## Bootstrap a compiler
+
+A new programming language and a compiler written also in the new language is supposed to develop from an existing language. The progress is called **bootstrapping**, which can be summarized as,
 
 ```sh
 C1  + L1  -> C20
