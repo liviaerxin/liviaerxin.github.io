@@ -29,11 +29,11 @@ git config --local --list
 
 **GIT** two popular authentication methods: [SSH Key](#git-ssh-key) and [Credentials](#git-credentials)
 
-## Git SSH Key
+## Git SSH key
 
 [How to Authenticate Your Git to GitHub with SSH Keys](https://hackernoon.com/how-to-authenticate-your-git-to-github-with-ssh-keys)
 
-## Git Credentials
+## Git credential
 
 Store username/password instead of ssh for multiple remotes
 
@@ -76,7 +76,7 @@ Alternatively, we can directly edit our global Git config file `~/.gitconfig`,
 
 [Configuring Git Credentials](https://www.baeldung.com/ops/git-configure-credentials)
 
-## Git Submodules
+## Git submodule
 
 1. Pull the repo and its all submodules in **the first time**.
 
@@ -128,3 +128,12 @@ Assume your local repo has 10 commits ahead of the `origin/main`, and you want t
 ```sh
 git reset --hard origin/main
 ```
+
+
+## Create a subdirectory inside git and use it as git submodule
+
+```sh
+
+```
+
+## Carve out a subdirectory from git and use it as git submodule

@@ -281,3 +281,49 @@ netsh interface portproxy delete v4tov4 listenport=8082
 ```powershell
 netsh advfirewall firewall delete rule name="Open port 8082"
 ```
+
+
+## Configure Static IP Address
+
+Ubuntu 17.10 and later uses **Netplan** as the default network management tool. The previous Ubuntu versions were using **ifconfig** and its configuration file `/etc/network/interfaces` to configure the network.
+
+Edit or create a file under `/etc/netplan`, such as `/etc/netplan/01-netcfg.yaml`.
+
+```yaml title="/etc/netplan/01-netcfg.yaml"
+network:
+ version: 2
+ renderer: networkd
+ ethernets:
+   enp0s31f6:
+     dhcp4: no
+     addresses: [10.6.64.12/24]
+     gateway4: 10.6.64.1
+     nameservers:
+         addresses: [8.8.8.8,8.8.8.4]
+```
+
+Options:
+- `enp0s31f6`: configure the network interface `enp0s31f6` of the device type `ethernets`.
+- `dhcp4: no`: don't obtain IP address from the **DHCP** server.
+- `addresses: [10.6.64.12/24]`: use static IP address `10.6.64.12` in subnet `10.6.64.0/24`.
+
+Once done, save the file and apply the changes by running the following command:
+
+```console
+$ sudo netplan apply
+```
+
+Verify the changes by typing:
+
+```console
+$ ip addr show enp0s31f6
+```
+
+:::NOTE
+For Ubuntu server which is provisioned with `cloud-init`, you may need to disable it. To do so, create the following file: `/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg` as,
+
+```cfg title="/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+network: {config: disabled}
+```
+
+:::
