@@ -6,9 +6,9 @@
 	path = code-snippets/c
 	url = https://github.com/liviaerxin/hello-c.git
 
-[submodule "code-snippets/dockerfiles"]
-	path = code-snippets/dockerfiles
-	url = https://github.com/liviaerxin/hello-dockerfiles.git
+[submodule "code-snippets/dockerfile"]
+	path = code-snippets/dockerfile
+	url = https://github.com/liviaerxin/hello-dockerfile.git
 
 [submodule "code-snippets/docker-compose"]
 	path = code-snippets/docker-compose
@@ -21,3 +21,7 @@
 [submodule "code-snippets/cpp"]
 	path = code-snippets/cpp
 	url = https://github.com/liviaerxin/hello-cpp.git
+
+[submodule "private"]
+	path = private
+	url = https://github.com/liviaerxin/private.git
