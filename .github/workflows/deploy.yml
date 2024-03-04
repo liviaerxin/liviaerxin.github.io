@@ -15,10 +15,46 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        # with:
+        #   submodules: recursive
+      
+      - name: Checkout hello assembly
+        uses: actions/checkout@v4
         with:
-          submodules: recursive # a submodule require another submodule
-          # submodules: true # just submodules required by main repo
+          repository: ${{ github.REPOSITORY_OWNER }}/hello-assembly
+          path: code-snippets/assembly
+
+      - name: Checkout hello c
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.REPOSITORY_OWNER }}/hello-c
+          path: code-snippets/c
+
+      - name: Checkout hello dockerfile
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.REPOSITORY_OWNER }}/hello-dockerfile
+          path: code-snippets/dockerfile
+
+      - name: Checkout hello docker compose
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.REPOSITORY_OWNER }}/hello-docker-compose
+          path: code-snippets/docker-compose
+
+      - name: Checkout hello python
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.REPOSITORY_OWNER }}/hello-python
+          path: code-snippets/python
+
+      - name: Checkout hello cpp
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.REPOSITORY_OWNER }}/hello-cpp
+          path: code-snippets/cpp
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
