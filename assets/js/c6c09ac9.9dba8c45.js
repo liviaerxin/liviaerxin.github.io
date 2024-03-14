@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[8965],{25196:e=>{e.exports=JSON.parse('{"label":"Python Alembic","permalink":"/blog/tags/python-alembic","allTagsPath":"/blog/tags","count":1}')}}]);
