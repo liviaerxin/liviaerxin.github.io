@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[8059],{21374:e=>{e.exports=JSON.parse('{"label":"how-to intercept","permalink":"/blog/tags/how-to-intercept","allTagsPath":"/blog/tags","count":1}')}}]);
