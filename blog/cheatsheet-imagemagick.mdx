@@ -1,0 +1,62 @@
+---
+authors:
+  - frank
+tags:
+  - cheatsheet
+  - ImageMagick
+description: Cheatsheet ImageMagick
+keywords:
+  - Cheatsheet ImageMagick
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-04-02
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Cheatsheet ImageMagick
+
+<!--truncate-->
+## Convert a PNG file to a JPG file
+
+```sh
+convert input.png \
+    -density 150 \
+    -define jpeg:extent=500KB \
+    output.jpg
+```
+
+
+```sh
+convert input.png \
+    -density 150 \
+    -quality 50 \
+    output.jpg
+```
+
+
+## Convert a PDF to a series of PNG files
+
+```sh
+convert                  \
+    <your-PDF-file>.pdf  \
+   -density 150          \
+   -trim                 \
+   -verbose              \
+    page%d.png
+```
+
+## Convert a PDF to a series of JPG files
+
+```sh
+convert                  \
+   -density 150          \
+   -trim                 \
+    <your-PDF-file>.pdf  \
+   -quality 100          \
+   -flatten              \
+   -sharpen 0x1.0        \
+   -verbose              \
+    page%d.jpg
+```
+
+## Resources
