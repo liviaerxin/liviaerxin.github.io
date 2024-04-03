@@ -2,33 +2,40 @@
 	path = code-snippets/assembly
 	url = https://github.com/liviaerxin/hello-assembly.git
 	branch = main
+	ignore = all
 
 [submodule "code-snippets/c"]
 	path = code-snippets/c
 	url = https://github.com/liviaerxin/hello-c.git
 	branch = main
+	ignore = all
 
 [submodule "code-snippets/dockerfile"]
 	path = code-snippets/dockerfile
 	url = https://github.com/liviaerxin/hello-dockerfile.git
 	branch = main
+	ignore = all
 
 [submodule "code-snippets/docker-compose"]
 	path = code-snippets/docker-compose
 	url = https://github.com/liviaerxin/hello-docker-compose.git
 	branch = main
+	ignore = all
 
 [submodule "code-snippets/python"]
 	path = code-snippets/python
 	url = https://github.com/liviaerxin/hello-python.git
 	branch = main
+	ignore = all
 
 [submodule "code-snippets/cpp"]
 	path = code-snippets/cpp
 	url = https://github.com/liviaerxin/hello-cpp.git
 	branch = main
+	ignore = all
 	
 [submodule "private"]
 	path = private
 	url = https://github.com/liviaerxin/private.git
 	branch = main
+	ignore = all

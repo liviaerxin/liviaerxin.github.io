@@ -201,5 +201,49 @@ In conclusion, `git submodule add` equals:
 3. Add the sub folder `include/{submodule}`: `git add include/{submodule}`.
 4. Sync `.git/config` file: `git submodule init`.
 
+Sometimes the warning to the changes of submodules will be annoying, especially if you update submodules frequently.
+
+To ignore all changes to the submodules:
+
+```sh title=".gitmodules"
+[submodule "include/private"]
+	path = include/private
+	url = https://github.com/liviaerxin/private.git
+  ignore = all
+```
+
+Once you have ignored changes in a submodule, you will no longer see them in the output of the git status command. You will also not be able to commit or push the changes to the submodule.
+
+To view the changes in the submodule, you can use the git submodule summary command. This command will show you a summary of the changes in the submodule, even if they are ignored.
+
+Once you have unignored changes in a submodule, you will be able to see them in the output of the git status command and you will be able to commit and push the changes to the submodule.
+
+Here are some additional things to keep in mind when ignoring changes in a submodule:
+- Ignoring changes in a submodule does not prevent you from updating the submodule. You can still use the git submodule update command to update the submodule to the latest version.
+- Ignoring changes in a submodule does not prevent you from cloning the submodule. You can still use the git submodule clone command to clone the submodule into another repository.
+- Ignoring changes in a submodule does not prevent you from deleting the submodule. You can still use the git submodule deinit command to delete the submodule from your repository.
+
+Overall, ignoring changes in a submodule can be a useful way to keep your repository clean and organized. However, it is important to understand the implications of ignoring changes before you do so.
 
 ## Carve out a subdirectory from Git and use it as Git submodule
+
+
+## Git subtree
+
+When you should consider using a **Git subtree** instead of **Git submodule**?
+
+If you need to manage multiple projects within a single repository as:
+
+1. I have a main project for writing blogs
+2. However, I also manage several projects to maintain my daily coding snippets such as `C`, `Python`, ...etc. 
+  - I want to store these **sub-projects** in the specified sub-folders of my main repository.
+  - I will update these **sub-projects** frequently.
+  - I will pull and push changes of these **sub-projects** in local sub working directories.
+  - I don't want to the main repository to warn me the new commits from **sub-projects** every time I update the **sub-projects**.
+
+Drawbacks:
+- To update and commit changes on these **sub-projects** you need to remember some "information", because the metadata of these **sub-projects** will be not stored in a file like `.gitmodules` in main repo.
+
+[About Git subtree merges](https://docs.github.com/en/get-started/using-git/about-git-subtree-merges)
+
+[Git Subtree: Alternative to Git Submodule | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/git-subtree)
