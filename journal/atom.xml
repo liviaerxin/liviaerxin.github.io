@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/journal</id>
     <title>S' Wiki Blog</title>
-    <updated>2024-04-10T14:50:38.000Z</updated>
+    <updated>2024-04-11T15:21:49.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/journal"/>
     <subtitle>S' Wiki Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Private Note or Documents]]></title>
         <id>https://liviaerxin.github.io/journal/README</id>
         <link href="https://liviaerxin.github.io/journal/README"/>
-        <updated>2024-04-10T14:50:38.000Z</updated>
+        <updated>2024-04-11T15:21:49.000Z</updated>
         <summary type="html"><![CDATA[Why Backend and DevOps Roles May Become One in the Future | HackerNoon]]></summary>
         <content type="html"><![CDATA[<p><a href="https://hackernoon.com/why-backend-and-devops-roles-may-become-one-in-the-future" target="_blank" rel="noopener noreferrer">Why Backend and DevOps Roles May Become One in the Future | HackerNoon</a></p><p><a href="https://www.hiration.com/blog/github-on-resume/" target="_blank" rel="noopener noreferrer">How to Put GitHub on Resume in 2023: Complete Guide &amp; Tips</a></p><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="job">Job<a href="#job" class="hash-link" aria-label="Direct link to Job" title="Direct link to Job">​</a></h2><p>prone to errors</p><p>backend engineer
 infrastructure</p><p>Vocabulary:</p><ul><li><p>experienced</p></li><li><p>precedence</p></li><li><p>promiscuous</p></li><li><p>reimburse</p></li><li><p>homogenous</p></li><li><p>monotonous</p></li><li><p>snoop</p></li></ul><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="terminology">Terminology<a href="#terminology" class="hash-link" aria-label="Direct link to Terminology" title="Direct link to Terminology">​</a></h2><p><a href="https://en.wikipedia.org/wiki/Arithmetic" target="_blank" rel="noopener noreferrer">Arithmetic</a></p><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="tech-vocabulary">Tech Vocabulary<a href="#tech-vocabulary" class="hash-link" aria-label="Direct link to Tech Vocabulary" title="Direct link to Tech Vocabulary">​</a></h2><ul><li>trivial program</li><li>trial program</li><li>experienced engineer</li><li>division and multiplication <strong>take precedence</strong></li></ul><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="mathematics-vocabulary">Mathematics Vocabulary<a href="#mathematics-vocabulary" class="hash-link" aria-label="Direct link to Mathematics Vocabulary" title="Direct link to Mathematics Vocabulary">​</a></h2><ul><li>associative</li><li>commutative
@@ -31,6 +31,15 @@ Organization and a good moving plan are <strong>indispensable</strong> parts of 
 <a href="https://www.crownrelo.com/hong-kong/zh-hk/get-a-quote" target="_blank" rel="noopener noreferrer">https://www.crownrelo.com/hong-kong/zh-hk/get-a-quote</a></p><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="gpt-35-vs-gpt-40">GPT 3.5 vs GPT 4.0<a href="#gpt-35-vs-gpt-40" class="hash-link" aria-label="Direct link to GPT 3.5 vs GPT 4.0" title="Direct link to GPT 3.5 vs GPT 4.0">​</a></h2><p>3.5 is used for general purpose, creating an essay.
 4.0 is more analytical and more logical and more precise.</p><p>I use 3.5 to create general letters, essays, posts, etc.
 4.0 is more for deeper questions &amp; outputs.</p><p>3.5 is much faster than 4.0.</p><p><a href="https://docs.kanaries.net/articles/compare-gpt-4-gpt-3" target="_blank" rel="noopener noreferrer">In-Depth Comparison: GPT-4 vs GPT-3.5 – KanariesDiscord</a></p><p>foremost</p><p>C is a good language to learn for a career. </p><p>. It is a foundational/<strong>primitive</strong> language that is still widely used in areas such as operating system, compiler/interpreter and low-level libraries.</p><p>Thanks for listening to my rant.</p><p><a href="https://benhoyt.com/cv/" target="_blank" rel="noopener noreferrer">Ben Hoyt’s Resume/CV</a></p><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="tech">Tech<a href="#tech" class="hash-link" aria-label="Direct link to Tech" title="Direct link to Tech">​</a></h2><p><a href="https://youtube.com/clip/UgkxedRh7NJJliritCfi-oVUzunSBZavWahd?si=x2W5qQvvHp_IvrR1" target="_blank" rel="noopener noreferrer">https://youtube.com/clip/UgkxedRh7NJJliritCfi-oVUzunSBZavWahd?si=x2W5qQvvHp_IvrR1</a></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[tmp]]></title>
+        <id>https://liviaerxin.github.io/journal/tmp</id>
+        <link href="https://liviaerxin.github.io/journal/tmp"/>
+        <updated>2024-04-11T15:21:49.000Z</updated>
+        <summary type="html"><![CDATA[https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable]]></summary>
+        <content type="html"><![CDATA[<p><a href="https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable</a></p><p>use case:
+because the frontend applications now always  are needed to build into the page app or static page app then run on the client side, if you want to use env variables to customize the app for different usage such as a different server address for dev and prod use, you can only use the env variables in the building stage. for quick spinning up the app, you shouldn't invoke building when every time running</p>]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Sunday, April 7, 2024]]></title>
