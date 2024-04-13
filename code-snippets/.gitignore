@@ -6,4 +6,5 @@ __pycache__/
 
 *.joblib
 *.mp4
+.DS_Store
 !*Dockerfile*
