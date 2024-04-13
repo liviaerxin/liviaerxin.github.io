@@ -4,7 +4,7 @@
         <title>S' Wiki Blog</title>
         <link>https://liviaerxin.github.io/journal</link>
         <description>S' Wiki Blog</description>
-        <lastBuildDate>Fri, 12 Apr 2024 08:22:18 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 13 Apr 2024 15:14:57 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[Private Note or Documents]]></title>
             <link>https://liviaerxin.github.io/journal/README</link>
             <guid>https://liviaerxin.github.io/journal/README</guid>
-            <pubDate>Fri, 12 Apr 2024 08:22:18 GMT</pubDate>
+            <pubDate>Sat, 13 Apr 2024 15:14:57 GMT</pubDate>
             <description><![CDATA[Why Backend and DevOps Roles May Become One in the Future | HackerNoon]]></description>
             <content:encoded><![CDATA[<p><a href="https://hackernoon.com/why-backend-and-devops-roles-may-become-one-in-the-future" target="_blank" rel="noopener noreferrer">Why Backend and DevOps Roles May Become One in the Future | HackerNoon</a></p><p><a href="https://www.hiration.com/blog/github-on-resume/" target="_blank" rel="noopener noreferrer">How to Put GitHub on Resume in 2023: Complete Guide &amp; Tips</a></p><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="job">Job<a href="#job" class="hash-link" aria-label="Direct link to Job" title="Direct link to Job">​</a></h2><p>prone to errors</p><p>backend engineer
 infrastructure</p><p>Vocabulary:</p><ul><li><p>experienced</p></li><li><p>precedence</p></li><li><p>promiscuous</p></li><li><p>reimburse</p></li><li><p>homogenous</p></li><li><p>monotonous</p></li><li><p>snoop</p></li></ul><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="terminology">Terminology<a href="#terminology" class="hash-link" aria-label="Direct link to Terminology" title="Direct link to Terminology">​</a></h2><p><a href="https://en.wikipedia.org/wiki/Arithmetic" target="_blank" rel="noopener noreferrer">Arithmetic</a></p><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="tech-vocabulary">Tech Vocabulary<a href="#tech-vocabulary" class="hash-link" aria-label="Direct link to Tech Vocabulary" title="Direct link to Tech Vocabulary">​</a></h2><ul><li>trivial program</li><li>trial program</li><li>experienced engineer</li><li>division and multiplication <strong>take precedence</strong></li></ul><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="mathematics-vocabulary">Mathematics Vocabulary<a href="#mathematics-vocabulary" class="hash-link" aria-label="Direct link to Mathematics Vocabulary" title="Direct link to Mathematics Vocabulary">​</a></h2><ul><li>associative</li><li>commutative
@@ -37,7 +37,7 @@ Organization and a good moving plan are <strong>indispensable</strong> parts of 
             <title><![CDATA[tmp]]></title>
             <link>https://liviaerxin.github.io/journal/tmp</link>
             <guid>https://liviaerxin.github.io/journal/tmp</guid>
-            <pubDate>Fri, 12 Apr 2024 08:22:18 GMT</pubDate>
+            <pubDate>Sat, 13 Apr 2024 15:14:57 GMT</pubDate>
             <description><![CDATA[https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable]]></description>
             <content:encoded><![CDATA[<p><a href="https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable</a></p><p>use case:
 because the frontend applications now always  are needed to build into the page app or static page app then run on the client side, if you want to use env variables to customize the app for different usage such as a different server address for dev and prod use, you can only use the env variables in the building stage. for quick spinning up the app, you shouldn't invoke building when every time running</p>]]></content:encoded>
