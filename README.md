@@ -1,5 +1,6 @@
 # Personal Blog Powered By Foam and Docusaurus
 
+
 Tech Stacks behind:
 
 - `Foam`: knowledge management system for providing rich features in `vscode`.
@@ -55,7 +56,10 @@ npm run serve --prefix _ssg/docusaurus
 
 [Docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
 
-## Submodules
+
+## Docusaurus
+
+### Submodules
 
 First time,
 
@@ -95,7 +99,7 @@ Pull the commits pointed by the parent repo for submodules
 git submodule update
 ```
 
-## Swizzling
+### Swizzling
 
 Here're `@docusaurus/theme-classic` components being customized by swizzling,
 
@@ -106,17 +110,17 @@ npm run swizzle @docusaurus/theme-classic BlogTagsPostsPage -- --eject --typescr
 npm run swizzle @docusaurus/theme-classic SearchBar -- --eject --typescript
 ```
 
-## Layout
+### Layout
 
 [Grid | Infima](https://infima.dev/docs/layout/grid)
 
-## CSS Styles
+### CSS Styles
 
 [Colors | Infima](https://infima.dev/docs/utilities/colors)
 
 I used the default colors shades from **Infima**.
 
-## Icon Management
+### Icon Management
 
 [Bootstrap Icons · Official open source SVG icon library for BootstrapBootstrapGitHubTwitterOpen CollectiveBootstrap](https://icons.getbootstrap.com/)
 
@@ -126,24 +130,28 @@ I used the default colors shades from **Infima**.
 
 [React SVG: How to use SVGs best in React - CopyCat Blog](https://www.copycat.dev/blog/react-svg/)
 
-## Metadata Setting
+### Metadata Setting
 
 [📦 plugin-content-blog | Docusaurus](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog#markdown-front-matter)
 
 [📦 plugin-content-docs | Docusaurus](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter)
 
-## Front Matter VS Code Extension
+### Front Matter VS Code Extension
 
 [Introduction | Front Matter](https://frontmatter.codes/docs)
 
-## Import Code from GitHub Repository
+### Import Code from GitHub Repository
 
 Docusaurus refer code snippets from GitHub repositories
 
 [GitHub - saucelabs/docusaurus-theme-github-codeblock: A Docusaurus v2 plugin that supports referencing code examples from public GitHub repositories.](https://github.com/saucelabs/docusaurus-theme-github-codeblock)
 
-## References
+### References
 
 To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
 
 Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design my blog website by referring his [blog library](https://github.com/HunteRoi/tinaeldevresse.eu).
+
+## 20241005
+
+As I create more and more Git repositories, it's becoming increasingly difficult to keep track of them all, especially the ones I haven't used in over six months. I'm prone to forgetting about them. However, since this repository, my personal repository, is where I work in my daily life, I've decided to consolidate my other Git repositories into this one for quick reference when needed.
