@@ -23,3 +23,14 @@ In the beginning of year 2024, ten years after I graduated with a bachelor degre
 
 Then I come across the confuse:
 How ChatGPT do arithmetic operations? Is it quit different with the traditional interpreter?
+
+
+## GPT 3.5 vs GPT 4.0
+
+3.5 is used for general purpose, creating an essay.
+4.0 is more analytical and more logical and more precise.
+
+I use 3.5 to create general letters, essays, posts, etc.
+4.0 is more for deeper questions & outputs.
+
+3.5 is much faster than 4.0.
