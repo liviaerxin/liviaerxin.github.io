@@ -46,6 +46,15 @@ RUN pip install --no-cache-dir --upgrade pip \
         black
 # Note: we had to merge the two "pip install" package lists here, otherwise the last "pip install" command in the OP may break dependency resolution…
 
+# Install Node.js
+# 1. installs NVM (Node Version Manager)
+# 2. download and install Node.js
+# 3. update to the latest version and install yarn
+Upgrading
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | source ~/.bashrc \
+    && nvm install 20
+    && npm install -g npm@latest yarn
+
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 

@@ -1,24 +1,8 @@
 # Personal Blog Powered By Foam and Docusaurus
 
+To maintain my blog, I decouple the blog content and the **SSG** into two distinct folders. If I try to switch to a different **SSG** in the future, this separation will facilitate a quick and seamless transition.
 
-Tech Stacks behind:
-
-- `Foam`: knowledge management system for providing rich features in `vscode`.
-  - Graph Visualization
-  - Link Autocompletion
-  - Sync links on file rename
-  - Templates
-  - Generate references for your wikilinks
-  - ...
-- `Docusaurus`: static site generator to build a static site from `Foam` knowledge content.
-  - SEO friendly
-  - Powered by MDX
-  - Search
-  - Document Versioning
-  - Internationalization (i18n)
-- `GitHub Actions`: deploy to GitHub Pages.
-
-Project Structure:
+## Project Structure
 
 ```sh
 ❯ tree -L 3
@@ -41,7 +25,24 @@ Project Structure:
 └── docs
 ```
 
-Local test:
+## Tech Stacks
+
+- `Foam`: knowledge management system for providing rich features in `vscode`.
+  - Graph Visualization
+  - Link Autocompletion
+  - Sync links on file rename
+  - Templates
+  - Generate references for your wikilinks
+  - ...
+- `Docusaurus`: static site generator (**SSG** ) to build a static site from `Foam` knowledge content.
+  - SEO friendly
+  - Powered by MDX
+  - Search
+  - Document Versioning
+  - Internationalization (i18n)
+- `GitHub Actions`: deploy to GitHub Pages.
+
+## Get started
 
 ```sh
 # dev
@@ -57,7 +58,7 @@ npm run serve --prefix _ssg/docusaurus
 [Docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
 
 
-## Docusaurus
+## About Docusaurus
 
 ### Submodules
 
@@ -151,6 +152,13 @@ Docusaurus refer code snippets from GitHub repositories
 To be admit I am not good at `UI` design and development, however there many excellent docusaurus showcase in open source.
 
 Thanks to [tinaeldevresse](https://github.com/HunteRoi), I got ideas to design my blog website by referring his [blog library](https://github.com/HunteRoi/tinaeldevresse.eu).
+
+## Changelogs
+
+## 20240514
+
+After several quiet months without maintaining my site and writing new posts, today I update my Docusaurus version from `2.4.3` to `3.3.2`. It feels like a significant leap with many breaking changes. Let me try!
+
 
 ## 20241005
 
