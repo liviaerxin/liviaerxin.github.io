@@ -33,16 +33,57 @@ https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/
 
 <!--truncate-->
 
-## Man-in-the-middle(MitM) or Proxy
+## Proxy vs Reverse Proxy
+
+Certainly! Let's explore the key differences between a **proxy** and a **reverse proxy**:
+
+1. **Proxy (Forward Proxy)**:
+  - Acts as an intermediary between **clients** (users or devices) and the **internet**.
+  - **Forwards client requests** to the internet resource (e.g., a website).
+  - Provides:
+    - **client anonymity**
+    - **caching**
+    - traffic control
+    - request/response transformation.
+  - Commonly used for bypassing content filters and accessing restricted content.
+  - Examples include:
+    - **Squid**
+    - **Proxy**
+    - **Tor**
+    - Charles Proxy
+    - HTTP Toolkit
+    - MITM Proxy
+    - Fiddler Proxy
+
+2. **Reverse Proxy**:
+  - Sits in front of one or more **web servers**.
+    - **Forwards server responses** to clients (users or devices).
+    - Offers benefits like:
+    - **server anonymity**
+    - **load balancing**
+    - DDoS protection
+    - URL/content rewriting.
+  - Used for improving server performance and enhancing security.
+  - Examples include:
+    - **Nginx**
+    - **Traefik**
+
+In summary, a proxy handles client traffic, while a reverse proxy shields servers by managing requests and responses.
+
+## Proxy
+
+Man-in-the-middle(MitM)
 
 https://httptoolkit.com/docs/guides/android/
 
 https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/
 
-## HTTPS proxy
+### How the proxy intercepts the HTTP traffic?
 
-## HTTP proxy
+### Install SSL **cert** in android emulator
 
-## SOCKS proxy
+### Socks Proxy
+
+## Reverse Proxy
 
 ## Resources
