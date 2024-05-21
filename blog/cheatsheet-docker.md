@@ -128,3 +128,37 @@ services:
       - "8081"
     command: "npm start"
 ```
+
+
+## Dockerfile
+
+### Download from GitHub release using wget
+
+**tgz**
+
+```dockerfile
+RUN GH_USER=REPLACE_WITH_USER \
+    GH_REPO=REPLACE_WITH_REPO \
+    GH_BRANCH=REPLACE_WITH_BRANCH \
+    wget https://github.com/${GH_USER}/${GH_REPO}/archive/refs/tags/${GH_BRANCH}.tar.gz -O "${GH_REPO}-${GH_BRANCH}.tar.gz" \
+    && tar -xzvf ./"${GH_REPO}-${GH_BRANCH}.tar.gz" \
+    && rm ./"${GH_REPO}-${GH_BRANCH}.tar.gz"
+```
+
+**zip**
+
+```dockerfile
+RUN GH_USER=REPLACE_WITH_USER \
+    GH_REPO=REPLACE_WITH_REPO \
+    GH_BRANCH=REPLACE_WITH_BRANCH \
+    wget https://github.com/${GH_USER}/${GH_REPO}/archive/refs/tags/${GH_BRANCH}.zip \
+    -O "${GH_REPO}-${GH_BRANCH}.zip" && \ 
+    unzip ./"${GH_REPO}-${GH_BRANCH}.zip" && \
+    rm ./"${GH_REPO}-${GH_BRANCH}.zip"
+```
+
+### Download from GitHub release using curl
+
+```sh
+curl -L https://github.com/yarnpkg/yarn/releases/download/v0.23.4/ya‌​rn-v0.23.4.tar.gz > yarn.tar.gz
+```

@@ -56,7 +56,7 @@ ldconfig -p | grep libcuda
 ```
 
 :::note
-> When running in the `nvidia/cuda` Docker container, what Nvidia libraries(from the host machine) should be mounted inside the container are specified by the `NVIDIA_DRIVER_CAPABILITIES` env variable, see [driver-capabilities](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html#driver-capabilities). Here for `FFmpeg` to employ GPU, it should be included at least as `NVIDIA_DRIVER_CAPABILITIES=video,utility`.
+> When running in the `nvidia/cuda` Docker container, what Nvidia libraries(from the host machine) should be mounted inside the container are specified by the `NVIDIA_DRIVER_CAPABILITIES` env variable, see [driver-capabilities](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/docker-specialized.html#driver-capabilities). Here for `FFmpeg` to employ GPU, it should be included at least as `NVIDIA_DRIVER_CAPABILITIES=video,utility`.
 :::
 
 ## Step by Step

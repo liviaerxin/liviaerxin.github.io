@@ -50,7 +50,7 @@ docker run -it --rm --link postgres-db:db busybox sh
 ping db
 ```
 
-## Using Default Bridge Network
+## Using the default network
 
 If you are running your container without specifying attached `network`, it will use the docker `default bridge network`.
 
@@ -85,9 +85,9 @@ postgres=# SELECT 1;
 (1 row)
 ```
 
-## Using Private Defined Bridge Network
+## Using the private network
 
-The `private defined bridge network` will give you more privacy that it only allows only containers belonging to it can talk to each other.
+**Creating private bridge network** will give you more privacy that it only allows only containers belonging to it can talk to each other.
 
 Moreover, you can use `hostname` or `alias name` to connect without regard of `IP address` changing due to re-start.
 
