@@ -1,0 +1,74 @@
+---
+authors:
+  - frank
+tags:
+  - Cheatsheet Python
+description: Cheatsheet Python
+keywords:
+  - Cheatsheet Python
+image: https://i.imgur.com/mErPwqL.png
+date: 2024-05-22
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Python pip cheat sheet
+
+A quick reference to looking up the python tips && best practice!
+
+<!--truncate-->
+
+## pip examples
+
+```sh
+pip install git+https://github.com/owner/repo@0.1
+pip install git+https://github.com/owner/repo@releases/tag/v3.7.1
+```
+
+## requirements.txt
+
+### Specify extra index url in requirements.txt
+
+```txt
+package-one==1.9.4
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch
+torchvision
+torchaudio
+```
+
+### Specify github source in requirements.txt
+
+#### Specify commit hash
+
+```txt
+package-one==1.9.4
+package-two @ git+https://github.com/owner/repo@41b95ec
+package-three==1.0.1
+```
+
+#### Specify branch name
+
+```txt
+package-one==1.9.4
+package-two @ git+https://github.com/owner/repo@main
+package-three==1.0.1
+```
+
+#### Specify tag
+
+```txt
+package-one==1.9.4
+package-two @ git+https://github.com/owner/repo@0.1
+package-three==1.0.1
+```
+
+#### Specify release
+
+```txt
+package-one==1.9.4
+package-two @ git+https://github.com/owner/repo@releases/tag/v3.7.1
+package-three==1.0.1
+```
+
+## Resources
