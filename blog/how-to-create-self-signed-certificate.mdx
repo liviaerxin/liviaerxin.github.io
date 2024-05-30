@@ -20,15 +20,17 @@ enableComments: true # for Gisqus
 
 # Generate self-signed SSL/TLS certificate for local IP address or local domain
 
-In real life, when we build our website and make it public, some paid or free CA(Certificate Authority) will help us sign a certificate for our website domain and enable SSL/TLS connections from user browser to our server.
+In real life, when we build our website and make it public, some paid or free **Certificate Authority** (**CA**) will help us sign a certificate for our website **domain** (IP address is not acceptable!) and enable **SSL/TLS** connections from user browser to our server.
 
-For secure reasons, the browser will only admit those servers's certificates signed from authorized CA, of which certificate is kept in your host system trust store.
+Given the secure reasons, the browser will only admit those servers's certificates signed from the authorized **CA**, and the **CA** certificate is kept in our host **system trust store**. In Linux, you can view the **CA** certificate file like `/etc/ssl/certs/ca-certificates.crt`.
 
-:::note
+:::NOTE
 One of the most popular Certificate Authorities is [Let's Encrypt](https://letsencrypt.org/), which is a free and non-profit CA.
 :::
 
-Here is an example, we will generate a local server certificate that is signed by a local CA. Finally, let Chrome can visit our local website without security warning.
+However, in many internal networks and development environments, we often need **self-signed certificate** more frequently.
+
+Here is an example, we will generate a **local server certificate** that is signed by a **local CA**. Finally, let Chrome can visit our local website without security warning.
 
 In brief, these steps we need to sign local sever certificate actually simulate how those CA sign certificates for public servers, as following:
 
@@ -47,9 +49,9 @@ And there is nice picture from [How to create your own self-signed root Certific
 <!--truncate-->
 
 
-## Create root Certificate Authority(CA)
+## 1. Create a local Certificate Authority (CA)
 
-Generate `RootCA.key` and `RootCA.crt`:
+Generate a file `RootCA.key` and a file `RootCA.crt` of our local root **CA**:
 
 ```sh
 openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout RootCA.key -out RootCA.crt -subj "/C=US/CN=Example-Root-CA"
@@ -57,13 +59,53 @@ openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout RootCA
 
 You can change `Example-Root-CA` to others or add more fields to CA.
 
-## Create local server certificate
+[Optional] Create a CA with a configuration file,
 
-Next, we should apply the local CA to sign a certificate for our local server, which will be accessed through the `localhost` or `127.0.0.1` from our local machine.
+```sh
+openssl req -x509 -nodes -new -keyout RootCA.key -out RootCA.crt -config <(cat <<EOF
+[ req ]
+default_bits       = 2048
+default_md         = sha256
+default_days       = 3650
+prompt             = no
+distinguished_name = req_distinguished_name
 
-### Generate Certificate Signing Request(CSR)
+[ req_distinguished_name ]
+C  = US
+ST = California
+L  = San Francisco
+O  = Example Corp
+OU = IT Department
+CN = www.example.com
+emailAddress = admin@example.com
+EOF
+)
+```
 
-Set up custom DNS in `/etc/hosts`,
+:::NOTE
+**process substitution** does not work in bash scripts!
+:::
+
+
+## 2. Create a signed certificate for the local server
+
+Next, we should apply the local **CA** to sign a **certificate** for our local server, which will be accessed through the `localhost` or `127.0.0.1` from our local machine.
+
+### 2.1. Generate a Certificate Signing Request (CSR)
+
+When generating the **CSR** file with OpenSSL, we can either specify certain details directly in the command line or use a configuration file. While you can provide some information via command-line arguments, complex configurations like specifying `[v3_req]` and `[alt_names]` are typically done through a configuration file.
+
+`subjectAltName` will let you specify more than domain/IP addresses as **Subject Alternative Names** (**SANs**).
+
+Here is an example for command-line arguments,
+
+```sh
+openssl req -new -newkey rsa:2048 -nodes -keyout privkey.pem -out csr.pem -subj "/C=US/ST=California/L=San Francisco/O=Example Corp/OU=IT Department/CN=www.example.com/emailAddress=admin@example.com"
+```
+
+Here is an example to use the configuration file.
+
+1. [Optional] Customize DNS by editing `/etc/hosts` (Other machines also have to do this if they would like to visit the server),
 
 ```conf title="/etc/hosts"
 127.0.0.1   localhost
@@ -71,14 +113,13 @@ Set up custom DNS in `/etc/hosts`,
 127.0.0.1   fake2.local
 ```
 
-Prepare a `localhost.conf`,
+2. Create a configure file for **CSR** including typical sections as:
 
 ```conf title="localhost.conf"
 [req]
 default_bits  = 2048
 distinguished_name = req_distinguished_name
-req_extensions = req_ext
-x509_extensions = v3_req
+req_extensions = v3_req
 prompt = no
 
 [req_distinguished_name]
@@ -87,9 +128,6 @@ stateOrProvinceName = N/A
 localityName = N/A
 organizationName = Self-signed certificate
 commonName = 127.0.0.1: Self-signed certificate
-
-[req_ext]
-subjectAltName = @alt_names
 
 [v3_req]
 subjectAltName = @alt_names
@@ -101,44 +139,56 @@ DNS.2 = fake1.local
 DNS.3 = fake2.local
 ```
 
-Generates `localhost.key` and `localhost.csr`:
+3. Generates the **CSR**
+
+To generate a CSR using the configuration file with OpenSSL, you can use the following command:
 
 ```sh
-openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -config localhost.conf
-# Or input from line
-# openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=localhost.local"
+openssl req -new -nodes -keyout localhost.key -out localhost.csr -config localhost.conf
 ```
 
-Verify the Certificate Signing Request(CSR) `localhost.csr`:
+[Optional] mix `-subj` and `-config`, to be short like:
+
+```sh
+SAN_LIST="[SAN]\nsubjectAltName=DNS:localhost, DNS:*.localhost, IP:127.0.0.1"
+openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example CORP/CN=localhost.local" -reqexts SAN -config <(echo $SAN_LIST)
+```
+
+Here, `localhost.conf` is the configuration file and the two outputs: 
+- `localhost.key` is the private key file for the local server to communicate with the clients securely.
+- `localhost.csr` is the **CSR** file that the local server will use in the next step to sign its certificate from the local CA.
+
+
+4. Verify the **CSR** file `localhost.csr`:
 
 ```sh
 openssl req -text -noout -verify -in localhost.csr
 ```
 
-### Get local server certificate signed by root CA
+### 2.2. Sign the CSR with the local CA
 
-Submit **CSR** to the **root CA** to let the **root CA** to sign a certificate for our `locahost` server.
+Now, it's time for **local CA** to sign a certificate for our local server by using the server's **CSR** `localhost.csr` file, thereby issuing a signed certificate.
 
-Generates `localhost.crt` by using CSR `localhost.csr` with extensions,
+- Generates `localhost.crt` by using CSR `localhost.csr`,
 
 ```sh
-openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -extensions req_ext -extfile localhost.conf -out localhost.crt
+openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -extensions v3_req -extfile localhost.conf -out localhost.crt
 ```
 
-View the `localhost.crt`:
+- View the generated `localhost.crt`:
 
 ```sh
 openssl x509 -text -noout -in localhost.crt
 ```
 
-Verify the `localhost.crt`:
+- Verify the generated`localhost.crt`:
 
 ```sh
 openssl verify -verbose -CAfile RootCA.crt localhost.crt
 ```
 
 :::warning
-If `X509` extensions(`subjectAltName`) are missing from the certificate, the browser will still report security issues.
+If `X509` extensions(`subjectAltName`) are missing from the certificate, the browser will still report security issues, such as **its security certificate does not specify Subject Alternative Names.**
 :::
 
 :::note
@@ -147,12 +197,58 @@ Using the CA and Subject as the same one, the step of creating the local CA can 
 ```sh
 openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.conf
 ```
-
 :::
 
-## Use the server certificate
+[Optional] For complicated configuration for CA to sign a certificate, you can use configuration file like:
 
-Run up a node https server to use the generated local server certificate.
+```sh
+cd /path/to/your/ca/
+mkdir -p newcerts
+touch index.txt
+echo 1000 > serial
+```
+
+```sh
+cat <<EOF > /path/to/your/ca/openssl.cnf
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+dir               = /path/to/your/ca
+database          = $dir/index.txt
+new_certs_dir     = $dir/newcerts
+certificate       = $dir/RootCA.crt
+serial            = $dir/serial
+private_key       = $dir/RootCA.key
+default_days      = 365
+default_md        = sha256
+policy            = policy_any
+x509_extensions   = usr_cert
+
+[ policy_any ]
+countryName             = supplied
+stateOrProvinceName     = supplied
+organizationName        = supplied
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ usr_cert ]
+basicConstraints=CA:FALSE
+nsCertType = client, email
+nsComment = "OpenSSL Generated Certificate"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+EOF
+```
+
+```sh
+openssl ca -config /path/to/your/ca/openssl.cnf -in localhost.csr -out localhost.crt -batch
+```
+
+## 3. Use the signed certificate in the local server
+
+Run up a node https server to use the **signed certificate** for the local sever.
 
 ```sh
 npx http-server -p 8082 --ssl --cert localhost.crt --key localhost.key
@@ -165,9 +261,9 @@ Then visit:
 
 The browser will give you security warning as the local **root CA** is not trusted in default.
 
-## Trust the root CA
+## 4. Install the local CA
 
-Install CA certificate `RootCA.crt` into each system trust store or each browser.
+TO trust the root **local CA**, we must install the **local CA** certificate `RootCA.crt` into each system **trust store** or each browser.
 
 - Windows system trust store
 - Ubuntu system trust store
