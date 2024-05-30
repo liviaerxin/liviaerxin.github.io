@@ -22,8 +22,23 @@ To maintain my blog, I decouple the blog content and the **SSG** into two distin
 ├── assets
 ├── attachments
 ├── blog
+|-- code-snippets
+|   |-- assembly
+|   |-- c
+|   |-- cpp
+|   |-- docker-compose
+|   |-- dockerfile
+|   `-- python
 └── docs
 ```
+
+I also include my daily codebase repos into the `code-snippets/` folder, including:
+- `assembly`: [https://github.com/liviaerxin/hello-assembly.git](https://github.com/liviaerxin/hello-assembly.git)
+- `c`: [https://github.com/liviaerxin/hello-c.git](https://github.com/liviaerxin/hello-c.git)
+- `cpp`: [https://github.com/liviaerxin/hello-cpp.git](https://github.com/liviaerxin/hello-cpp.git)
+- `docker-compose`: [https://github.com/liviaerxin/hello-docker-compose.git](https://github.com/liviaerxin/hello-docker-compose.git)
+- `docker`: [https://github.com/liviaerxin/hello-docker.git](https://github.com/liviaerxin/hello-docker.git)
+- `python`: [https://github.com/liviaerxin/hello-python.git](https://github.com/liviaerxin/hello-python.git)
 
 ## Tech Stacks
 
@@ -45,12 +60,21 @@ To maintain my blog, I decouple the blog content and the **SSG** into two distin
 ## Get started
 
 ```sh
+npm install --prefix _ssg/docusaurus
+yarn --cwd _ssg/docusaurus
+```
+
+```sh
 # dev
 npm run start --prefix _ssg/docusaurus
+yarn --cwd _ssg/docusaurus start
 
 # prod
 npm run build --prefix _ssg/docusaurus
-npm run serve --prefix _ssg/docusaurus
+yarn --cwd _ssg/docusaurus build
+
+npm run serve --prefix _ssg/docusaurus -- --host 0.0.0.0
+yarn --cwd _ssg/docusaurus serve --host 0.0.0.0
 ```
 
 [Foam: A personal knowledge management and sharing system for VSCode](https://github.com/foambubble/foam)

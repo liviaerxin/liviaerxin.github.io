@@ -1,8 +1,4 @@
 ---
-foam_template:
-  name: Blog Docusaurus Template
-  description: Creates Docusaurus blog/slip
-  filepath: blog/wiki-assembly.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
 authors:
   - frank
 tags:
@@ -47,27 +43,27 @@ No, `C` started with the `BCPL` language, [](https://stackoverflow.com/questions
 ## Assembler
 
 - GNU assembler (GAS) 
-  - x86-64 GNU assembler 
-    * AT&T syntax
-  - aarch64 GNU assembler
-    * aarch64/arm64 syntax
+    - x86-64 GNU assembler 
+        * AT&T syntax
+    - aarch64 GNU assembler
+        * aarch64/arm64 syntax
 - Clang Assembler
-  - external Assembler
-    - GNU Assembler
-  - LLVM’s integrated assembler
-  - [](https://clang.llvm.org/docs/Toolchain.html#assembler)  
+    - external Assembler
+        - GNU Assembler
+    - LLVM’s integrated assembler
+    - [https://clang.llvm.org/docs/Toolchain.html#assemble](https://clang.llvm.org/docs/Toolchain.html#assembler)  
 - Netwide assembler (NASM)
-  * Intel syntax
-  * x86-64
-    * macOS
-    * linux
-    * windows
+    * Intel syntax
+    * x86-64
+        * macOS
+        * linux
+        * windows
 - MASM
-  * Intel syntax
+    * Intel syntax
 
-### XXX
+A example **NASM** assembly file `print.asm` to print message
 
-```asm title="print.asm"
+```nasm title="print.asm"
 ; print.asm
 ; nasm -f elf64 print.asm && ld print.o && ./a.out ; echo $?
 ; objdump -d a.out
@@ -99,7 +95,7 @@ _start:
     int  0x80          ; Call kernel
 ```
 
-```asm title="sum.asm"
+```nasm title="sum.asm"
 ; sum.asm
 ; nasm -f elf64 sum.asm && ld sum.o && ./a.out ; echo $?
 ; objdump -d a.out
@@ -133,21 +129,21 @@ _start:
 The structure of an assembly file generally consists of serval section:
 
 - `.text` section:
-   - `.text` section is generally read-only. It is typically used for storing executable code, and it is not intended to be modified during program execution.
-   - `.text` section contains the machine code instructions that the processor will execute.
-   - `.text` section contains global constant data.
+    - `.text` section is generally read-only. It is typically used for storing executable code, and it is not intended to be modified during program execution.
+    - `.text` section contains the machine code instructions that the processor will execute.
+    - `.text` section contains global constant data.
 - `.data` section:
-   - `.data` section is writable. It is used for storing initialized data that can be modified during the execution of the program.
-   - `.data` section contains global variable data.
+    - `.data` section is writable. It is used for storing initialized data that can be modified during the execution of the program.
+    - `.data` section contains global variable data.
 - `.bss` section: 
-  - It's mostly the same with `.data` section except it's used for storing uninitialized data 
+    - It's mostly the same with `.data` section except it's used for storing uninitialized data 
 - `.rodata` section:
-  - It is used for read-only data, such as constant strings.
+    - It is used for read-only data, such as constant strings.
 
 Here's a simple example illustrating the use of these sections:
 
 
-```asm
+```nasm
 .section .text
 .global _start
 
@@ -175,24 +171,26 @@ A running program's memory layout consists of these segments, and also `heap` an
 A running program typically consists of serval segments or sections, each serving a specific purpose but common sections include:
 
 - `Stack`:
-  - Stores local variables and function call information.
-  - Memory is automatically allocated and de-allocated as functions are called and return.
-  - Register(`sp` in `arm64`, stack pointer) is used to manage and point to the stack memory.
-  - Size is limited(may lead to **stack overflow**).
-    - set via `ulimit -s` in linux.
+    - Stores local variables and function call information.
+    - Memory is automatically allocated and de-allocated as functions are called and return.
+    - Register(`sp` in `arm64`, stack pointer) is used to manage and point to the stack memory.
+    - Size is limited(may lead to **stack overflow**).
+        - set via `ulimit -s` in linux.
 - `Heap`:
-  - Dynamic memory managed by programmer at runtime.
-  - Memory is allocated and deallocated explicitly using functions like `malloc`/`free` in `C`, and `new`/`delete` in `C++`, `brk` system call in `assembly` etc.
-  - Store dynamic data that can be shared across functions. Data lifecycle is not bound to functions.
-  - Size is much larger than the stack,
+    - Dynamic memory managed by programmer at runtime.
+    - Memory is allocated and deallocated explicitly using functions like `malloc`/`free` in `C`, and `new`/`delete` in `C++`, `brk` system call in `assembly` etc.
+    - Store dynamic data that can be shared across functions. Data lifecycle is not bound to functions.
+    - Size is much larger than the stack,
 - `Data`(`.data`, `.bss`):
-  - Stores global variables/constants, separated into initialized and uninitialized
+    - Stores global variables/constants, separated into initialized and uninitialized
 - `Text`(`.text`): 
-  - Stores the code being executed
+    - Stores the code being executed
 
 [CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/fa2022/resources/stack-heap/)
 
 ## Label
+
+Label
 
 ## Instruction
 
@@ -211,27 +209,32 @@ Data area
 
 #### Register Operand
 
-```asm
+Register Operand
+
+```nasm
 mov   rdi, rsi
 ```
 
 #### Immediate Operand
 
-```asm
+Immediate Operand
+
+```nasm
 mov   rdi, 0x21
 mov   rdi, 5
 mov   edi, 0x21314151
 ```
 
-in `aarch64`, the immediate value is subject to:
-- Arithmetic instructions (add{s}, sub{s}, cmp, cmn) take a 12-bit unsigned immediate with an optional 12-bit left shift.
-- Move instructions (movz, movn, movk) take a 16-bit immediate optionally shifted to any 16-bit-aligned position within the register.
-- Address calculations (adr, adrp) take a 21-bit signed immediate, although there's no actual syntax to specify it directly - to do so you'd have to resort to assembler expression trickery to generate an appropriate "label".
-- Logical instructions (and{s}, orr, eor, tst) take a "bitmask immediate".
+In `aarch64`, the immediate value is subject to:
+
+- Arithmetic instructions (`add{s}`, `sub{s}`, `cmp`, `cmn`) take a 12-bit unsigned immediate with an optional 12-bit left shift.
+- Move instructions (`movz`, `movn`, `movk`) take a 16-bit immediate optionally shifted to any 16-bit-aligned position within the register.
+- Address calculations (`adr`, `adrp`) take a 21-bit signed immediate, although there's no actual syntax to specify it directly - to do so you'd have to resort to assembler expression trickery to generate an appropriate "label".
+- Logical instructions (`and{s}`, `orr`, `eor`, `tst`) take a "bitmask immediate".
 
 #### Memory Operand
 
-```asm
+```nasm
 mov   rdi, [sdi]
 ```
 
@@ -250,20 +253,24 @@ In order to load 32-bit integer, `x86_64` need only **one** instruction while mo
 
 Load a 32-bit integer `0x1a2b3c4d` in `x86_64`,
 
-```asm
+```nasm
 mov     rid, 0x1a2b3c4d
 ```
 
 Load a 32-bit integer 32-bit `0x1a2b3c4d` in `aarch64`(the immediate value in `mov` must be in the range of `16-bit`, so it needs **two** instructions),
 
-```asm
+```nasm
 movz    x1, 0x3c4d
 movk    x1, 0x1a2b, lsl 16
 ```
 
 ## NASM x86_64 cheat sheet
 
+NASM x86_64 cheat sheet
+
 ## GAS aarch64 cheat sheet
+
+GAS aarch64 cheat sheet
 
 ## Assembly's Role in Compiler
 
@@ -273,32 +280,32 @@ The `Assembly` plays intermediate role in the compiler, while higher language li
 
 I have another writing to introduce my understanding of the compiler from the practice more than the theoretical point of view, and how to write a compiler.
 
-[wiki compiler](./wiki-compiler.mdx)
+[wiki-compiler.mdx](./wiki-compiler.mdx)
 
 ## Resources
 
-https://gist.github.com/mikesmullin/6259449
+[Notes on x86-64 Assembly and Machine Code · GitHub](https://gist.github.com/mikesmullin/6259449)
 
-https://cs.lmu.edu/~ray/notes/nasmtasutorial/
+[nasmtasutorial](https://cs.lmu.edu/~ray/notes/nasmtasutorial/)
 
-https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
+[x64_cheatsheet.pdf](https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf)
 
-http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html
+[mit x86-64 architecture guide](http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html)
 
-https://cs61.seas.harvard.edu/site/2018/Asm1/
+[Assembly 1: Basics – CS 61 2018](https://cs61.seas.harvard.edu/site/2018/Asm1/)
 
-https://web.stanford.edu/class/cs107/guide/x86-64.html
+[CS107 Guide to x86-64](https://web.stanford.edu/class/cs107/guide/x86-64.html)
 
-https://www.cs.virginia.edu/~evans/cs216/guides/x86.html
+[Guide to x86 Assembly](https://www.cs.virginia.edu/~evans/cs216/guides/x86.html)
 
-https://www.cs.uaf.edu/2016/fall/cs301/lecture/09_28_machinecode.html
+[Assembly Language & Computer Architecture Lecture (CS301)](https://www.cs.uaf.edu/2016/fall/cs301/lecture/09_28_machinecode.html)
 
-https://p403n1x87.github.io/getting-started-with-x86-64-assembly-on-linux.html
+[The Hub of Heliopolis - Getting Started with x86-64 Assembly on Linux](https://p403n1x87.github.io/getting-started-with-x86-64-assembly-on-linux.html)
 
-https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html
+[Guide to x86 Assembly](https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html)
 
-https://nickdesaulniers.github.io/blog/2014/04/18/lets-write-some-x86-64/
+[Let's Write Some X86-64](https://nickdesaulniers.github.io/blog/2014/04/18/lets-write-some-x86-64/)
 
-https://pacman128.github.io/static/pcasm-book.pdf
+[pcasm-book.pdf](https://pacman128.github.io/static/pcasm-book.pdf)
 
-https://redirect.cs.umbc.edu/portal/help/nasm/sample_64.shtml
+[Sample 64-bit nasm programs](https://redirect.cs.umbc.edu/portal/help/nasm/sample_64.shtml)

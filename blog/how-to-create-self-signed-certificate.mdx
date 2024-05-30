@@ -24,7 +24,7 @@ In real life, when we build our website and make it public, some paid or free **
 
 Given the secure reasons, the browser will only admit those servers's certificates signed from the authorized **CA**, and the **CA** certificate is kept in our host **system trust store**. In Linux, you can view the **CA** certificate file like `/etc/ssl/certs/ca-certificates.crt`.
 
-:::NOTE
+:::note
 One of the most popular Certificate Authorities is [Let's Encrypt](https://letsencrypt.org/), which is a free and non-profit CA.
 :::
 
@@ -82,7 +82,7 @@ EOF
 )
 ```
 
-:::NOTE
+:::note
 **process substitution** does not work in bash scripts!
 :::
 
@@ -176,11 +176,11 @@ Now, it's time for **local CA** to sign a certificate for our local server by us
 openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -extensions v3_req -extfile localhost.conf -out localhost.crt
 ```
 
-:::Explanation
+:::info
 `-extensions v3_req -extfile localhost.conf`: `openssl x509` will contain `subjectAltName` extension in the certificate.
 :::
 
-:::WARNING
+:::warning
 If `X509` extensions(`subjectAltName`) are missing from the certificate, the browser will still report security issues, such as **its security certificate does not specify Subject Alternative Names.**
 :::
 
@@ -202,7 +202,7 @@ openssl x509 -text -noout -in localhost.crt
 openssl verify -verbose -CAfile RootCA.crt localhost.crt
 ```
 
-:::NOTE
+:::note
 If the CA and Subject are the same one, the step of creating the local CA can be skipped.
 
 ```sh
