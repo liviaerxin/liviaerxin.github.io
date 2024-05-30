@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[9600],{2192:e=>{e.exports=JSON.parse('{"label":"serial console","permalink":"/blog/tags/serial-console","allTagsPath":"/blog/tags","count":1}')}}]);

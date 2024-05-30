@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2659],{87094:s=>{s.exports=JSON.parse('{"label":"autoswitch","permalink":"/blog/tags/autoswitch","allTagsPath":"/blog/tags","count":1}')}}]);

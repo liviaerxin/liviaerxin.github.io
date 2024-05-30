@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[9178],{43706:e=>{e.exports=JSON.parse('{"label":"Wiki Socket","permalink":"/blog/tags/wiki-socket","allTagsPath":"/blog/tags","count":1}')}}]);

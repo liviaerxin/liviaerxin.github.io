@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[4791],{19229:s=>{s.exports=JSON.parse('{"label":"Linux Boot Process","permalink":"/blog/tags/linux-boot-process","allTagsPath":"/blog/tags","count":1}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2578],{9233:s=>{s.exports=JSON.parse('{"label":"Wiki Assembly","permalink":"/blog/tags/wiki-assembly","allTagsPath":"/blog/tags","count":1}')}}]);
