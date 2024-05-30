@@ -49,7 +49,7 @@ And there is nice picture from [How to create your own self-signed root Certific
 <!--truncate-->
 
 
-## 1. Create a local Certificate Authority (CA)
+## 1. Create a local CA
 
 Generate a file `RootCA.key` and a file `RootCA.crt` of our local root **CA**:
 
@@ -89,21 +89,22 @@ EOF
 
 ## 2. Create a signed certificate for the local server
 
-Next, we should apply the local **CA** to sign a **certificate** for our local server, which will be accessed through the `localhost` or `127.0.0.1` from our local machine.
+Next, we should apply the local **CA** to sign a **certificate** for our local server using the server's **Certificate Signing Request** (**CSR**)
+, which will be accessed through the `localhost` or `127.0.0.1` from our local machine.
 
-### 2.1. Generate a Certificate Signing Request (CSR)
+### 2.1. Generate the server's CSR
 
-When generating the **CSR** file with OpenSSL, we can either specify certain details directly in the command line or use a configuration file. While you can provide some information via command-line arguments, complex configurations like specifying `[v3_req]` and `[alt_names]` are typically done through a configuration file.
+When generating the **CSR** file with OpenSSL, we can either specify certain details directly in the command line or use a configuration file. While you can provide some information via command-line arguments, complex configurations like specifying `[v3_req]` and `[alt_names]` in belowing are typically done through a configuration file.
 
-`subjectAltName` will let you specify more than domain/IP addresses as **Subject Alternative Names** (**SANs**).
+`subjectAltName` in `[v3_req]` will let you specify more than domain/IP addresses as **Subject Alternative Names** (**SANs**). And now modern browser require the server certificate to include **SANs**. Usage of the **Common Name** (**CN**) alone is not considered secure enough, and omitting **SANs** may result a certificate validation error!
 
-Here is an example for command-line arguments,
+Here is an example for using pure arguments to specify `-subj`:
 
 ```sh
 openssl req -new -newkey rsa:2048 -nodes -keyout privkey.pem -out csr.pem -subj "/C=US/ST=California/L=San Francisco/O=Example Corp/OU=IT Department/CN=www.example.com/emailAddress=admin@example.com"
 ```
 
-Here is an example to use the configuration file.
+Here is an example to use the configuration file as `-config`.
 
 1. [Optional] Customize DNS by editing `/etc/hosts` (Other machines also have to do this if they would like to visit the server),
 
@@ -141,7 +142,7 @@ DNS.3 = fake2.local
 
 3. Generates the **CSR**
 
-To generate a CSR using the configuration file with OpenSSL, you can use the following command:
+To generate a **CSR** using the configuration file with OpenSSL, you can use the following command:
 
 ```sh
 openssl req -new -nodes -keyout localhost.key -out localhost.csr -config localhost.conf
@@ -151,10 +152,10 @@ openssl req -new -nodes -keyout localhost.key -out localhost.csr -config localho
 
 ```sh
 SAN_LIST="[SAN]\nsubjectAltName=DNS:localhost, DNS:*.localhost, IP:127.0.0.1"
-openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example CORP/CN=localhost.local" -reqexts SAN -config <(echo $SAN_LIST)
+openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example CORP/CN=localhost.local" -reqexts SAN -config <(echo -e "$SAN_LIST")
 ```
 
-Here, `localhost.conf` is the configuration file and the two outputs: 
+Here, `localhost.conf` is the configuration file and the two outputs are: 
 - `localhost.key` is the private key file for the local server to communicate with the clients securely.
 - `localhost.csr` is the **CSR** file that the local server will use in the next step to sign its certificate from the local CA.
 
@@ -175,6 +176,20 @@ Now, it's time for **local CA** to sign a certificate for our local server by us
 openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -extensions v3_req -extfile localhost.conf -out localhost.crt
 ```
 
+:::Explanation
+`-extensions v3_req -extfile localhost.conf`: `openssl x509` will contain `subjectAltName` extension in the certificate.
+:::
+
+:::WARNING
+If `X509` extensions(`subjectAltName`) are missing from the certificate, the browser will still report security issues, such as **its security certificate does not specify Subject Alternative Names.**
+:::
+
+Or after **OpenSSL v3**, you can copy the extensions specified in the **CSR** to the certificate by `openssl x509` as this:
+
+```sh
+openssl x509 -req -sha256 -days 1024 -in localhost.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -copy_extensions copyall -out localhost.crt
+```
+
 - View the generated `localhost.crt`:
 
 ```sh
@@ -187,64 +202,13 @@ openssl x509 -text -noout -in localhost.crt
 openssl verify -verbose -CAfile RootCA.crt localhost.crt
 ```
 
-:::warning
-If `X509` extensions(`subjectAltName`) are missing from the certificate, the browser will still report security issues, such as **its security certificate does not specify Subject Alternative Names.**
-:::
-
-:::note
-Using the CA and Subject as the same one, the step of creating the local CA can be skipped.
+:::NOTE
+If the CA and Subject are the same one, the step of creating the local CA can be skipped.
 
 ```sh
 openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.conf
 ```
 :::
-
-[Optional] For complicated configuration for CA to sign a certificate, you can use configuration file like:
-
-```sh
-cd /path/to/your/ca/
-mkdir -p newcerts
-touch index.txt
-echo 1000 > serial
-```
-
-```sh
-cat <<EOF > /path/to/your/ca/openssl.cnf
-[ ca ]
-default_ca = CA_default
-
-[ CA_default ]
-dir               = /path/to/your/ca
-database          = $dir/index.txt
-new_certs_dir     = $dir/newcerts
-certificate       = $dir/RootCA.crt
-serial            = $dir/serial
-private_key       = $dir/RootCA.key
-default_days      = 365
-default_md        = sha256
-policy            = policy_any
-x509_extensions   = usr_cert
-
-[ policy_any ]
-countryName             = supplied
-stateOrProvinceName     = supplied
-organizationName        = supplied
-organizationalUnitName  = optional
-commonName              = supplied
-emailAddress            = optional
-
-[ usr_cert ]
-basicConstraints=CA:FALSE
-nsCertType = client, email
-nsComment = "OpenSSL Generated Certificate"
-subjectKeyIdentifier=hash
-authorityKeyIdentifier=keyid,issuer
-EOF
-```
-
-```sh
-openssl ca -config /path/to/your/ca/openssl.cnf -in localhost.csr -out localhost.crt -batch
-```
 
 ## 3. Use the signed certificate in the local server
 
@@ -270,6 +234,56 @@ TO trust the root **local CA**, we must install the **local CA** certificate `Ro
 - macOS system trust store
 
 Then visit again, the browser will show green!
+
+## [Optional] Sign the CSR with `openssl ca`
+
+For complicated configuration for CA to sign a certificate, you can use `openssl ca` and the configuration file is like:
+
+```sh
+cd /path/to/your/ca/
+mkdir -p newcerts
+touch index.txt
+echo 1000 > serial
+```
+
+```sh
+cat <<EOF > /path/to/your/ca/openssl.cnf
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+dir               = /path/to/your/ca
+database          = $dir/index.txt
+new_certs_dir     = $dir/newcerts
+certificate       = $dir/RootCA.crt
+serial            = $dir/serial
+private_key       = $dir/RootCA.key
+default_days      = 365
+default_md        = sha256
+policy            = policy_any
+x509_extensions   = usr_cert
+copy_extensions   = copy
+
+[ policy_any ]
+countryName             = supplied
+stateOrProvinceName     = supplied
+organizationName        = supplied
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ usr_cert ]
+basicConstraints=CA:FALSE
+nsCertType = client, email
+nsComment = "OpenSSL Generated Certificate"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+EOF
+```
+
+```sh
+openssl ca -config /path/to/your/ca/openssl.cnf -in localhost.csr -out localhost.crt -batch
+```
 
 ## Troubleshooting
 
