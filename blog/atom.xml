@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/blog</id>
     <title>S' Wiki Blog</title>
-    <updated>2024-06-05T07:45:13.000Z</updated>
+    <updated>2024-06-05T08:41:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/blog"/>
     <subtitle>S' Wiki Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[CIL(Common Intermediate Language)]]></title>
         <id>https://liviaerxin.github.io/blog/common-intermediate-language</id>
         <link href="https://liviaerxin.github.io/blog/common-intermediate-language"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Verifying your own .NET IL-Code]]></summary>
         <content type="html"><![CDATA[<p><a href="https://www.dynatrace.com/news/blog/verifying-your-own-dotnet-il-code/" target="_blank" rel="noopener noreferrer">Verifying your own .NET IL-Code</a></p>
 <p><a href="https://stackoverflow.com/questions/39979851/net-core-equivalent-of-ildasm-ilasm" target="_blank" rel="noopener noreferrer">linux - .net-core: Equivalent of ILDASM / ILASM - Stack Overflow</a></p>
@@ -26,7 +26,7 @@
         <title type="html"><![CDATA[Data Center]]></title>
         <id>https://liviaerxin.github.io/blog/data-center</id>
         <link href="https://liviaerxin.github.io/blog/data-center"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Economic Data]]></summary>
         <content type="html"><![CDATA[<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="economic-data">Economic Data<a href="https://liviaerxin.github.io/blog/data-center#economic-data" class="hash-link" aria-label="Direct link to Economic Data" title="Direct link to Economic Data">​</a></h2>
 <p><a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener noreferrer">FRED ECONOMIC DATA</a></p>
@@ -36,7 +36,7 @@
         <title type="html"><![CDATA[.NET Finalizer]]></title>
         <id>https://liviaerxin.github.io/blog/dotnet-finalizer</id>
         <link href="https://liviaerxin.github.io/blog/dotnet-finalizer"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[c# - Finalizer launched while its object was still being used - Stack Overflow]]></summary>
         <content type="html"><![CDATA[<p><a href="https://stackoverflow.com/questions/134653/finalizer-launched-while-its-object-was-still-being-used" target="_blank" rel="noopener noreferrer">c# - Finalizer launched while its object was still being used - Stack Overflow</a></p>
 <h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="tips">Tips<a href="https://liviaerxin.github.io/blog/dotnet-finalizer#tips" class="hash-link" aria-label="Direct link to Tips" title="Direct link to Tips">​</a></h2>
@@ -48,7 +48,7 @@
         <title type="html"><![CDATA[Frequently Asked Questions]]></title>
         <id>https://liviaerxin.github.io/blog/frequently-asked-questions</id>
         <link href="https://liviaerxin.github.io/blog/frequently-asked-questions"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[⚠️ Foam is still in preview. Expect the experience to be a little rough.]]></summary>
         <content type="html"><![CDATA[<blockquote>
 <p>⚠️ Foam is still in preview. Expect the experience to be a little rough.</p>
@@ -81,7 +81,7 @@
         <title type="html"><![CDATA[Graphical User Interface(GUI)]]></title>
         <id>https://liviaerxin.github.io/blog/graphical-user-interface</id>
         <link href="https://liviaerxin.github.io/blog/graphical-user-interface"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Modern GUI composition of:]]></summary>
         <content type="html"><![CDATA[<p>Modern GUI composition of:</p>
 <ul>
@@ -136,7 +136,7 @@
         <title type="html"><![CDATA[IoC]]></title>
         <id>https://liviaerxin.github.io/blog/ioc</id>
         <link href="https://liviaerxin.github.io/blog/ioc"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Introduction IoC, DIP, DI and IoC Container]]></summary>
         <content type="html"><![CDATA[<p><a href="https://www.tutorialsteacher.com/ioc/introduction" target="_blank" rel="noopener noreferrer">Introduction IoC, DIP, DI and IoC Container</a></p>
 <p><a href="https://thomaslevesque.com/2020/03/18/lazily-resolving-services-to-fix-circular-dependencies-in-net-core/" target="_blank" rel="noopener noreferrer">Lazily resolving services to fix <code>circular dependencies</code> in .NET Core - Thomas Levesque's .NET Blog</a></p>
@@ -149,7 +149,7 @@
         <title type="html"><![CDATA[LevelDB]]></title>
         <id>https://liviaerxin.github.io/blog/leveldb</id>
         <link href="https://liviaerxin.github.io/blog/leveldb"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Principle and use of leveldb - Birost]]></summary>
         <content type="html"><![CDATA[<p><a href="https://blog.birost.com/a?ID=00650-1d5c18b6-1dac-46da-bbf8-80a5257e7bdd" target="_blank" rel="noopener noreferrer">Principle and use of leveldb - Birost</a></p>
 <p><a href="https://www.igvita.com/2012/02/06/sstable-and-log-structured-storage-leveldb/" target="_blank" rel="noopener noreferrer">SSTable and Log Structured Storage: LevelDB - igvita.com</a></p>
@@ -159,7 +159,7 @@
         <title type="html"><![CDATA[Your markdown including PlantUML code block]]></title>
         <id>https://liviaerxin.github.io/blog/markdown-plantuml</id>
         <link href="https://liviaerxin.github.io/blog/markdown-plantuml"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <content type="html"><![CDATA[<div class="language-plantumlcode codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-plantumlcode codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">@startuml</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">:User: --&gt; (Use)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">"Main Admin" as Admin</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">"Use the application" as (Use)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Admin --&gt; (Admin the application)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">@enduml</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <img decoding="async" loading="lazy" src="https://www.plantuml.com/plantuml/png/XSpH2O0W403GVwUu1Mw124b7Q0Ep0mMzgppt3wgl2Ff_lAbfEBJNObp9aG0jU5a6S5qJiUOOD0l3J7kdfiRB0eWMBloXsYRSoBmp5arqGFXERpmY_kWdduZNNii9" class="img_ev3q">
 <img decoding="async" loading="lazy" src="https://www.plantuml.com/plantuml/png/ROtBIWD144Nt_HKtGo0A0-8-X4IJh1m796Gb36LtZMbItJNq8-ZVYt6JXRiBvt3kEXTAfGOnCn-jLCTO1YgSFCc3rH0qhim21uKFawQ2ScBaAVd26BqmlhLYsxyk3eZC3aKn2La6OKey-g_PV-5HnN4QWbvuPKot6VRzotRtDdJzSNVt96JFBHvRE9zQ9BQ5ugTmYsO3eG-MvjwOwtcJjIRBiEhuFIxdWORRT0FAL_PdFtTqvj-LpPgZgq5-0000" class="img_ev3q">
@@ -169,7 +169,7 @@
         <title type="html"><![CDATA[OpenCV tips]]></title>
         <id>https://liviaerxin.github.io/blog/opencv-tips</id>
         <link href="https://liviaerxin.github.io/blog/opencv-tips"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Q: Whether the image/frame from VideoCapture is in BGR or YUV pixels format?]]></summary>
         <content type="html"><![CDATA[<p>Q: Whether the image/frame from VideoCapture is in <code>BGR</code> or <code>YUV</code> pixels format?
 A:
@@ -180,7 +180,7 @@ you can disable this conversion (and receive YUV) by setting the CAP_PROP_CONVER
         <title type="html"><![CDATA[Python Benchmark]]></title>
         <id>https://liviaerxin.github.io/blog/python-benchmark</id>
         <link href="https://liviaerxin.github.io/blog/python-benchmark"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Ok, here is the cost of acquiring and releasing an uncontended lock]]></summary>
         <content type="html"><![CDATA[<p>Ok, here is the cost of acquiring and releasing an uncontended lock
 under Linux, with Python 3.2:</p>
@@ -202,7 +202,7 @@ improvement in lock performance, to say the least.</p>
         <title type="html"><![CDATA[Python Module]]></title>
         <id>https://liviaerxin.github.io/blog/python-module</id>
         <link href="https://liviaerxin.github.io/blog/python-module"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Python Module Search Path]]></summary>
         <content type="html"><![CDATA[<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="python-module-search-path">Python Module Search Path<a href="https://liviaerxin.github.io/blog/python-module#python-module-search-path" class="hash-link" aria-label="Direct link to Python Module Search Path" title="Direct link to Python Module Search Path">​</a></h2>
 <p><a href="https://docs.python.org/3/tutorial/modules.html#the-module-search-path" target="_blank" rel="noopener noreferrer">The Module Search Path</a></p>
@@ -212,7 +212,7 @@ improvement in lock performance, to say the least.</p>
         <title type="html"><![CDATA[RPC vs MQ]]></title>
         <id>https://liviaerxin.github.io/blog/rpc_vs_mq</id>
         <link href="https://liviaerxin.github.io/blog/rpc_vs_mq"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[RPC: synchronous, client needs to preserve the request until the client receives response.]]></summary>
         <content type="html"><![CDATA[<p>RPC: synchronous, client needs to preserve the request until the client receives response.
 MQ(Message Queue): asynchronous, there is no need for client to wait for the response.</p>
@@ -229,7 +229,7 @@ MQ(Message Queue): asynchronous, there is no need for client to wait for the res
         <title type="html"><![CDATA[Serialization]]></title>
         <id>https://liviaerxin.github.io/blog/serialization</id>
         <link href="https://liviaerxin.github.io/blog/serialization"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[Serialization]]></summary>
         <content type="html"><![CDATA[<p><a href="https://en.wikipedia.org/wiki/Serialization" target="_blank" rel="noopener noreferrer">Serialization</a></p>
 <p><a href="https://medium.com/@hugovs/the-need-for-speed-experimenting-with-message-serialization-93d7562b16e4" target="_blank" rel="noopener noreferrer">The need for speed — Experimenting with message serialization</a></p>
@@ -247,7 +247,7 @@ MQ(Message Queue): asynchronous, there is no need for client to wait for the res
         <title type="html"><![CDATA[Wiki Skia]]></title>
         <id>https://liviaerxin.github.io/blog/wiki-skia</id>
         <link href="https://liviaerxin.github.io/blog/wiki-skia"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[What the difference between SkImage/SkPicture/SkCanvas/SkSurface?]]></summary>
         <content type="html"><![CDATA[<p><a href="https://groups.google.com/g/skia-discuss/c/rNWV-oYtps" target="_blank" rel="noopener noreferrer">What the difference between SkImage/SkPicture/SkCanvas/SkSurface?</a></p>
 <p><a href="https://groups.google.com/g/skia-discuss/c/zatUu89s5_I" target="_blank" rel="noopener noreferrer">SkBitmap based SkCanvas very slow... How to improve draw speeds?</a></p>
@@ -259,7 +259,7 @@ MQ(Message Queue): asynchronous, there is no need for client to wait for the res
         <title type="html"><![CDATA[Wiki VPN]]></title>
         <id>https://liviaerxin.github.io/blog/wiki-vpn</id>
         <link href="https://liviaerxin.github.io/blog/wiki-vpn"/>
-        <updated>2024-06-05T07:45:13.000Z</updated>
+        <updated>2024-06-05T08:41:00.000Z</updated>
         <summary type="html"><![CDATA[OpenVPN: how secure virtual private networks really work]]></summary>
         <content type="html"><![CDATA[<p><a href="https://cloudacademy.com/blog/openvpn-how-secure-virtual-private-networks-really-work/" target="_blank" rel="noopener noreferrer">OpenVPN: how secure virtual private networks really work</a></p>
 <blockquote>
