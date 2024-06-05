@@ -3,31 +3,47 @@ import Layout from '@theme/Layout';
 import {translate} from '@docusaurus/Translate';
 
 import styles from './styles.module.css';
-import useGithubRepositories, {
+import {
+  useGithubRepositoriesForUser,
   Repository,
+  useGithubRepositories,
 } from '../../hooks/useGithubRepositories';
 import RepositoryCard from '../../components/RepositoryCard';
 
 const websiteConfig = require('@site/website_config.json');
 
-function Portfolio() {
-  const maxPerPage = 24;
-  const {repositories} = useGithubRepositories(websiteConfig.GITHUB_USER, {
-    type: 'owner',
-    sort: 'pushed',
-    direction: 'desc',
-    per_page: maxPerPage,
-    page: 0,
-  });
+export default function Portfolio() : JSX.Element{
+  // const maxPerPage = 24;
+  // const {repositories} = useGithubRepositoriesForUser(websiteConfig.GITHUB_USER, {
+  //   type: 'owner',
+  //   sort: 'pushed',
+  //   direction: 'desc',
+  //   per_page: maxPerPage,
+  //   page: 0,
+  // });
+
+  const repos = [
+    "hello-c",
+    "hello-cpp",
+    "hello-python",
+    "hello-assembly",
+    "hello-dockerfile",
+    "hello-docker-compose",
+  ];
+  const {repositories} = useGithubRepositories(
+    websiteConfig.GITHUB_USER,
+    repos,
+  );
+  const maxPerPage = repos.length;
 
   const title = translate({
     id: 'portfolio.title',
-    message: 'My open-source projects',
+    message: 'Daily Projects',
     description: "The author's portfolio",
   });
   const description = translate({
     id: 'portfolio.description',
-    message: 'My {maxPerPage} most up-to-date open-source projects!',
+    message: 'My {maxPerPage} up-to-date daily coding playground!',
     description: 'A description for the portfolio page',
   });
 
@@ -51,5 +67,3 @@ function Portfolio() {
     </Layout>
   );
 }
-
-export default Portfolio;
