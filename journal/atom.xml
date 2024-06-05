@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/journal</id>
     <title>S' Wiki Blog</title>
-    <updated>2024-06-05T08:41:00.000Z</updated>
+    <updated>2024-06-05T08:48:55.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/journal"/>
     <subtitle>S' Wiki Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Private Note or Documents]]></title>
         <id>https://liviaerxin.github.io/journal/README</id>
         <link href="https://liviaerxin.github.io/journal/README"/>
-        <updated>2024-06-05T08:41:00.000Z</updated>
+        <updated>2024-06-05T08:48:55.000Z</updated>
         <summary type="html"><![CDATA[Why Backend and DevOps Roles May Become One in the Future | HackerNoon]]></summary>
         <content type="html"><![CDATA[<p><a href="https://hackernoon.com/why-backend-and-devops-roles-may-become-one-in-the-future" target="_blank" rel="noopener noreferrer">Why Backend and DevOps Roles May Become One in the Future | HackerNoon</a></p>
 <p><a href="https://www.hiration.com/blog/github-on-resume/" target="_blank" rel="noopener noreferrer">How to Put GitHub on Resume in 2023: Complete Guide &amp; Tips</a></p>
@@ -169,8 +169,6 @@ dividend / divisor = (quotient) R (remainder) : dividend divided by the divisor 
 </li>
 <li>
 <p><strong>Python:</strong></p>
-</li>
-</ol>
 <ul>
 <li>Data Structure<!-- -->
 <ul>
@@ -181,7 +179,7 @@ dividend / divisor = (quotient) R (remainder) : dividend divided by the divisor 
 </ul>
 </li>
 <li>dict</li>
-<li>deque<!-- -->
+<li>dequeue<!-- -->
 <ul>
 <li><code>append(v)</code>, <code>pop()</code>: O(1)</li>
 <li><code>appendleft(v)</code>=<code>insert(0, v)</code>, <code>popleft()</code>=<code>pop(0)</code>: O(1)</li>
@@ -199,49 +197,57 @@ dividend / divisor = (quotient) R (remainder) : dividend divided by the divisor 
 </ul>
 </li>
 </ul>
-<ol start="11">
-<li><strong>DevOps:</strong></li>
-</ol>
+</li>
+<li>
+<p><strong>DevOps:</strong></p>
 <ul>
 <li>Cloud platforms (e.g., AWS, Azure, Google Cloud Platform)</li>
 <li>CI/CD pipelines</li>
-<li>Containerization (e.g., Docker, Kubernetes)</li>
+<li>Containerization (e.g., Docker, Kubernetes)<!-- -->
+<ul>
+<li>Docker<!-- -->
+<ul>
+<li>Dev container</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Monitoring and logging solutions (e.g., Prometheus, ELK stack)</li>
 </ul>
-<ol start="12">
-<li><strong>Testing:</strong></li>
-</ol>
+</li>
+<li>
+<p><strong>Testing:</strong></p>
 <ul>
 <li>Unit testing</li>
 <li>Integration testing</li>
 <li>End-to-end testing</li>
 </ul>
-<ol start="13">
-<li><strong>Debugging:</strong></li>
-</ol>
+</li>
+<li>
+<p><strong>Debugging:</strong></p>
 <ul>
 <li>Debugging techniques and tools (e.g., logging, debugginggers)</li>
 <li>Performance profiling and optimization</li>
 </ul>
-<ol start="14">
-<li><strong>Software Development Practices:</strong></li>
-</ol>
+</li>
+<li>
+<p><strong>Software Development Practices:</strong></p>
 <ul>
 <li>Version control systems (e.g., Git)</li>
 <li>Continuous integration and continuous deployment (CI/CD)</li>
 <li>Agile methodologies (e.g., Scrum, Kanban)</li>
 <li>Code review processes and best practices</li>
 </ul>
-<ol start="15">
-<li><strong>Cloud Computing and DevOps:</strong></li>
-</ol>
+</li>
+<li>
+<p><strong>Cloud Computing and DevOps:</strong></p>
 <ul>
 <li>Cloud platforms (e.g., AWS, Azure, Google Cloud Platform)</li>
 <li>Infrastructure as Code (IaC) tools (e.g., Terraform, CloudFormation)</li>
 <li>Containerization (e.g., Docker, Kubernetes)</li>
 <li>Monitoring and logging solutions (e.g., Prometheus, ELK stack)</li>
 </ul>
-<ol start="16">
+</li>
 <li>
 <p><strong>Other Topics:</strong></p>
 <ul>
@@ -301,7 +307,7 @@ Organization and a good moving plan are <strong>indispensable</strong> parts of 
         <title type="html"><![CDATA[tmp]]></title>
         <id>https://liviaerxin.github.io/journal/tmp</id>
         <link href="https://liviaerxin.github.io/journal/tmp"/>
-        <updated>2024-06-05T08:41:00.000Z</updated>
+        <updated>2024-06-05T08:48:55.000Z</updated>
         <summary type="html"><![CDATA[https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable]]></summary>
         <content type="html"><![CDATA[<p><a href="https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable</a></p>
 <p>use case:
