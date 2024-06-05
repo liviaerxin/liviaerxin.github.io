@@ -55,113 +55,115 @@ Vocabulary:
 Backend software engineering interviews often cover a broad range of topics, including data structures, algorithms, system design, database management, networking, and more. Here's a categorization of some common terms and topics:
 
 1. **Data Structures**:
-   - Arrays
-   - Linked Lists
-   - Stacks
-   - Queues
-   - Trees (Binary Trees, Binary Search Trees, AVL Trees, Red-Black Trees, etc.)
-   - Graphs
-   - Hash Tables
-   - Heaps
+    - Arrays
+    - Linked Lists
+    - Stacks
+    - Queues
+    - Trees (Binary Trees, Binary Search Trees, AVL Trees, Red-Black Trees, etc.)
+    - Graphs
+    - Hash Tables
+    - Heaps
 
 2. **Algorithms**:
-   - Searching algorithms (Binary search, Linear search, Depth-first search, Breadth-first search)
-   - Sorting algorithms (Quick sort, Merge sort, Bubble sort, Insertion sort)
-   - Dynamic programming
-   - Greedy algorithms
-   - Recursion
-   - Graph algorithms (Shortest path algorithms like Dijkstra's, Minimum Spanning Tree algorithms like Prim's and Kruskal's, etc.)
+    - Searching algorithms (Binary search, Linear search, Depth-first search, Breadth-first search)
+    - Sorting algorithms (Quick sort, Merge sort, Bubble sort, Insertion sort)
+    - Dynamic programming
+    - Greedy algorithms
+    - Recursion
+    - Graph algorithms (Shortest path algorithms like Dijkstra's, Minimum Spanning Tree algorithms like Prim's and Kruskal's, etc.)
 
 3. **Database Management:**
-   - Relational databases (SQL)
-   - Non-relational databases (NoSQL)
-   - ACID properties, transactions, and concurrency control
-   - Indexing, normalization and denormalization
-   - Query optimization and performance tuning
-   - Database Migration
+    - Relational databases (SQL)
+    - Non-relational databases (NoSQL)
+    - ACID properties, transactions, and concurrency control
+    - Indexing, normalization and denormalization
+    - Query optimization and performance tuning
+    - Database Migration
 
 4. **Architectural:**
-   - Microservices
+    - Microservices
 
 5. **Security:**:
-   - Authentication and authorization
-   - Encryption
-   - Man-in-the-middle attacks
+    - Authentication and authorization
+    - Encryption
+    - Man-in-the-middle attacks
 
 6. **System Design:**
-   - Scalability
-   - Load balancing
-   - Caching strategies
-   - Database sharding
-   - Replication and fault tolerance
-   - Microservices architecture
-   - API design
-   - Message queues and asynchronous processing
-   - Proxy servers
+    - Scalability
+    - Load balancing
+    - Caching strategies
+    - Database sharding
+    - Replication and fault tolerance
+    - Microservices architecture
+    - API design
+    - Message queues and asynchronous processing
+    - Proxy servers
 
 7. **Server:**
-   - HTTP protocol, RESTful APIs
-   - Web server concepts (e.g., Nginx, Apache)
-   - Authentication and authorization (e.g., OAuth, JWT)
-   - Session management and cookies
-   - Web security best practices (e.g., SQL injection, XSS)
-   - ORM
-     - active record
-     - data mapper
+    - HTTP protocol, RESTful APIs
+    - Web server concepts (e.g., Nginx, Apache)
+    - Authentication and authorization (e.g., OAuth, JWT)
+    - Session management and cookies
+    - Web security best practices (e.g., SQL injection, XSS)
+    - ORM
+        - active record
+        - data mapper
 
 8. **Concurrency and Parallelism:**
-   - Multi-threading and synchronization
-   - Locking mechanisms (e.g., mutexes, semaphores)
-   - Concurrent data structures (e.g., concurrent hash maps, queues)
-   - Parallel processing frameworks (e.g., MapReduce)
+    - Multi-threading and synchronization
+    - Locking mechanisms (e.g., mutexes, semaphores)
+    - Concurrent data structures (e.g., concurrent hash maps, queues)
+    - Parallel processing frameworks (e.g., MapReduce)
 
 9. **Programming Languages and Frameworks:**
-   - Proficiency in at least one backend programming language (e.g., Java, Python, Go, Node.js)
-   - Frameworks and libraries commonly used in backend development (e.g., Spring, Django, Express.js)
-   - Understanding of asynchronous programming and event-driven architectures
+    - Proficiency in at least one backend programming language (e.g., Java, Python, Go, Node.js)
+    - Frameworks and libraries commonly used in backend development (e.g., Spring, Django, Express.js)
+    - Understanding of asynchronous programming and event-driven architectures
 
 10. **Python:**
-   - Data Structure
-      - list
-         - `append(v)`, `pop()`: O(1)
-         - `insert(0, v)`, `pop(0)`: O(n)
-      - dict
-      - deque
-         - `append(v)`, `pop()`: O(1)
-         - `appendleft(v)`=`insert(0, v)`, `popleft()`=`pop(0)`: O(1)
-   - Typing
-   - Interactive shells
-      - rich
-      - IPython
-      - bpython
-      - ptpython
+    - Data Structure
+        - list
+            - `append(v)`, `pop()`: O(1)
+            - `insert(0, v)`, `pop(0)`: O(n)
+        - dict
+        - dequeue
+            - `append(v)`, `pop()`: O(1)
+            - `appendleft(v)`=`insert(0, v)`, `popleft()`=`pop(0)`: O(1)
+    - Typing
+    - Interactive shells
+        - rich
+        - IPython
+        - bpython
+        - ptpython
 
 11. **DevOps:**
-   - Cloud platforms (e.g., AWS, Azure, Google Cloud Platform)
-   - CI/CD pipelines
-   - Containerization (e.g., Docker, Kubernetes)
-   - Monitoring and logging solutions (e.g., Prometheus, ELK stack)
+    - Cloud platforms (e.g., AWS, Azure, Google Cloud Platform)
+    - CI/CD pipelines
+    - Containerization (e.g., Docker, Kubernetes)
+        - Docker
+            - Dev container
+    - Monitoring and logging solutions (e.g., Prometheus, ELK stack)
 
 12. **Testing:**
-   - Unit testing
-   - Integration testing
-   - End-to-end testing
+    - Unit testing
+    - Integration testing
+    - End-to-end testing
 
 13. **Debugging:**  
-   - Debugging techniques and tools (e.g., logging, debugginggers)
-   - Performance profiling and optimization
+    - Debugging techniques and tools (e.g., logging, debugginggers)
+    - Performance profiling and optimization
 
 14. **Software Development Practices:**
-   - Version control systems (e.g., Git)
-   - Continuous integration and continuous deployment (CI/CD)
-   - Agile methodologies (e.g., Scrum, Kanban)
-   - Code review processes and best practices
+    - Version control systems (e.g., Git)
+    - Continuous integration and continuous deployment (CI/CD)
+    - Agile methodologies (e.g., Scrum, Kanban)
+    - Code review processes and best practices
 
 15. **Cloud Computing and DevOps:**
-   - Cloud platforms (e.g., AWS, Azure, Google Cloud Platform)
-   - Infrastructure as Code (IaC) tools (e.g., Terraform, CloudFormation)
-   - Containerization (e.g., Docker, Kubernetes)
-   - Monitoring and logging solutions (e.g., Prometheus, ELK stack)
+    - Cloud platforms (e.g., AWS, Azure, Google Cloud Platform)
+    - Infrastructure as Code (IaC) tools (e.g., Terraform, CloudFormation)
+    - Containerization (e.g., Docker, Kubernetes)
+    - Monitoring and logging solutions (e.g., Prometheus, ELK stack)
 
 16. **Other Topics:**
     - Design patterns (e.g., singleton, factory, observer)
