@@ -50,8 +50,8 @@ RUN pip install --no-cache-dir --upgrade pip \
 # 1. installs NVM (Node Version Manager)
 # 2. download and install Node.js
 # 3. update to the latest version and install yarn
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash 
-    && source ~/.bashrc \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
+    && . ~/.bashrc \
     && nvm install 20 \
     && npm install -g npm@latest yarn
 
