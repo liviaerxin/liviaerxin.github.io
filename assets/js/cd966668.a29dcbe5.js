@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2385],{29687:s=>{s.exports=JSON.parse('{"tag":{"label":"algorithm","permalink":"/docs/tags/algorithm","allTagsPath":"/docs/tags","count":1,"items":[{"id":"algorithms","title":"Algorithms","description":"algorithm","permalink":"/docs/algorithms"}],"unlisted":false}}')}}]);

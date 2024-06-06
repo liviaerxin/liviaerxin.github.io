@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[6313],{13981:e=>{e.exports=JSON.parse('{"tag":{"label":"utf-8","permalink":"/docs/tags/utf-8","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki-unicode","title":"Wiki Unicode","description":"Wiki UTF8","permalink":"/docs/wiki-unicode"}],"unlisted":false}}')}}]);

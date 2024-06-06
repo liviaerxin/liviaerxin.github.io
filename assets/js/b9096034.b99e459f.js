@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[978],{18004:e=>{e.exports=JSON.parse('{"tag":{"label":"learn","permalink":"/docs/tags/learn","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki-powershell","title":"Wiki PowerShell","description":"Learn PowerShell","permalink":"/docs/wiki-powershell"}],"unlisted":false}}')}}]);

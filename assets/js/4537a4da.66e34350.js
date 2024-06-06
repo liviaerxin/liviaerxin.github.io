@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1542],{83498:e=>{e.exports=JSON.parse('{"tag":{"label":"emulator","permalink":"/docs/tags/emulator","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki-emulator","title":"Wiki Emulator","description":"Wiki Emulator","permalink":"/docs/wiki-emulator"}],"unlisted":false}}')}}]);

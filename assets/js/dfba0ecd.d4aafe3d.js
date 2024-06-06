@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[8026],{16287:t=>{t.exports=JSON.parse('{"tag":{"label":"git","permalink":"/docs/tags/git","allTagsPath":"/docs/tags","count":1,"items":[{"id":"git-best-practices","title":"Git Best Practices","description":"Git Submodules","permalink":"/docs/git-best-practices"}],"unlisted":false}}')}}]);
