@@ -5,7 +5,7 @@ import {ProfileItem} from './src/components/Profile';
 export const SKILLS: SkillItem[] = [
   {
     title: 'Backend Stacks',
-    href: '/blog/tags/backend',
+    href: '/docs/tags/backend',
     image: {
       src: 'img/github-tile.svg',
     },
@@ -19,7 +19,7 @@ export const SKILLS: SkillItem[] = [
   },
   {
     title: 'Microservices Architecture',
-    href: '/blog/tags/microservice',
+    href: '/docs/tags/microservice',
     image: {
       src: 'img/github-tile.svg',
     },
@@ -32,7 +32,7 @@ export const SKILLS: SkillItem[] = [
   },
   {
     title: 'DevOps Principles',
-    href: '/blog/tags/dev-ops',
+    href: '/docs/tags/dev-ops',
     image: {
       src: 'img/github-tile.svg',
     },
@@ -46,7 +46,7 @@ export const SKILLS: SkillItem[] = [
   },
   {
     title: 'Best Practices',
-    href: '/blog/tags/best-practice',
+    href: '/docs/tags/best-practice',
     image: {
       src: 'img/github-tile.svg',
     },

@@ -1,6 +1,9 @@
 # Personal Blog Powered By Foam and Docusaurus
 
-To maintain my blog, I decouple the blog content and the **SSG** into two distinct folders. If I try to switch to a different **SSG** in the future, this separation will facilitate a quick and seamless transition.
+The content and the **Static Site Generator** (**SSG**) are decoupled into two separated folders.
+
+To organize and present my learning content, I have employed both of **Docs** and **Blog** features in **Docusaurus** while creating these markdown files with **template** feature in **Foam**.
+
 
 ## Project Structure
 
@@ -40,22 +43,22 @@ I also include my daily codebase repos into the `code-snippets/` folder, includi
 - `docker`: [https://github.com/liviaerxin/hello-docker.git](https://github.com/liviaerxin/hello-docker.git)
 - `python`: [https://github.com/liviaerxin/hello-python.git](https://github.com/liviaerxin/hello-python.git)
 
-## Tech Stacks
+## Detailed features
 
-- `Foam`: knowledge management system for providing rich features in `vscode`.
+- **Foam**: knowledge management system for providing rich features in `vscode`.
   - Graph Visualization
   - Link Autocompletion
   - Sync links on file rename
   - Templates
   - Generate references for your wikilinks
   - ...
-- `Docusaurus`: static site generator (**SSG** ) to build a static site from `Foam` knowledge content.
+- **Docusaurus**: static site generator (**SSG** ) to build a static site from `Foam` knowledge content.
   - SEO friendly
   - Powered by MDX
   - Search
   - Document Versioning
   - Internationalization (i18n)
-- `GitHub Actions`: deploy to GitHub Pages.
+- **GitHub Actions**: deploy to GitHub Pages.
 
 ## Get started
 

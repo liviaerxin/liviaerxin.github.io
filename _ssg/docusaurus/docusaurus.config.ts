@@ -1,16 +1,16 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-const math = require('remark-math');
-const katex = require('rehype-katex');
-const simplePlantUML = require('@akebifiky/remark-simple-plantuml');
+import {themes as prismThemes} from 'prism-react-renderer';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import type {Config} from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+const simplePlantUML = require("@akebifiky/remark-simple-plantuml");
 
-const websiteConfig = require('./website_config.json');
+import websiteConfig from './website_config.json';
 
-/** @type {import('@docusaurus/types').Config} */
-const config = {
+const config: Config = {
   title: "S' Wiki",
   tagline: 'Learn in practice',
   favicon: 'https://github.com/liviaerxin.png',
@@ -30,6 +30,14 @@ const config = {
   onBrokenMarkdownLinks: 'warn',
   trailingSlash: false,
 
+  // Even if you don't use internalization, you can use this field to set useful
+  // metadata like html lang. For example, if your site is Chinese, you may want
+  // to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
   stylesheets: [
     {
       href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
@@ -39,13 +47,6 @@ const config = {
       crossorigin: 'anonymous',
     },
   ],
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
 
   markdown: {
     mermaid: true,
@@ -54,26 +55,8 @@ const config = {
   plugins: [
     'docusaurus-plugin-sass',
     '@docusaurus/theme-mermaid',
-    '@saucelabs/theme-github-codeblock',
+    'docusaurus-theme-github-codeblock',
     [require.resolve('docusaurus-lunr-search'), {}],
-    [
-      '@docusaurus/plugin-content-blog',
-      {
-        /**
-         * Required for any multi-instance plugin
-         */
-        id: 'journal',
-        /**
-         * URL route for the blog section of your site.
-         * *DO NOT* include a trailing slash.
-         */
-        routeBasePath: '/journal',
-        /**
-         * Path to data on filesystem relative to site dir.
-         */
-        path: '../../journal',
-      },
-    ],
     [
       '@docusaurus/plugin-content-pages',
       {
@@ -97,61 +80,97 @@ const config = {
   presets: [
     [
       'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
-        docs: false, // Optional: disable the docs plugin
-        // {
-        //   sidebarPath: require.resolve('./sidebars.js'),
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
-        //   path: './docs',
-        //   showLastUpdateAuthor: true,
-        //   showLastUpdateTime: true,
-        //   remarkPlugins: [math, simplePlantUML],
-        //   rehypePlugins: [katex],
-        // },
+      {
+        docs: {
+          routeBasePath: '/docs',
+          path: '../../docs',
+          sidebarPath: './sidebars.ts',
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
+          remarkPlugins: [remarkMath, simplePlantUML],
+          rehypePlugins: [rehypeKatex],
+        },
         blog: {
           // routeBasePath: '/',
-          path: '../../blog', // './blog' for local test
+          path: '../../journal', // './blog' for local test
           blogTitle: 'Docusaurus blog!',
           blogDescription: 'A Docusaurus powered blog!',
           // postsPerPage: 'ALL',
-          blogSidebarTitle: 'ALL posts',
-          blogSidebarCount: "ALL",
+          blogSidebarTitle: 'Recent posts',
+          blogSidebarCount: 20, // "ALL",
           showReadingTime: true,
           editUrl:
             'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
-          remarkPlugins: [math, simplePlantUML],
-          rehypePlugins: [katex],
+          remarkPlugins: [remarkMath, simplePlantUML],
+          rehypePlugins: [rehypeKatex],
           readingTime: ({content, frontMatter, defaultReadingTime}) =>
             frontMatter.hide_reading_time
               ? undefined
               : defaultReadingTime({content}),
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.scss'),
+          customCss: './src/css/custom.scss',
         },
-      }),
+      },
     ],
   ],
 
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+  themeConfig: {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
+      // docs: {
+      //   sidebar: {
+      //     hideable: true,
+      //     autoCollapseCategories: true,
+      //   },
+      // },
+      colorMode: {
+        defaultMode: 'light',
+        disableSwitch: false,
+        respectPrefersColorScheme: true,
+      },
+      prism: {
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
+        additionalLanguages: ['powershell', 'csharp', 'bash', 'python', 'plsql', 'sql', 'editorconfig', 'log', 'regex', 'armasm', 'nasm'],
+      },
+      mermaid: {
+        theme: {light: 'neutral', dark: 'forest'},
+        options: {
+          maxTextSize: 100000,
+        },
+      },
+      sitemap: {
+        cacheTime: 6000 * 1000, // 600 sec - cache purge period
+        changefreq: 'weekly',
+        priority: 0.5,
+      },
+      // github codeblock theme configuration
+      codeblock: {
+        showGithubLink: true,
+        githubLinkLabel: 'View on GitHub',
+        showRunmeLink: false,
+        runmeLinkLabel: 'Checkout via Runme'
+      },
       navbar: {
+        hideOnScroll: true,
         title: "S' Wiki",
         logo: {
           alt: 'My Site Logo',
           src: 'https://github.com/liviaerxin.png',
         },
-        hideOnScroll: true,
         items: [
+          {
+            type: 'doc',
+            position: 'left',
+            docId: 'README',
+            label: 'Docs',
+          },
           {to: '/blog', label: 'Blog', position: 'left'},
           {to: '/learning', label: 'Learning', position: 'left'},
-          {to: '/journal', label: 'Journal', position: 'left'},
           {to: '/portfolio', label: 'Portfolio', position: 'left'},
           {
             href: 'https://github.com/facebook/docusaurus',
@@ -178,23 +197,7 @@ const config = {
         ],
         copyright: `<span style='font-size: 10px;'>Copyright ©2020-present Frank. Built with Docusaurus.</span>`,
       },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
-        additionalLanguages: ['powershell', 'csharp', 'bash', 'python', 'plsql', 'sql', 'editorconfig', 'log', 'regex', 'armasm', 'nasm'],
-      },
-      mermaid: {
-        theme: {light: 'neutral', dark: 'forest'},
-        options: {
-          maxTextSize: 100000,
-        },
-      },
-      sitemap: {
-        cacheTime: 6000 * 1000, // 600 sec - cache purge period
-        changefreq: 'weekly',
-        priority: 0.5,
-      },
-    }),
-};
+  } satisfies Preset.ThemeConfig,
+} satisfies Config;
 
-module.exports = config;
+export default config;
