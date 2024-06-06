@@ -6,7 +6,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-const simplePlantUML = require("@akebifiky/remark-simple-plantuml");
+const simplePlantUML = require('@akebifiky/remark-simple-plantuml');
 
 import websiteConfig from './website_config.json';
 
@@ -87,7 +87,8 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
+          editUrl:
+            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           remarkPlugins: [remarkMath, simplePlantUML],
@@ -119,84 +120,102 @@ const config: Config = {
   ],
 
   themeConfig: {
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
-      // docs: {
-      //   sidebar: {
-      //     hideable: true,
-      //     autoCollapseCategories: true,
-      //   },
-      // },
-      colorMode: {
-        defaultMode: 'light',
-        disableSwitch: false,
-        respectPrefersColorScheme: true,
+    // Replace with your project's social card
+    image: 'img/docusaurus-social-card.jpg',
+    // docs: {
+    //   sidebar: {
+    //     hideable: true,
+    //     autoCollapseCategories: true,
+    //   },
+    // },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+      additionalLanguages: [
+        'powershell',
+        'csharp',
+        'bash',
+        'python',
+        'plsql',
+        'sql',
+        'editorconfig',
+        'log',
+        'regex',
+        'armasm',
+        'nasm',
+      ],
+    },
+    mermaid: {
+      theme: {light: 'neutral', dark: 'forest'},
+      options: {
+        maxTextSize: 100000,
       },
-      prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
-        additionalLanguages: ['powershell', 'csharp', 'bash', 'python', 'plsql', 'sql', 'editorconfig', 'log', 'regex', 'armasm', 'nasm'],
+    },
+    sitemap: {
+      cacheTime: 6000 * 1000, // 600 sec - cache purge period
+      changefreq: 'weekly',
+      priority: 0.5,
+    },
+    // github codeblock theme configuration
+    codeblock: {
+      showGithubLink: true,
+      githubLinkLabel: 'View on GitHub',
+      showRunmeLink: false,
+      runmeLinkLabel: 'Checkout via Runme',
+    },
+    navbar: {
+      hideOnScroll: true,
+      title: "S' Wiki",
+      logo: {
+        alt: 'My Site Logo',
+        src: 'https://github.com/liviaerxin.png',
       },
-      mermaid: {
-        theme: {light: 'neutral', dark: 'forest'},
-        options: {
-          maxTextSize: 100000,
+      items: [
+        // When type: 'default', it is [Navbar link](https://docusaurus.io/docs/api/themes/configuration#navbar-link)
+        // {
+        //   to: '/docs/introduction',
+        //   label: 'Docs',
+        //   position: 'left',
+        // },
+        {
+          type: 'docSidebar',
+          position: 'left',
+          sidebarId: 'docs',
+          label: 'Docs',
         },
-      },
-      sitemap: {
-        cacheTime: 6000 * 1000, // 600 sec - cache purge period
-        changefreq: 'weekly',
-        priority: 0.5,
-      },
-      // github codeblock theme configuration
-      codeblock: {
-        showGithubLink: true,
-        githubLinkLabel: 'View on GitHub',
-        showRunmeLink: false,
-        runmeLinkLabel: 'Checkout via Runme'
-      },
-      navbar: {
-        hideOnScroll: true,
-        title: "S' Wiki",
-        logo: {
-          alt: 'My Site Logo',
-          src: 'https://github.com/liviaerxin.png',
+        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/learning', label: 'Learning', position: 'left'},
+        {to: '/portfolio', label: 'Portfolio', position: 'left'},
+        {
+          href: 'https://github.com/facebook/docusaurus',
+          label: 'GitHub',
+          position: 'right',
         },
-        items: [
-          {
-            type: 'doc',
-            position: 'left',
-            docId: 'README',
-            label: 'Docs',
-          },
-          {to: '/blog', label: 'Blog', position: 'left'},
-          {to: '/learning', label: 'Learning', position: 'left'},
-          {to: '/portfolio', label: 'Portfolio', position: 'left'},
-          {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
-            position: 'right',
-          },
-        ],
-      },
-      footer: {
-        links: [
-          {
-            items: [
-              {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://github.com/${websiteConfig.GITHUB_USER}'><img class='svg-inline--fa fa-github fa-w-14' src="/img/github-tile.svg"/></a>`,
-              },
-              {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/users/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="/img/stackoverflow-tile.svg" /></a>`,
-              },
-              {
-                html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://linkedin.com/in/${websiteConfig.LINKEDIN_USER}'><img class='svg-inline--fa fa-linkedin fa-w-14' src="/img/linkedin-tile.svg" /></a>`,
-              },
-            ],
-          },
-        ],
-        copyright: `<span style='font-size: 10px;'>Copyright ©2020-present Frank. Built with Docusaurus.</span>`,
-      },
+      ],
+    },
+    footer: {
+      links: [
+        {
+          items: [
+            {
+              html: `<a class='footer__link-item' target='_blank' rel='noopener' href='https://github.com/${websiteConfig.GITHUB_USER}'><img class='svg-inline--fa fa-github fa-w-14' src="/img/github-tile.svg"/></a>`,
+            },
+            {
+              html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://stackoverflow.com/users/${websiteConfig.STACKOVERFLOW_USER}'><img class='svg-inline--fa fa-stackoverflow fa-w-14' src="/img/stackoverflow-tile.svg" /></a>`,
+            },
+            {
+              html: `<a class='footer__link-item' target='_blank' rel='noopener noreferrer' href='https://linkedin.com/in/${websiteConfig.LINKEDIN_USER}'><img class='svg-inline--fa fa-linkedin fa-w-14' src="/img/linkedin-tile.svg" /></a>`,
+            },
+          ],
+        },
+      ],
+      copyright: `<span style='font-size: 10px;'>Copyright ©2020-present Frank. Built with Docusaurus.</span>`,
+    },
   } satisfies Preset.ThemeConfig,
 } satisfies Config;
 
