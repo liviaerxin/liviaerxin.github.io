@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/blog</id>
     <title>S' Wiki Blog</title>
-    <updated>2024-06-06T16:04:41.000Z</updated>
+    <updated>2024-08-31T04:18:51.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/blog"/>
     <subtitle>S' Wiki Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Private Note or Documents]]></title>
         <id>https://liviaerxin.github.io/blog/README</id>
         <link href="https://liviaerxin.github.io/blog/README"/>
-        <updated>2024-06-06T16:04:41.000Z</updated>
+        <updated>2024-08-31T04:18:51.000Z</updated>
         <summary type="html"><![CDATA[Why Backend and DevOps Roles May Become One in the Future | HackerNoon]]></summary>
         <content type="html"><![CDATA[<p><a href="https://hackernoon.com/why-backend-and-devops-roles-may-become-one-in-the-future" target="_blank" rel="noopener noreferrer">Why Backend and DevOps Roles May Become One in the Future | HackerNoon</a></p>
 <p><a href="https://www.hiration.com/blog/github-on-resume/" target="_blank" rel="noopener noreferrer">How to Put GitHub on Resume in 2023: Complete Guide &amp; Tips</a></p>
@@ -307,7 +307,7 @@ Organization and a good moving plan are <strong>indispensable</strong> parts of 
         <title type="html"><![CDATA[tmp]]></title>
         <id>https://liviaerxin.github.io/blog/tmp</id>
         <link href="https://liviaerxin.github.io/blog/tmp"/>
-        <updated>2024-06-06T16:04:41.000Z</updated>
+        <updated>2024-08-31T04:18:51.000Z</updated>
         <summary type="html"><![CDATA[https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable]]></summary>
         <content type="html"><![CDATA[<p><a href="https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/52429984/docker-compose-build-environment-variable</a></p>
 <p>use case:
