@@ -33,7 +33,7 @@ To implement a resumable file upload, it is necessary to contain three parts:
 ## A Basic Resumable Upload
 
 ```js reference
-https://github.com/liviaerxin/hello-python/blob/main/app_resumable_upload.py
+https://github.com/liviaerxin/hello-python/blob/main/fastapi_resumable_upload.py
 ```
 
 ## TUS Resumable Upload
@@ -41,7 +41,7 @@ https://github.com/liviaerxin/hello-python/blob/main/app_resumable_upload.py
 FastAPI implementing tus v1.0.0 server in Python
 
 ```js reference
-https://github.com/liviaerxin/hello-python/blob/main/app_tusd.py
+https://github.com/liviaerxin/hello-python/blob/main/fastapi_tusd.py
 ```
 
 
