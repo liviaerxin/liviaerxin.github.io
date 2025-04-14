@@ -62,21 +62,35 @@ I also include my daily codebase repos into the `code-snippets/` folder, includi
 
 ## Get started
 
+Installing dependencies,
+
 ```sh
+# `npm`
 npm install --prefix _ssg/docusaurus
+
+# or `yarn`
 yarn --cwd _ssg/docusaurus
 ```
 
+For development, running up as
+
 ```sh
-# dev
+# `npm`
 npm run start --prefix _ssg/docusaurus
+
+# or `yarn`
 yarn --cwd _ssg/docusaurus start
+```
 
-# prod
+For production, building the package then serving,
+
+```sh
+# `npm`
 npm run build --prefix _ssg/docusaurus
-yarn --cwd _ssg/docusaurus build
-
 npm run serve --prefix _ssg/docusaurus -- --host 0.0.0.0
+
+# or `yarn`
+yarn --cwd _ssg/docusaurus build
 yarn --cwd _ssg/docusaurus serve --host 0.0.0.0
 ```
 
