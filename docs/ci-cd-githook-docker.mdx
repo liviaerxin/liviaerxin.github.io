@@ -1,0 +1,177 @@
+---
+id: zero-cost-ci-cd
+title: Zero-Cost CI/CD with Git Hooks and Docker Compose
+sidebar_label: Git Hooks + Docker CI/CD
+description: A lightweight CI/CD method using Git push and Docker, no third-party tools needed.
+keywords:
+  - ci cd
+  - docker
+  - git hook
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - ci-cd
+  - docker
+  - git
+last_update:
+  date: 2025-04-14
+  author: frank
+---
+
+# Zero-Cost CI/CD with Git Hooks and Docker Compose
+
+For small projects or self-hosted apps, using a full-fledged CI/CD tool like GitHub Actions or Jenkins can be overkill. What if you could have automated deployments **without any third-party service**, and all you need is **Git and SSH**?
+
+In this post, we’ll walk through setting up a lightweight, no-cost CI/CD pipeline using **Git hooks** and **Docker Compose**, with deployments triggered by a simple `git push` to your production server.
+
+---
+
+## Overview
+
+Here’s the basic idea:
+
+1. You push your code from your dev machine to both:
+   - A central Git host (like GitHub/GitLab)
+   - Your production server (a bare Git repo)
+2. The production server runs a `post-receive` hook to:
+   - Checkout the latest code
+   - Rebuild and restart Docker containers
+
+This method is great for solo developers or small teams who want simple, fast deployments without external dependencies.
+
+---
+
+## Step-by-Step Setup
+
+### 1. Prepare the Production Server
+
+#### Install Git and Docker:
+```bash
+sudo apt update && sudo apt install git docker docker-compose -y
+```
+
+#### Create a bare Git repository:
+```bash
+mkdir -p ~/repos/myapp.git
+cd ~/repos/myapp.git
+git init --bare
+```
+
+#### Set up SSH access:
+From your dev machine, copy your SSH key to the production server:
+```bash
+ssh-copy-id user@yourserver
+```
+
+Test it:
+```bash
+ssh user@yourserver
+```
+
+---
+
+### 2. Add the Production Server as a Remote on Your Dev Machine
+
+In your project repo:
+```bash
+git remote add production ssh://user@yourserver/home/user/repos/myapp.git
+```
+
+Now you can push to the production server:
+```bash
+git push production main
+```
+
+---
+
+### 3. Create a Post-Receive Hook on the Server
+
+On the production server:
+```bash
+nano ~/repos/myapp.git/hooks/post-receive
+```
+
+Paste the following:
+```bash
+#!/bin/bash
+APP_DIR=/var/www/myapp
+
+# Checkout code
+git --work-tree=$APP_DIR --git-dir=$(pwd) checkout -f
+
+# Deploy with Docker
+cd $APP_DIR || exit
+docker compose down
+docker compose build
+docker compose up -d
+```
+
+Make it executable:
+```bash
+chmod +x ~/repos/myapp.git/hooks/post-receive
+```
+
+---
+
+## What Exactly Happens During `git push`
+
+1. You run:
+   ```bash
+   git push production main
+   ```
+
+2. Your local Git client:
+   - Connects to the production server over SSH.
+   - Invokes `git-receive-pack` on the server’s bare Git repo.
+
+3. Git negotiates what data is needed:
+   - It sends new commits, trees, and blobs over SSH.
+
+4. The server’s Git receives the data and updates the bare repo.
+
+5. The `post-receive` hook is automatically triggered:
+   - It checks out the new code to the app directory.
+   - It runs `docker compose` to deploy the latest version.
+
+6. Only once the hook script finishes does the `git push` complete on your dev machine.
+
+This means your `git push` blocks and provides real-time feedback on deployment success or failure.
+
+---
+
+## How It Works
+
+- When you run `git push production main`, Git connects to the server over **SSH**.
+- Your dev Git sends commit data to the **bare repo** on the server.
+- Git automatically runs the `post-receive` hook.
+- The hook checks out the new code and runs Docker commands.
+
+No daemon, no polling, no fancy tools. Just Git + SSH + Docker.
+
+---
+
+## FAQ
+
+**Q: Does the push block until the deployment finishes?**
+> Yes. The `git push` command will block until the `post-receive` hook finishes. That way, you get immediate feedback if the deployment fails.
+
+**Q: Does Git use SSH to send data?**
+> Absolutely. All Git data (commits, trees, blobs) is transferred securely over SSH when using `ssh://` remotes.
+
+**Q: Can I still use GitHub/GitLab?**
+> Yes! You can push to both:
+```bash
+git push origin main      # Push to GitHub
+git push production main  # Deploy to server
+```
+
+---
+
+## Final Thoughts
+
+This setup gives you a super simple and secure way to deploy code with nothing more than Git and Docker. For many indie devs and internal tools, it’s all you really need.
+
+Want logging? Add `>> /var/log/deploy.log 2>&1` to the hook.
+Want async? Run the hook script in the background with `&`.
+
+Happy hacking! 🚀
+

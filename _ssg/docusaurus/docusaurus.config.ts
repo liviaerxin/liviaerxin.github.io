@@ -11,8 +11,9 @@ const simplePlantUML = require('@akebifiky/remark-simple-plantuml');
 import websiteConfig from './website_config.json';
 
 const config: Config = {
-  title: "S' Wiki",
-  tagline: 'Learn in practice',
+  title: "Frank' Wiki",
+  tagline: '',
+  // tagline: 'Learn in practice',
   favicon: 'https://github.com/liviaerxin.png',
 
   // Set the production url of your site here
@@ -94,24 +95,25 @@ const config: Config = {
           remarkPlugins: [remarkMath, simplePlantUML],
           rehypePlugins: [rehypeKatex],
         },
-        blog: {
-          // routeBasePath: '/',
-          path: '../../journal', // './blog' for local test
-          blogTitle: 'Docusaurus blog!',
-          blogDescription: 'A Docusaurus powered blog!',
-          // postsPerPage: 'ALL',
-          blogSidebarTitle: 'Recent posts',
-          blogSidebarCount: 20, // "ALL",
-          showReadingTime: true,
-          editUrl:
-            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
-          remarkPlugins: [remarkMath, simplePlantUML],
-          rehypePlugins: [rehypeKatex],
-          readingTime: ({content, frontMatter, defaultReadingTime}) =>
-            frontMatter.hide_reading_time
-              ? undefined
-              : defaultReadingTime({content}),
-        },
+        blog: false,
+        // blog: {
+        //   // routeBasePath: '/',
+        //   path: '../../journal', // './blog' for local test
+        //   blogTitle: 'Docusaurus blog!',
+        //   blogDescription: 'A Docusaurus powered blog!',
+        //   // postsPerPage: 'ALL',
+        //   blogSidebarTitle: 'Recent posts',
+        //   blogSidebarCount: 20, // "ALL",
+        //   showReadingTime: true,
+        //   editUrl:
+        //     'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
+        //   remarkPlugins: [remarkMath, simplePlantUML],
+        //   rehypePlugins: [rehypeKatex],
+        //   readingTime: ({content, frontMatter, defaultReadingTime}) =>
+        //     frontMatter.hide_reading_time
+        //       ? undefined
+        //       : defaultReadingTime({content}),
+        // },
         theme: {
           customCss: './src/css/custom.scss',
         },
@@ -170,7 +172,7 @@ const config: Config = {
     },
     navbar: {
       hideOnScroll: true,
-      title: "S' Wiki",
+      title: "Frank",
       logo: {
         alt: 'My Site Logo',
         src: 'https://github.com/liviaerxin.png',
@@ -188,9 +190,9 @@ const config: Config = {
           sidebarId: 'docs',
           label: 'Docs',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
-        {to: '/learning', label: 'Learning', position: 'left'},
-        {to: '/portfolio', label: 'Portfolio', position: 'left'},
+        // {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/docs/tags', label: 'Tags', position: 'right'},
+        {to: '/portfolio', label: 'Portfolio', position: 'right'},
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',

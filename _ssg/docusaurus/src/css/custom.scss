@@ -5,50 +5,50 @@
  */
 
 /* You can override the default Infima variables here. */
+/* ======= Base (Light Mode) ======= */
 :root {
-  /* Use the default color from [infima](https://infima.dev/docs/utilities/colors) */
-  --ifm-color-primary: #0969da;
-  --ifm-color-primary-dark: #0859b9;
-  --ifm-color-primary-darker: #064999;
-  --ifm-color-primary-darkest: #053f83;
-  --ifm-color-primary-light: #1b7ff6;
-  --ifm-color-primary-lighter: #4698f7;
-  --ifm-color-primary-lightest: #72b0f9;
-  
-  --ifm-font-family-base: "Arial", sans-serif;
-  --ifm-line-height-base: 1.5;
-  --ifm-leading: 1.5rem;
-  --ifm-font-size-base: 18px;
+  --ifm-font-family-base: 'Inter', system-ui, sans-serif;
+  --ifm-font-family-monospace: 'Fira Code', 'JetBrains Mono', monospace;
+
+  --ifm-font-size-base: 16px;
   --ifm-code-font-size: 80%;
+
+  /* Colors - Light Mode */
+  --ifm-color-primary: #3b82f6;             /* Tailwind Blue-500 */
+  --ifm-color-secondary: #9333ea;           /* Purple-600 */
+  --ifm-background-color: #ffffff;          /* White */
+  --ifm-color-content: #111827;             /* Gray-900 */
+  --ifm-color-content-secondary: #6b7280;   /* Gray-500 */
+  --ifm-link-hover-color: #2563eb;          /* Blue-600 */
+  --ifm-code-background: #f3f4f6;           /* Gray-100 */
 }
 
-html[data-theme='dark'] {
-  --ifm-background-color: #202225;
-  --ifm-footer-background-color: var(--ifm-background-color);
-
-  --ifm-color-primary: #2f81f7;
-  --ifm-color-primary-dark: #0962e2;
-  --ifm-color-primary-darker: #074aaa;
-  --ifm-color-primary-darkest: #043171;
-  --ifm-color-primary-light: #4b92f8;
-  --ifm-color-primary-lighter: #599bf9;
-  --ifm-color-primary-lightest: #84b4fa;
-
-  --ifm-border-color: #ffffff;
+/* ======= Dark Theme ======= */
+[data-theme='dark'] {
+  --ifm-background-color: #0f172a;           /* Slate-900 */
+  --ifm-color-primary: #3b82f6;              /* Same Blue-500 */
+  --ifm-color-secondary: #8b5cf6;            /* Purple-500 */
+  --ifm-color-content: #f8fafc;              /* Slate-50 */
+  --ifm-color-content-secondary: #94a3b8;    /* Slate-400 */
+  --ifm-link-hover-color: #60a5fa;           /* Blue-400 */
+  --ifm-code-background: #1e293b;            /* Slate-800 */
 }
 
-/* Body and General Styles */
-body {
-  // font-size: 18px;
-  // line-height: 1.5;
-  // color: var(--text-color);
-  // background-color: var(--background-color);
+/* ======= Code Styling ======= */
+.codeBlock_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Content-styles-module {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: var(--ifm-code-font-size);
+  background-color: var(--ifm-code-background);
 }
 
-/* Headings */
-h1, h2, h3, h4, h5, h6 {
-  // color: var(--text-color);
+code {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: var(--ifm-code-font-size);
+  background-color: var(--ifm-code-background);
+  padding: 0.15em 0.3em;
+  border-radius: 4px;
 }
+
 
 /* Links */
 a {

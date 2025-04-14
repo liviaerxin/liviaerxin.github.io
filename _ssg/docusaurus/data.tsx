@@ -63,6 +63,7 @@ export const SKILLS: SkillItem[] = [
 export const PROFILE: ProfileItem = {
   title: '',
   tagline: '',
+  link: '/doc',
   description: (
     <>
       <p><b>Software engineer</b> to build infrastructure for machine learning products.</p>

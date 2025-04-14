@@ -77,6 +77,7 @@ For development, running up as
 ```sh
 # `npm`
 npm run start --prefix _ssg/docusaurus
+npm run start --prefix _ssg/docusaurus -- --host 0.0.0.0
 
 # or `yarn`
 yarn --cwd _ssg/docusaurus start
