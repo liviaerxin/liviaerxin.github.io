@@ -12,7 +12,7 @@ image: https://i.imgur.com/mErPwqL.png
 tags:
   - blog
   - docusaurus
-date: 2023-06-26
+date: 2024-06-26
 author: frank
 ---
 
@@ -36,7 +36,7 @@ Below you can see an example showing a todo list and a timestamp.
 2. A second tabstop
 3. A third tabstop
 
-Note Created: 2023-06-26
+Note Created: 2024-06-26
 
 ---
 

@@ -13,7 +13,7 @@ description: Git Submodules
 keywords:
   - Git Submodules
 image: https://i.imgur.com/mErPwqL.png
-date: 2023-08-02
+date: 2024-08-02
 draft: false
 enableComments: true # for Gisqus
 ---

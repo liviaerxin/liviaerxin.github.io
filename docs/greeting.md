@@ -4,7 +4,7 @@ slug: doc-with-tags
 tags:
   - Demo
   - Getting started
-date: 2023-05-30
+date: 2024-05-30
 author: custom author name
 ---
 

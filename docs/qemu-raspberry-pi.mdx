@@ -9,7 +9,7 @@ description: QEMU emulate Raspberry Pi 3/4
 keywords:
   - QEMU Raspberry Pi 3/4
 image: https://i.imgur.com/mErPwqL.png
-date: 2023-09-23
+date: 2024-09-23
 draft: false
 enableComments: true # for Gisqus
 ---
@@ -31,7 +31,7 @@ For both of these two, we still need prepare some common steps before running **
 
 <!--truncate-->
 
-This blog will emulate Raspberry Pi using QEMU in mac M1 host using the new image `2023-05-03-raspios-bullseye-arm64-lite.img`.
+This blog will emulate Raspberry Pi using QEMU in mac M1 host using the new image `2024-05-03-raspios-bullseye-arm64-lite.img`.
 
 The default `user:pi` and `password:raspberry` have been removed from this image. In order to log in, we have to write `user` and `password` to the image before booting. These steps can be skipped when booting previous images.
 
@@ -43,7 +43,7 @@ The default `user:pi` and `password:raspberry` have been removed from this image
   - can use `wsl` as an alternative in Windows
 - **QEMU**
   - `homebrew` install in macOS
-- **Raspberry Pi image**: `2023-05-03-raspios-bullseye-arm64-lite.img`
+- **Raspberry Pi image**: `2024-05-03-raspios-bullseye-arm64-lite.img`
 
 Since I am in mac M1, and the `raspberry pi` image which contains a `fat` filesystem as boot and a `ext4` filesystem as OS, we need write some configuration into it. So I will use a **Docker Ubuntu** container to do the operation on the the filesystem. There some other tools to do the like of these operations:
 
@@ -56,13 +56,13 @@ Since I am in mac M1, and the `raspberry pi` image which contains a `fat` filesy
 
 ```sh
 cd ~
-wget https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2023-05-03/2023-05-03-raspios-bullseye-arm64-lite.img.xz
-xz -d 2023-05-03-raspios-bullseye-arm64-lite.img.xz
+wget https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2024-05-03/2024-05-03-raspios-bullseye-arm64-lite.img.xz
+xz -d 2024-05-03-raspios-bullseye-arm64-lite.img.xz
 ```
 
 ## Docker Ubuntu container
 
-Mount the **folder** including `2023-05-03-raspios-bullseye-arm64-lite.img`
+Mount the **folder** including `2024-05-03-raspios-bullseye-arm64-lite.img`
 
 ```sh
 docker run -it -d --privileged -v $PWD:/qemu --name ubuntu ubuntu
@@ -74,8 +74,8 @@ docekr exec -it ubuntu bash
 Operations all in Ubuntu container.
 
 ```sh
-root@f36a3251391d:/qemu# fdisk -l 2023-05-03-raspios-bullseye-arm64-lite.img 
-Disk 2023-05-03-raspios-bullseye-arm64-lite.img: 1.96 GiB, 2101346304 bytes, 4104192 sectors
+root@f36a3251391d:/qemu# fdisk -l 2024-05-03-raspios-bullseye-arm64-lite.img 
+Disk 2024-05-03-raspios-bullseye-arm64-lite.img: 1.96 GiB, 2101346304 bytes, 4104192 sectors
 Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
@@ -83,8 +83,8 @@ Disklabel type: dos
 Disk identifier: 0x544c6228
 
 Device                                      Boot  Start     End Sectors  Size Id Type
-2023-05-03-raspios-bullseye-arm64-lite.img1        8192  532479  524288  256M  c W95 FAT32 (LBA)
-2023-05-03-raspios-bullseye-arm64-lite.img2      532480 4104191 3571712  1.7G 83 Linux
+2024-05-03-raspios-bullseye-arm64-lite.img1        8192  532479  524288  256M  c W95 FAT32 (LBA)
+2024-05-03-raspios-bullseye-arm64-lite.img2      532480 4104191 3571712  1.7G 83 Linux
 ```
 
 - The first partition is boot filesystem.
@@ -95,7 +95,7 @@ All the data we need is in the first partition, to do the operation is mounting 
 The offset of the first partition: 8192 * 512 = 4194304,
 
 ```sh
-root@f36a3251391d:/qemu# mount -o loop,offset=4194304 2023-05-03-raspios-bullseye-arm64-lite.img /mnt/rpi-boot/
+root@f36a3251391d:/qemu# mount -o loop,offset=4194304 2024-05-03-raspios-bullseye-arm64-lite.img /mnt/rpi-boot/
 ```
 
 
@@ -174,14 +174,14 @@ Resize the image to the next power of 2 size,
 The original size,
 
 ```sh
-❯ stat -f%z 2023-05-03-raspios-bullseye-arm64-lite.img
+❯ stat -f%z 2024-05-03-raspios-bullseye-arm64-lite.img
 2101346304
 ```
 
 To resize to `4GB`,
 
 ```sh
-qemu-img resize ./2023-05-03-raspios-bullseye-arm64-lite.img 4G
+qemu-img resize ./2024-05-03-raspios-bullseye-arm64-lite.img 4G
 ```
 
 ```sh
@@ -196,7 +196,7 @@ qemu-system-aarch64 \
     -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rootdelay=1" \
     -netdev user,id=net0,hostfwd=tcp::2222-:22 \
     -device usb-net,netdev=net0 \
-    -sd 2023-05-03-raspios-bullseye-arm64-lite.img
+    -sd 2024-05-03-raspios-bullseye-arm64-lite.img
 ```
 
 Options in detail:
@@ -207,7 +207,7 @@ Options in detail:
   - `root=/dev/mmcblk0p2`: mount **real root filesystem** to `/dev/mmcblk0p2`(the second partition of `mmcblk0`) as we `-sd xx` will be mounted to `/dev/mmcblk0`.
 - `-netdev user,id=net0,hostfwd=tcp::2222-:22`: network mapping host port `2222` to the **VM** `22`
 - `-device usb-net,netdev=net0`: expose `netdev=net0` as `usb-net` in the raspberry pi 3 machine.
-- `-sd 2023-05-03-raspios-bullseye-arm64-lite.img`: `sd` drive is available in the raspberry pi 3 machine.
+- `-sd 2024-05-03-raspios-bullseye-arm64-lite.img`: `sd` drive is available in the raspberry pi 3 machine.
 
 ### Emulate Raspberry Pi 4 with `virt`
 

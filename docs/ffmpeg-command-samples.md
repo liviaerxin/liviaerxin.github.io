@@ -13,7 +13,7 @@ image: https://i.imgur.com/mErPwqL.png
 tags:
   - cheat-sheet
   - ffmpeg
-date: 2023-07-06
+date: 2024-12-06
 ---
 
 # FFmpeg Command Samples

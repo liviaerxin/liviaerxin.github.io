@@ -13,7 +13,7 @@ description: wiki celery
 keywords:
   - celery
 image: https://i.imgur.com/mErPwqL.png
-date: 2023-10-30
+date: 2025-03-30
 draft: false
 enableComments: true # for Gisqus
 ---
@@ -196,7 +196,7 @@ The result of a task is stored in `celery-task-meta-{{uuid}}` key.
 127.0.0.1:6379> TYPE celery-task-meta-da959152-1f45-4846-99e4-5205d30c1be7
 string
 127.0.0.1:6379> GET celery-task-meta-da959152-1f45-4846-99e4-5205d30c1be7
-"{\"status\": \"SUCCESS\", \"result\": \"wait() - Done, secs[60.0]s\", \"traceback\": null, \"children\": [], \"date_done\": \"2023-11-07T07:54:16.954872\", \"task_id\": \"da959152-1f45-4846-99e4-5205d30c1be7\"}"
+"{\"status\": \"SUCCESS\", \"result\": \"wait() - Done, secs[60.0]s\", \"traceback\": null, \"children\": [], \"date_done\": \"2024-11-07T07:54:16.954872\", \"task_id\": \"da959152-1f45-4846-99e4-5205d30c1be7\"}"
 ```
 
 ## Serve machine learning model
@@ -266,7 +266,7 @@ sig.freeze()
 
 [Celery - Distributed Task Queue — Celery 5.3.4 documentation](https://docs.celeryq.dev/en/latest/index.html#)
 
-[Celery Execution Pools: What is it all about?](https://celery.school/post/2023-10-20_execution-pools/)
+[Celery Execution Pools: What is it all about?](https://celery.school/post/2024-10-20_execution-pools/)
 
 [Celery Execution Pool: The worker and the pool - separation of concerns](https://celery.school/posts/celery-pool-types-1-introduction/)
 

@@ -14,7 +14,7 @@ description: Docker Containers Data Sharing
 keywords:
   - Docker Containters Data Sharing
 image: https://i.imgur.com/mErPwqL.png
-date: 2023-07-19
+date: 2024-07-19
 draft: false
 enableComments: true # for Gisqus
 ---
@@ -53,7 +53,7 @@ $ docker create volume xxx
 $ docker volume inspect xxx
 [
     {
-        "CreatedAt": "2023-07-19T14:41:18+08:00",
+        "CreatedAt": "2024-07-19T14:41:18+08:00",
         "Driver": "local",
         "Labels": {},
         "Mountpoint": "/var/lib/docker/volumes/xxx/_data",
@@ -74,7 +74,7 @@ $ docker volume create --opt type=none --opt o=bind --opt device=/data/volumes/t
 $ docker inspect testvol
 [
     {
-        "CreatedAt": "2023-07-13T04:36:16Z",
+        "CreatedAt": "2024-07-13T04:36:16Z",
         "Driver": "local",
         "Labels": {},
         "Mountpoint": "/var/lib/docker/volumes/testvol/_data",

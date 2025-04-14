@@ -13,7 +13,7 @@ description: Self Signed Certificate
 keywords:
   - Self Signed Certificate
 image: https://i.imgur.com/mErPwqL.png
-date: 2023-10-04
+date: 2025-02-04
 draft: false
 enableComments: true # for Gisqus
 ---
@@ -36,7 +36,7 @@ In brief, these steps we need to sign local sever certificate actually simulate 
 
 1. Create a local **Root CA**.
 2. Create a **CSR**(Certificate Signing Request) file for local server `127.0.0.1`.
-3. The local **Root CA** use the **CSR** to generate a **certificate** for local server `127.0.0.1`.
+3. The local **Root CA** use the local server `127.0.0.1` **CSR** to generate a **certificate**.
 4. Install the local **Root CA** into our system(Windows, Ubuntu or macOS) trust store.
 5. Run a simple **https** server to test local server **certificate**.
 
