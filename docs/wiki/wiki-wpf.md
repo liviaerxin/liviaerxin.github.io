@@ -65,7 +65,7 @@ enableComments: true # for Gisqus
 
 ## Principles
 
-![MVVM Application](../attachments/images/mvvm-application.png)
+![MVVM Application](../../attachments/images/mvvm-application.png)
 
 - View-to-ViewModel one-to-one/many-to-one mapping
 - ViewModel-to-ViewModel communication

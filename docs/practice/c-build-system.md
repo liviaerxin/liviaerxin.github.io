@@ -100,4 +100,7 @@ CMake
 
 Meson
 
-## CI
+## Package Management
+
+- vcpkg
+- conan

@@ -28,7 +28,7 @@ enableComments: true # for Gisqus
 [User Guide — container-toolkit 1.13.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
 
 
-[wiki cuda](./wiki-cuda.mdx)
+[wiki cuda](../wiki/wiki-cuda.mdx)
 
 This documentation describes to install `FFmpeg` on `nvidia/cuda` **container** to use the **Nvidia GPU** to accelerate encoding.
 
@@ -77,12 +77,9 @@ docker run --rm --runtime=nvidia \
 
 ## Complete Dockerfile
 
-The source code is available at [Dockerfile](../code-snippets/dockerfile/nvidia-cuda-ffmpeg/Dockerfile)
-
-import CodeBlock from '@theme/CodeBlock';
-import CodeSource from '!!raw-loader!../code-snippets/dockerfile/nvidia-cuda-ffmpeg/Dockerfile';
-
-<CodeBlock language="yaml" title="nvidia-cuda-ffmpeg/Dockerfile">{CodeSource}</CodeBlock>
+```js reference
+https://github.com/liviaerxin/hello-dockerfile/blob/main/nvidia-cuda-ffmpeg/Dockerfile
+```
 
 ## Known issues
 

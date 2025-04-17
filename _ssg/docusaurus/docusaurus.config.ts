@@ -194,7 +194,7 @@ const config: Config = {
         {to: '/docs/tags', label: 'Tags', position: 'right'},
         {to: '/portfolio', label: 'Portfolio', position: 'right'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/liviaerxin/liviaerxin.github.io',
           label: 'GitHub',
           position: 'right',
         },

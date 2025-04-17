@@ -1,0 +1,10 @@
+position: 2
+label: 'How To'
+collapsible: true # make the category collapsible
+collapsed: true # keep the category open by default
+className: red
+link:
+  type: generated-index
+  title: How to solve problems overview
+customProps:
+  description: This description can be used in the swizzled DocCard

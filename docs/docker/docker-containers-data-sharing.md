@@ -27,7 +27,7 @@ There are three types of data to manage data in Docker,
 - volume mount
 - tmpfs mount
 
-![](../attachments/images/types-of-mounts-volume.png)
+![](../../attachments/images/types-of-mounts-volume.png)
 
 Read [Manage data in Docker](https://docs.docker.com/storage/) for more information, it's a great official documentation!
 
