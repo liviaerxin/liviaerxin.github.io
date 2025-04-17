@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2290],{49231:e=>{e.exports=JSON.parse('{"tag":{"label":"C","permalink":"/docs/tags/c","allTagsPath":"/docs/tags","count":1,"items":[{"id":"practice/python-c-library","title":"Python C Library","description":"Python C","permalink":"/docs/practice/python-c-library"}],"unlisted":false}}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1820],{49159:i=>{i.exports=JSON.parse('{"tag":{"label":"coral","permalink":"/docs/tags/coral","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-coral","title":"Wiki Coral","description":"wiki-coral","permalink":"/docs/wiki/wiki-coral"}],"unlisted":false}}')}}]);

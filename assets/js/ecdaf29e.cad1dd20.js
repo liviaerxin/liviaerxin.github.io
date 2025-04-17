@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[8780],{35787:i=>{i.exports=JSON.parse('{"tag":{"label":"wpf","permalink":"/docs/tags/wpf","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-wpf","title":"Wiki WPF","description":"Wiki WPF","permalink":"/docs/wiki/wiki-wpf"}],"unlisted":false}}')}}]);

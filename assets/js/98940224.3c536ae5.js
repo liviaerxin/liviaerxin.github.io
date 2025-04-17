@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[7511],{2645:i=>{i.exports=JSON.parse('{"tag":{"label":"diagram","permalink":"/docs/tags/diagram","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-diagram","title":"Diagram Wiki","description":"Wiki Diagram","permalink":"/docs/wiki/wiki-diagram"}],"unlisted":false}}')}}]);

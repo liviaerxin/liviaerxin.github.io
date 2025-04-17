@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[5009],{19975:s=>{s.exports=JSON.parse('{"tag":{"label":"Wiki Assembly","permalink":"/docs/tags/wiki-assembly","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki-assembly","title":"Wiki Assembly","description":"Wiki Assembly","permalink":"/docs/wiki-assembly"}],"unlisted":false}}')}}]);

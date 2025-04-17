@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[9507],{45683:i=>{i.exports=JSON.parse('{"tag":{"label":"Wiki Socket","permalink":"/docs/tags/wiki-socket","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-socket","title":"Wiki Socket","description":"Wiki Socket","permalink":"/docs/wiki/wiki-socket"}],"unlisted":false}}')}}]);

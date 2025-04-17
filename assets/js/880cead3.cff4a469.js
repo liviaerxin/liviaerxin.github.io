@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[4453],{78497:e=>{e.exports=JSON.parse('{"tag":{"label":"celery","permalink":"/docs/tags/celery","allTagsPath":"/docs/tags","count":1,"items":[{"id":"python-celery","title":"Celery","description":"wiki celery","permalink":"/docs/python-celery"}],"unlisted":false}}')}}]);

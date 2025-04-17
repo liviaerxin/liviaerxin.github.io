@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[4364],{168:s=>{s.exports=JSON.parse('{"tag":{"label":"msbuild","permalink":"/docs/tags/msbuild","allTagsPath":"/docs/tags","count":1,"items":[{"id":"c-build-system","title":"C/C++ Build System","description":"Learn Avalonia","permalink":"/docs/c-build-system"}],"unlisted":false}}')}}]);

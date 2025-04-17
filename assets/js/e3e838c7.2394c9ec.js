@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[5683],{18430:a=>{a.exports=JSON.parse('{"tag":{"label":"practice","permalink":"/docs/tags/practice","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki-avalonia","title":"Wiki Avalonia","description":"Learn Avalonia","permalink":"/docs/wiki-avalonia"}],"unlisted":false}}')}}]);
