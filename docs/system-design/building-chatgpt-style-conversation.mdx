@@ -1,0 +1,133 @@
+---
+sidebar_label: building chatgpt style conversation
+description: building chatgpt style conversation messages tree on recursive
+keywords:
+  - system-design
+  - data-structure
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - system-design
+  - database
+last_update:
+  date: 2025-04-16
+  author: frank
+---
+
+# Building ChatGPT-Style Conversations: Message Structure and Recursive Retrieval in PostgreSQL
+
+Ever wondered how ChatGPT handles branching conversations, regenerations, and maintaining context seamlessly? Behind the sleek UI is a well-designed data structure rooted in a classic computer science concept: the message tree. In this post, we'll explore how to design and implement a ChatGPT-style conversation system, with a focus on storing and retrieving messages in PostgreSQL using recursive queries.
+
+---
+
+## The Problem: Conversations Aren't Flat
+
+In a normal messaging app, conversations are usually linear. But in an AI chat interface like ChatGPT, users can:
+- Regenerate a previous response
+- Fork a new conversation from any earlier message
+- Traverse back and forth in a conversation tree
+
+This means the data structure must support **branching**, not just a flat message list.
+
+---
+
+## The Solution: Message Trees
+
+Instead of storing messages in a simple list, we structure them as a **tree**:
+- Every message has a unique `id`
+- Each message (except the root) has a `parent_id`
+- A conversation is a path from the **root message to a leaf message**
+
+```text
+root_msg
+  └── msg_1
+        └── msg_2a
+              └── msg_3
+        └── msg_2b  <- regenerated fork
+```
+
+To get the path for msg3:
+	•	msg3 → msg_2a → msg1 → root_msg
+
+This allows us to support regenerations and alternate responses while preserving context.
+
+---
+
+## Designing the Table in PostgreSQL
+
+```sql
+CREATE TABLE messages (
+    id UUID PRIMARY KEY,
+    parent_id UUID REFERENCES messages(id),
+    role TEXT CHECK (role IN ('user', 'assistant')),
+    content TEXT,
+    created_at TIMESTAMP DEFAULT now()
+);
+```
+
+Each message is either from the `user` or the `assistant`, and optionally links to its parent message.
+
+---
+
+## Reconstructing the Message Path with a Recursive Query
+
+To feed the correct context to the model, we need to reconstruct the full path from the **root to a given message**. PostgreSQL makes this easy with a recursive CTE:
+
+```sql
+WITH RECURSIVE path AS (
+    SELECT id, parent_id, role, content, created_at
+    FROM messages
+    WHERE id = 'leaf_message_id' -- starting point
+
+    UNION ALL
+
+    SELECT m.id, m.parent_id, m.role, m.content, m.created_at
+    FROM messages m
+    INNER JOIN path p ON m.id = p.parent_id
+)
+SELECT * FROM path ORDER BY created_at;
+```
+
+This walks **up** the tree from the leaf to the root, and we then **sort by timestamp** to restore the original message order.
+
+---
+
+## Handling Branches and Regenerations
+
+Every time a user regenerates or forks a response:
+- A new message is created with the same `parent_id` as the message being regenerated
+- This creates a new branch in the tree
+
+To show branches in the UI (like ChatGPT does with “Regenerate” or “Continue from here”), simply:
+```sql
+SELECT * FROM messages WHERE parent_id = 'some_message_id';
+```
+
+You’ll get all the children of that message, representing possible next steps or alternate replies.
+
+---
+
+## Why Not Store Child References?
+
+You might wonder if we should store `child_id` or even entire paths for fast lookup. In practice:
+- **Storing `child_id` isn't necessary**, as we can always query it and the parent may have **more than one child**.
+- Caching full paths (denormalized) is an optimization, not a requirement.
+
+This keeps the data normalized and clean, while PostgreSQL handles recursion efficiently.
+
+---
+
+## Performance Tips
+- Index `parent_id` for fast joins
+- Use `UUID` or short `BIGINT` ids depending on your needs
+- Optionally cache reconstructed paths in Redis for real-time rendering
+
+---
+
+## Conclusion
+
+Designing a ChatGPT-style conversation system requires more than just storing messages. You need a tree-based structure, recursive retrieval, and efficient querying. PostgreSQL, with its support for recursive CTEs, is a rock-solid choice for managing this elegantly.
+
+Whether you’re building a chatbot platform, customer support tool, or AI assistant, these techniques can give you the flexibility to handle complex conversational flows just like ChatGPT.
+
+Happy building! 🫠
+
