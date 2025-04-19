@@ -1,0 +1,137 @@
+---
+sidebar_label: designing-tiktok-comment-threads
+description: Designing Comment Threads for TikTok-Style Applications
+keywords:
+  - system-design
+  - data-structure
+  - tiktok
+  - comment-threads
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - system-design
+  - database
+last_update:
+  date: 2025-03-19
+  author: frank
+---
+
+# Designing Comment Threads for TikTok-Style Applications
+
+In modern content platforms like TikTok, the comment thread is an essential interaction space. Users can post top-level comments and reply to others, forming shallow trees. While this might seem simple, designing this system to be efficient, scalable, and user-friendly takes some thoughtful architecture.
+
+This post explores how comment threads are modeled, stored, and reconstructed — and then closes with a bonus section on using Redis for performance.
+
+## Comment Thread Structure
+
+Each video can have:
+- Many **top-level comments**
+- Optional **replies**, each pointing to a `parent_comment_id`
+
+### Data Model (Relational Database)
+
+```sql
+CREATE TABLE comments (
+  id BIGINT PRIMARY KEY,
+  video_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  parent_comment_id BIGINT NULL,
+  content TEXT NOT NULL,
+  replies_n BIGINT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+);
+```
+
+---
+
+## Reconstructing Comment Threads
+
+To render a full comment thread:
+
+### 1. Fetch Top-Level Comments
+
+```sql
+SELECT * FROM comments
+WHERE video_id = :video_id AND parent_comment_id IS NULL
+ORDER BY replies_n DESC
+LIMIT 50;
+```
+
+### 2. Fetch Replies for Those Comments
+
+```sql
+SELECT * FROM comments
+WHERE parent_comment_id IN (:top_level_comment_ids);
+```
+
+### 3. Group Replies by Parent (In Memory)
+
+```python
+from collections import defaultdict
+
+replies_by_parent = defaultdict(list)
+for reply in replies:
+    replies_by_parent[reply["parent_comment_id"]].append(reply)
+
+thread = []
+for comment in top_comments:
+    comment["replies"] = replies_by_parent.get(comment["id"], [])
+    thread.append(comment)
+```
+
+This reconstruction approach is efficient: **O(N + M)** time, where N = number of top-level comments, M = total replies.
+
+
+## Scaling Considerations
+
+To handle millions of comments:
+- Paginate top-level comments (and load replies lazily)
+- Use indexes on `video_id`, `parent_comment_id`
+- Consider denormalizing data for hot content
+
+
+## 🔥 Bonus: Redis Caching for Hot Threads
+
+To offload frequent reads and keep response times sub-ms, cache the full reconstructed thread in Redis.
+
+### Example Structure
+
+```json
+{
+  "video_id": 123,
+  "comments": [
+    {
+      "id": 1,
+      "content": "Nice vid!",
+      "replies": [
+        { "id": 4, "content": "Agree!" },
+        { "id": 5, "content": "Same!" }
+      ]
+    }
+  ]
+}
+```
+
+### Redis Key
+
+```
+comment_thread:video:123
+```
+
+### Recompute and Cache
+
+```python
+def recompute_comment_thread(video_id):
+    top_comments = db.query(...)
+    replies = db.query(...)
+    ...
+    redis.set(f"comment_thread:video:{video_id}", json.dumps(thread), ex=600)
+```
+
+You can trigger recompute on new comment events or via background jobs.
+
+## Conclusion
+
+Designing comment threads involves balancing simplicity, flexibility, and performance. Whether you're serving 100 users or 100 million, the pattern of parent-child comment structuring and smart reconstruction gives you a strong foundation.
+
+And when performance matters most? Add a Redis layer to make it fly.
+
