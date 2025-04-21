@@ -9,9 +9,13 @@ tags:
   - wiki
   - network
   - proxy
+  - socket
+  - vpn
 description: Wiki Proxy
 keywords:
-  - Wiki Proxy
+  - proxy
+  - vpn
+  - socket
 image: https://i.imgur.com/mErPwqL.png
 date: 2023-11-29
 draft: false
@@ -38,35 +42,37 @@ https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/
 Certainly! Let's explore the key differences between a **proxy** and a **reverse proxy**:
 
 1. **Proxy (Forward Proxy)**:
-  - Acts as an intermediary between **clients** (users or devices) and the **internet**.
-  - **Forwards client requests** to the internet resource (e.g., a website).
-  - Provides:
-    - **client anonymity**
-    - **caching**
-    - traffic control
-    - request/response transformation.
-  - Commonly used for bypassing content filters and accessing restricted content.
-  - Examples include:
-    - **Squid**
-    - **Proxy**
-    - **Tor**
-    - Charles Proxy
-    - HTTP Toolkit
-    - MITM Proxy
-    - Fiddler Proxy
 
-2. **Reverse Proxy**:
-  - Sits in front of one or more **web servers**.
-    - **Forwards server responses** to clients (users or devices).
-    - Offers benefits like:
-    - **server anonymity**
-    - **load balancing**
-    - DDoS protection
-    - URL/content rewriting.
-  - Used for improving server performance and enhancing security.
-  - Examples include:
-    - **Nginx**
-    - **Traefik**
+- Acts as an intermediary between **clients** (users or devices) and the **internet**.
+- **Forwards client requests** to the internet resource (e.g., a website).
+- Provides:
+  - **client anonymity**
+  - **caching**
+  - traffic control
+  - request/response transformation.
+- Commonly used for bypassing content filters and accessing restricted content.
+- Examples include:
+  - **Squid**
+  - **Proxy**
+  - **Tor**
+  - Charles Proxy
+  - HTTP Toolkit
+  - MITM Proxy
+  - Fiddler Proxy
+
+1. **Reverse Proxy**:
+
+- Sits in front of one or more **web servers**.
+  - **Forwards server responses** to clients (users or devices).
+  - Offers benefits like:
+  - **server anonymity**
+  - **load balancing**
+  - DDoS protection
+  - URL/content rewriting.
+- Used for improving server performance and enhancing security.
+- Examples include:
+  - **Nginx**
+  - **Traefik**
 
 In summary, a proxy handles client traffic, while a reverse proxy shields servers by managing requests and responses.
 
@@ -87,3 +93,62 @@ https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/
 ## Reverse Proxy
 
 ## Resources
+
+## Socket
+
+Terms of sockets in socket programming,
+
+- On the server side:
+  - The socket responsible for listening and accepting incoming connections is commonly referred to as the "**server socket**".
+  - The individual sockets created for each accepted connection, responsible for data exchange with the connected clients, are often referred to as "**client socket**" (or simply "**socket**").
+- On the client side:
+  - The socket responsible for initiating a connection to the server and handling data exchange is commonly referred to as the "**client socket**" or "**socket**"
+
+In summary:
+
+- Server Side:
+  - Listening Socket: "**Server Socket**"
+  - Data Exchange Sockets (for each connection): "**Client Socket**" or just "**Socket**"
+- Client Side:
+  - Data Exchange Socket: "**Client Socket**" or just "**Socket**"
+
+
+
+[Transports and Protocols — Python 3.12.1 documentation](https://docs.python.org/3/library/asyncio-protocol.html)
+
+[selectors — High-level I/O multiplexing — Python 3.12.1 documentation](https://docs.python.org/3/library/selectors.html)
+
+[socket — Low-level networking interface — Python 3.12.1 documentation](https://docs.python.org/3/library/socket.html)
+
+## VPN
+
+[OpenVPN: how secure virtual private networks really work](https://cloudacademy.com/blog/openvpn-how-secure-virtual-private-networks-really-work/)
+> !!!Favorite explanation
+
+[ip - How do VPN's forward network traffic? (Layer 3) - Network Engineering Stack Exchange](https://networkengineering.stackexchange.com/questions/51159/how-do-vpns-forward-network-traffic-layer-3)
+
+[How to set up a router with Surfshark? – Surfshark Customer Support](https://support.surfshark.com/hc/en-us/articles/360003103833-How-to-set-up-a-router-with-Surfshark-)
+
+[Routers Supporting VPN Client - Home Network Community](https://community.tp-link.com/en/home/forum/topic/272492)
+
+### Kill Switch
+
+KillSwitch could be used to block outgoing traffic when the VPN connection drops and crashes.
+
+### PF(packet filter) MacOS
+
+[Setting up correctly Packet Filter (pf) firewall on any macOS](https://iyanmv.medium.com/setting-up-correctly-packet-filter-pf-firewall-on-any-macos-from-sierra-to-big-sur-47e70e062a0e)
+
+[Prevent outgoing traffic unless OpenVPN connection is active using pf.conf on Mac OS X](https://superuser.com/questions/468919/prevent-outgoing-traffic-unless-openvpn-connection-is-active-using-pf-conf-on-ma)
+
+[Quick and easy pf (packet filter) firewall rules on macOS](https://blog.neilsabol.site/post/quickly-easily-adding-pf-packet-filter-firewall-rules-macos-osx/)
+
+[A Cheat Sheet For Using pf in OS X Lion and Up](https://krypted.com/mac-security/a-cheat-sheet-for-using-pf-in-os-x-lion-and-up/)
+
+[OS X PF Manual](https://murusfirewall.com/Documentation/OS%20X%20PF%20Manual.pdf)
+
+### Set Up Firewall to Allow Access Only via VPN(KillSwitch)
+
+[ENABLING VPN-ONLY ACCESS TO THE INTERNET WITH WINDOWS FIREWALL](https://zorrovpn.com/articles/windows-firewall-vpn-only?lang=en)
+
+[KillSwitch for macOS](https://github.com/vpn-kill-switch/killswitch)

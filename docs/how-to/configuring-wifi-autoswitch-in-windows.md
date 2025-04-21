@@ -1,24 +1,20 @@
 ---
-foam_template:
-  name: Docs Docusaurus Template
-  description: Creates Docusaurus docs/slip
-  filepath: docs/wifi-autoswitch-windows.md
-sidebar_label: WiFi AutoSwitch Windows
-description: WiFi AutoSwitch Windows
+sidebar_label: Configuring WiFi AutoSwitch Windows
+description: Configuring WiFi AutoSwitch Windows
 keywords:
   - autoswitch
   - wifi
   - windows
 image: https://i.imgur.com/mErPwqL.png
 tags:
-  - autoswitch
-  - wifi
-  - windows
+  - how-to
+  - network
+  - environment
 date: 2023-06-01
 author: frank
 ---
 
-# WiFi AutoSwitch Windows
+# How to Configure WiFi AutoSwitch in Windows
 
 If **autoSwitch** is turned on, it allows Windows to continue looking for other auto-connected wireless networks while connected to the current wireless network. If a higher priority auto-connected wireless network than the currently connected wireless network comes in range, Windows will automatically connect to it instead.
 

@@ -1,5 +1,5 @@
 ---
-tags: [circular-dependencies, inversion-of-control, dependency-injection]
+draft: true
 ---
 
 # IoC

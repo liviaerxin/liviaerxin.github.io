@@ -1,36 +1,25 @@
 ---
-foam_template:
-  name: Blog Docusaurus Template
-  description: Creates Docusaurus blog/slip
-  filepath: blog/wiki-coral.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
-authors:
-  - frank
-tags:
-  - wiki
-  - coral
-  - serial console
-description: wiki-coral
+sidebar_label: Setting up coral dev board
+description: Setting up coral dev board
 keywords:
-  - wiki
-  - coral
-  - mendel
+  - autoswitch
+  - wifi
+  - windows
 image: https://i.imgur.com/mErPwqL.png
-date: 2023-09-18
-draft: false
-enableComments: true # for Gisqus
+tags:
+  - how-to
+  - network
+  - environment
+date: 2023-06-01
+author: frank
 ---
 
-# Wiki Coral
+# How To Set Up Coral Dev Board
 
 Set up Coral Dev Board for employing an Edge TPU coprocessor.
 
 Prototype new projects demanding fast on-device inference for the ML models.
 
-<!--truncate-->
-
-## Resources
-
-[Get started with the Dev Board | CoralCoralClose](https://coral.ai/docs/dev-board/get-started/)
 
 ## Background
 
@@ -69,3 +58,7 @@ There are general ways to access a just-setup Coral in brief steps:
 3. Enable SSH Password Authentication. Edit `/etc/ssh/sshd_config` to change `PasswordAuthentication no` to `PasswordAuthentication yes`, and `sudo service ssh restart` to restart the ssh service.
 4. Log into the shell using username: `mendel` and password: `mendel`.
 5. If you want to keep the secure shell, generate `private SSH key` stored in host and `public SSH key` saved into Coral.
+
+## References
+
+- [Get started with the Dev Board | CoralCoralClose](https://coral.ai/docs/dev-board/get-started/)

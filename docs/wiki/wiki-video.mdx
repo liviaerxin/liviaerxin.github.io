@@ -1,0 +1,151 @@
+---
+position: 1
+sidebar_label: wiki video
+description: This document serves as a fast tech wiki for anyone building or analyzing modern video streaming workflows.
+keywords:
+  - wiki
+  - video
+  - streaming protocols
+  - chunk
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - wiki
+  - video
+last_update:
+  date: 2025-04-20
+  author: frank
+---
+
+# Wiki Video: Streaming Protocols, Video Chunk, Format/Codec, Playback
+
+## Overview
+
+This document provides a quick reference to modern video streaming technologies, covering key differences between streaming protocols, video chunking strategies, and how video playback works in browsers and players. It focuses especially on the difference between progressive MP4 streaming and chunk-based playback via HLS/DASH.
+
+## Video Format/Codec
+
+
+## Common Video Streaming Protocols
+
+| Protocol | Full Name                    | Use Case              | Live/VOD  | Latency   | Status                | Notes                                                                     |
+|----------|------------------------------|-----------------------|-----------|-----------|-----------------------|---------------------------------------------------------------------------|
+| HLS      | HTTP Live Streaming          | Apple TV, Safari      | Both      | 10–30 sec | Active                | modern, scalable, used for both live and VOD.                             |
+| DASH     | MPEG-DASH                    | YouTube, Netflix      | Both      | 5–15 sec  | Active                | Open standard, alternative to HLS                                         |
+| RTMP     | Real-Time Messaging Protocol | OBS to YouTube/Twitch | Live Only | ~2–5 sec  | Deprecated (playback) | used for sending live video to servers, not for playback                  |
+| RTSP     | Real-Time Streaming Protocol | CCTV, IP cameras      | Live Only | ~1 sec    | Active (niche)        | Not browser-compatible; mostly in special app(surveillance systems, etc.) |
+| WebRTC   | Web Real-Time Communication  | Live chat, calls      | Live Only | ~0.5 sec  | Growing               | Low latency; peer-to-peer(video calls, etc.)                              |
+
+## Video Chunking(HLS/DASH)
+
+In real world applications, like **youtube**, they will divide a video into many chunks for `HLS` or `DASH` for better performance.
+
+| Protocol | Chunk File Format                            | Notes                                                             |
+| -------- | -------------------------------------------- | ----------------------------------------------------------------- |
+| HLS      | .ts (MPEG-2 Transport Stream) or .mp4 (fMP4) | .ts is traditional, .mp4 (fMP4) is newer and supports low-latency |
+| DASH     | .mp4 (fMP4)                                  | DASH usually uses fragmented MP4                                  |
+
+- fMP4 = fragmented MP4 — this allows streaming before the full file is complete, perfect for chunked delivery.
+- Each chunk might be ~2–10 seconds long depending on settings.
+
+### How Does Client Handle Chunks?
+
+The client (player) must understand how to:
+
+- Parse the manifest file (`.m3u8` for `HLS`, `.mpd` for `DASH`)
+- Download the chunks in order
+- Buffer a few chunks ahead
+- Handle adaptive bitrate switching
+
+Usually, this is done by a video player library like:
+
+- HLS.js (for browsers)
+- Shaka Player (for `DASH`)
+- AVPlayer (on iOS/tvOS)
+- ExoPlayer (on Android)
+
+## Playback
+
+### A. Chunk-Based Playback (HLS/DASH)
+
+1. The player loads the manifest file.
+2. It picks the best quality (bitrate) based on bandwidth.
+3. It downloads chunk 1 and starts playing it while downloading chunk 2.
+4. It continues in parallel: downloading one or more chunks ahead, playing current one.
+5. If network speed drops, it switches bitrate (adaptive bitrate streaming).
+
+So, no, the player doesn’t download the whole chunked video first. It streams it in real time by pulling chunks one by one.
+
+#### Bonus: Manifest Files
+
+`HLS` `.m3u8` Example:
+
+```m3u8
+#EXTM3U
+#EXT-X-VERSION:3
+#EXTINF:10.0,
+chunk1.ts
+#EXTINF:10.0,
+chunk2.ts
+...
+```
+
+`DASH` `.mpd` Manifest:
+
+An XML file describing all chunks, qualities, and durations.
+
+#### Bonus: How to Create HLS from MP4 (ffmpeg Example)
+
+```bash
+ffmpeg -i input.mp4 \
+  -codec: copy -start_number 0 \
+  -hls_time 6 -hls_list_size 0 \
+  -f hls output.m3u8
+```
+
+This will create `.ts` chunks and an `.m3u8` playlist ready for HLS playback.
+
+### B. Progressive MP4 Download (Direct in Browser, via a streaming api supported by server)
+
+- A single `.mp4` file is streamed via HTTP.
+- Browsers like Chrome or Safari can start playback once enough is buffered.
+- Doesn’t require special manifests.
+- Supports basic seeking (if moov atom is early).
+- No adaptive bitrate or chunk control.
+
+#### Bonus: Streaming API In Python to Support Progressive MP4 Playback
+
+```js reference
+https://github.com/liviaerxin/hello-python/blob/main/fastapi_streaming.py
+```
+
+### Playback Comparison
+
+| Feature                  | MP4 Progressive      | HLS/DASH Chunk Streaming        |
+| ------------------------ | -------------------- | ------------------------------- |
+| File Format              | Single `.mp4`        | Multiple `.ts` or `.mp4` chunks |
+| Requires Manifest        | ❌ No                 | ✅ Yes (`.m3u8` / `.mpd`)        |
+| Native Browser Support   | ✅ Yes (Chrome, etc.) | ❌ (except Safari for HLS)       |
+| Adaptive Bitrate         | ❌ No                 | ✅ Yes                           |
+| Low-Latency Live Support | ❌ Limited            | ✅ Yes                           |
+| JS Player Required       | ❌ No                 | ✅ Usually                       |
+| Suitable for Long VOD    | ⚠️ Not ideal          | ✅ Excellent                     |
+
+
+When to Use Which,
+
+- **MP4 Progressive**:
+  - Small or simple videos
+  - Static content without network adaptation needs
+
+- **HLS/DASH**:
+  - Live streaming
+  - VOD with varying network conditions
+  - Need for adaptive bitrate
+  - Complex playback control (seeking, DVR, etc.)
+
+## References
+
+- [Apple HLS Documentation](https://developer.apple.com/streaming/)
+- [MPEG-DASH Overview](https://dashif.org/)
+- [hls.js GitHub](https://github.com/video-dev/hls.js/)
+- [Shaka Player](https://github.com/shaka-project/shaka-player)
