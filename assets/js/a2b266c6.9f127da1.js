@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1461],{45247:e=>{e.exports=JSON.parse('{"tag":{"label":"socket","permalink":"/docs/tags/socket","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-network","title":"Wiki Network","description":"Wiki Proxy","permalink":"/docs/wiki/wiki-network"}],"unlisted":false}}')}}]);

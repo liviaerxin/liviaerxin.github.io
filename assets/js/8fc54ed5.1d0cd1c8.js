@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1333],{31928:i=>{i.exports=JSON.parse('{"tag":{"label":"vcpkg","permalink":"/docs/tags/vcpkg","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-vcpkg","title":"Wiki vcpkg","description":"learn vcpkg","permalink":"/docs/wiki/wiki-vcpkg"}],"unlisted":false}}')}}]);

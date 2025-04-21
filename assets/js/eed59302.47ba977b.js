@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[190],{17375:i=>{i.exports=JSON.parse('{"tag":{"label":"asgi","permalink":"/docs/tags/asgi","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-asgi","title":"Learn ASGI","description":"Learn ASGI","permalink":"/docs/wiki/wiki-asgi"}],"unlisted":false}}')}}]);
