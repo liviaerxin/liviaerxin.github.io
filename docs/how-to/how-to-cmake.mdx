@@ -1,18 +1,18 @@
 ---
-sidebar_label: Learn CMake
-description: Learn CMake
+sidebar_label: How to CMake
+description: How to work with CMake
 keywords:
   - cmake
   - project structure
 image: https://i.imgur.com/mErPwqL.png
 tags:
-  - cmake
-  - wiki
+  - toolchain
+  - how-to
 date: 2023-06-25
 author: frank
 ---
 
-# Learn CMake
+# How to Work with CMake
 
 In brief, **CMake** is all about **targets** and **properties**
 
@@ -224,7 +224,7 @@ Use `-L` flag:
 ❯ clang -L/opt/homebrew/lib -Xlinker -v
 ```
 
-https://langui.sh/2015/07/24/osx-clang-include-lib-search-paths/
+[OS X clang include lib search path](https://langui.sh/2015/07/24/osx-clang-include-lib-search-paths/)
 
 ## What is the difference? clang++ | clang -std=c++11
 
@@ -235,7 +235,7 @@ https://langui.sh/2015/07/24/osx-clang-include-lib-search-paths/
 1. `set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /opt/local/lib)`
 2. `LINK_DIRECTORIES(/opt/local/lib)`
 
-## Resources
+## References
 
 [CMake hands-on workshop — CMake Workshop](https://enccs.github.io/cmake-workshop/)
 [^rpath]: [RPATH handling from official cmake](https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling)

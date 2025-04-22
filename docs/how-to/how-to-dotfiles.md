@@ -1,16 +1,17 @@
 ---
-sidebar_label: Dotfiles Guide
-description: Dotfiles Guide
+sidebar_label: how to dotfiles
+description: How to Create Dotfiles for Your Setup
 keywords:
   - dotfiles
 image: https://i.imgur.com/mErPwqL.png
 tags:
   - dotfiles
+  - how-to
 date: 2024-06-26
 author: frank
 ---
 
-# Dotfiles Guide
+# How To Make Dotfiles for Your Sake
 
 [Tutorials - dotfiles.github.io](http://dotfiles.github.io/tutorials/)
 

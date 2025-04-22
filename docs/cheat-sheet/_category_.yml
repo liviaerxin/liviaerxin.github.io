@@ -1,4 +1,4 @@
-position: 5
+position: 10
 label: 'Cheat Sheet'
 collapsible: true # make the category collapsible
 collapsed: true # keep the category open by default

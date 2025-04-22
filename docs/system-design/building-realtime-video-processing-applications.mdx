@@ -1,0 +1,130 @@
+---
+sidebar_label: building realtime video processing applications
+description: building realtime video processing applications
+keywords:
+  - system-design
+  - video
+  - ml
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - ml
+  - system-design
+  - video
+last_update:
+  date: 2025-04-12
+  author: frank
+---
+
+
+# Building Real-Time Video Processing Applications
+
+In recent years, real-time video processing has become an essential component in consumer and industrial applications—ranging from pose detection and AR effects to equipment monitoring and telehealth systems. While it’s common to start with platform-specific solutions (such as native Android pipelines), this path can quickly lead to complexity and duplication of work when targeting multiple platforms like iOS, desktop, or embedded systems.
+
+In this blog, I’ll walk through the two primary approaches to building real-time video processing pipelines:
+
+1. Custom implementation using platform-native libraries (e.g., Android)
+2. Cross-platform implementation using GUI frameworks (e.g., Unity, Qt)
+
+We’ll discuss basic architecture for real-time video processing, and how GUI frameworks can significantly reduce the engineering effort for cross-platform deployments.
+
+## What Is Real-Time Video Processing?
+
+Real-time video processing refers to capturing, analyzing(ML model), and rendering video frames fast enough that users perceive the experience as immediate — typically at 30/60 FPS or higher. Basically, this involves a video/data pipeline that:
+
+1. Captures video frames from camera
+2. Processes them (e.g., AI inference),
+3. Renders the processed results like drawing annotations, etc.
+
+To ensure a smooth performance for user experiences, multiple threads programming and buffering are critical tech stacks among the implementation for real-time.
+
+This is a modular approach where developers manually control each stage:
+
+## Data Pipeline Architecture
+
+```sh
+[Video Capture(v4l2, DirectShow)]
+      ↓
+[ML Model (Analyze)]
+      ↓
+[Render (Overlay)]
+```
+
+1. Video Capture
+    - Use low-level OS interfaces like v4l2(Linux), DirectShow(Windows) or multimedia libraries like GStreamer, FFmpeg, OpenCV, CameraX.
+    - Deliver video frames as RGB from YUV_420_888 format OpenCV, optionally in the regard of ML model input image format supports.
+2. ML Model Analysis
+    - Use ML model for face detection, object detection, or pose estimation.
+    - ML model returns results like keypoints, bounding boxes, and confidence scores.
+3. Rendering
+    - Use Skia, OpenGL, or libraries to draw bounding boxes, etc.
+    - You must manually draw overlays using model output.
+
+## 1. The Custom Approach: Building a Native Android Pipeline
+
+When building a real-time video processing app on Android, developers typically stitch together multiple libraries to handle video capture, AI inference, rendering, and user interaction. Here’s an example stack:
+
+Typical Android Pipeline:
+
+- Video Capture: CameraX
+- AI Processing: ML Kit, TensorFlow Lite, or custom JNI wrappers
+- Frame Conversion: YUV to RGB via RenderScript or GPU
+- Rendering: Canvas, SurfaceView, or OpenGL ES
+- UI Layer: XML layouts + Jetpack Compose
+
+This custom pipeline offers maximum control, but it also comes with challenges:
+
+- You must manually handle format conversion (YUV to RGB, etc.)
+- You must synchronize frame timing between components
+- Each platform (iOS, Windows, macOS) requires a completely different implementation
+- Performance tuning is low-level and platform-specific
+
+Bottom line: Great flexibility, but high development and maintenance cost.
+
+## 2. The Framework-Based Approach: Using GUI Frameworks Like Unity or Qt
+
+Instead of re-implementing pipelines per platform, GUI frameworks like Unity and Qt provide a cross-platform abstraction layer over hardware, video capture, GPU rendering, and AI integration.
+
+These frameworks wrap native APIs (e.g., Android Camera2, iOS AVFoundation) and offer built-in rendering pipelines, which means you can focus on application logic and user experience.
+
+Typical Unity Pipeline:
+
+- Capture: WebCamTexture (auto-handles Android/iOS differences)
+- AI Processing: Barracuda, TFLite Plugin, or MediaPipe Unity Plugin
+-	Rendering: GPU-accelerated overlay using Canvas, Shaders, or 3D objects
+- UI Layer: Unity UI + C#
+
+Typical Qt Pipeline:
+
+- Capture: QCamera + GStreamer or OpenCV backend
+- AI Processing: TensorFlow Lite, ONNX, or OpenCV DNN module
+- Rendering: QML, QPainter, or OpenGL
+- UI Layer: QML + C++
+
+Bottom line: Frameworks reduce effort and increase portability — ideal for fast product development.
+
+## Why Use a Framework?
+
+Pros:
+
+- Cross-platform out of the box
+- Hardware acceleration built-in
+- Clean separation between logic and rendering
+- Reusable codebase and assets
+- Easier to integrate with AR/VR or gaming features
+
+Cons:
+
+- Some frameworks abstract too much — not ideal for edge cases
+- Slightly more overhead than bare-metal native code
+
+## Conclusion
+
+If you’re aiming to develop a real-time video processing application that works across multiple platforms, cross-platform GUI frameworks like Unity or Qt are powerful tools that can save you months of engineering time.
+
+They provide:
+
+- Built-in hardware acceleration
+- Unified APIs for camera and rendering
+- Portability across mobile and desktop
+
+Of course, native pipelines are still valuable when you need absolute performance or deep platform integration—but for most modern applications, frameworks like Unity strike the right balance between flexibility and development speed.

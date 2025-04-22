@@ -1,23 +1,19 @@
 ---
-foam_template:
-  name: Blog Docusaurus Template
-  description: Creates Docusaurus blog/slip
-  filepath: blog/wiki-cross-compilation.mdx # See using [Variable transforms](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variable-transforms )
-authors:
-  - frank
-tags:
-  - wiki
-  - cross-compilation
-description: Wiki Cross Compilation
+sidebar_label: How to cross compilation
+description: How to perform cross compilation
 keywords:
-  - Wiki Cross Compilation
+  - cross-compilation
+  - project structure
+  - toolchain
 image: https://i.imgur.com/mErPwqL.png
+tags:
+  - how-to
+  - toolchain
 date: 2024-09-18
-draft: false
-enableComments: true # for Gisqus
+author: frank
 ---
 
-# Wiki Cross Compilation
+# How to Perform Cross Compilation
 
 ## Cross Compilation Anatomy
 
@@ -187,10 +183,10 @@ clang --target=aarch64-linux-gnu  -fsanitize=undefined \
 
 ## Resources
 
-https://wiki.osdev.org/GCC_Cross-Compiler
+[GCC Cross-Compiler - OSDev Wiki](https://wiki.osdev.org/GCC_Cross-Compiler)
 
-https://github.com/generia/buildroot-osx
+[GitHub - generia/buildroot-osx: Buidroot OSX - Use Buildroot on OSX natively without a Linux container.](https://github.com/generia/buildroot-osx)
 
-https://crosstool-ng.github.io/docs/
+[crosstool-ng Documentation](https://crosstool-ng.github.io/docs/)
 
-https://github.com/messense/homebrew-macos-cross-toolchains/blob/main/.github/workflows/aarch64.yml
+[aarch64 workflows example](https://github.com/messense/homebrew-macos-cross-toolchains/blob/main/.github/workflows/aarch64.yml)

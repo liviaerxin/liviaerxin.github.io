@@ -3,34 +3,35 @@ sidebar_label: wiki graphic
 description: Understanding the Graphics Stack, From GUI Toolkits to GPU APIs
 keywords:
   - wiki
-  - video
+  - graphic
   - streaming protocols
   - chunk
 image: https://i.imgur.com/mErPwqL.png
 tags:
   - wiki
-  - video
+  - graphic
+  - gpu
 last_update:
   date: 2025-04-20
   author: frank
 ---
 
-# Graphics Stack: From Low-Level Graphics APIs to High-Level GUI Toolkits
+# Graphics Stack: From Low-Level Graphics APIs to High-Level GUI Framework
 
-Modern GUI composition of:
+Modern GUI applications are built on following tech aspects:
 
-- GPU
-  - Nvidia
-  - AMD
-- Graphic APIs(communicate with the GPU)
+- Hardware
+  - GPU, Hardware Rendering
+  - CPU, Software Rendering
+- Graphic APIs (communicate with the Graphic Card)
   - OpenGL
   - Vulkan
   - DirectX
   - Metal
-- Rendering Engine
+- Rendering Engine (Leverage Graphic APIs)
   - GPU, Hardware Rendering
-    - Skia + OpenGL, Vulkan, DirectX, Metal
-    - Qt + OpenGL, Vulkan, DirectX, Metal
+    - Skia (2D) + OpenGL, Vulkan, DirectX, Metal
+    - Qt (3D) + OpenGL, Vulkan, DirectX, Metal
     - Cairo + OpenGL
   - CPU, Software Rendering
     - QT Rasterization Engine
@@ -43,9 +44,9 @@ Modern GUI composition of:
   - Wayland(Linux)
   - SurfaceFlinger(Android)
 
-## Low-Level Graphics APIs
+## Graphics APIs
 
-These are used to render 2D/3D graphics, directly interfacing with **GPU**.
+These are used to render **2D/3D** graphics, directly interfacing with **GPU**.
 
 | API     | Platform Support                       | Description                                                                     |
 |---------|----------------------------------------|---------------------------------------------------------------------------------|
@@ -58,22 +59,26 @@ These APIs don't create windows or GUI elements — they render within a surface
 
 ## Rendering Engine
 
-| Rendering Engine | Primary Use                      | Key Platform(s)          |
-|------------------|----------------------------------|--------------------------|
-| Cairo            | 2D graphics rendering (software) | GTK, GIMP, Pango         |
-| Skia             | 2D graphics rendering            | Chrome, Android, Flutter |
-| QT               | 2D graphics rendering            | Chrome, Android, Flutter |
+**QT, Unity, Unreal** are **GUI** framework, but they also have their own rendering stacks or rendering engines to draw their UI and visuals.
+
+| Rendering Engine | Uses Which Graphics API           | Primary Use                      | Key Platform(s)          |
+|------------------|-----------------------------------|----------------------------------|--------------------------|
+| Cairo            | OpenGL                            | 2D graphics rendering (software) | used by GTK, GIMP, Pango |
+| Skia             | OpenGL, Vulkan                    | 2D graphics rendering            | Chrome, Android, Flutter |
+| QT own stack     | OpenGL, Vulkan, DirectX, or Metal | 2D/3D graphics rendering         | Cross-platform           |
+| Unity own stack  | OpenGL, Vulkan, DirectX, or Metal | 2D/3D graphics rendering         | Cross-platform           |
+| Unreal own stack | OpenGL, Vulkan, DirectX, or Metal | 2D/3D graphics rendering         | Cross-platform           |
 
 ## GUI Framework Toolkits
 
 These provide buttons, windows, text inputs, etc. Some of them can also handle rendering.
 
-| Toolkit | Uses Which Graphics API        | Platform Support      | Notes                                                                                                      |
-|---------|--------------------------------|-----------------------|------------------------------------------------------------------------------------------------------------|
-| Qt      | OpenGL (and optionally Vulkan) | Cross-platform        | Powerful C++ toolkit with widgets and OpenGL support. Can integrate with OpenGL directly.                  |
-| GTK     | OpenGL via Cairo or GSK        | Linux, Windows, macOS | Used in GNOME desktop. Not as OpenGL/Vulkan-native as Qt.                                                  |
-| Skia    | Can use OpenGL, Vulkan, or CPU | Cross-platform        | 2D graphics library by Google (used in Chrome, Flutter). Not a GUI toolkit per se, but a rendering engine. |
-
+| Toolkit | Uses Which Graphics API           | Platform Support      | Notes                                                                                                      |
+|---------|-----------------------------------|-----------------------|------------------------------------------------------------------------------------------------------------|
+| GTK     | OpenGL via Cairo or GSK           | Linux, Windows, macOS | Used in GNOME desktop. Not as OpenGL/Vulkan-native as Qt.                                                  |
+| Qt      | OpenGL, Vulkan, DirectX, or Metal | Cross-platform        | Powerful C++ toolkit with widgets and OpenGL support. Can integrate with OpenGL directly.                  |
+| Unity   | OpenGL, Vulkan, DirectX, or Metal | Cross-platform        | 2D/3D GUI framework for games, AR/VR, and now cross-platform apps                                          |
+| Unreal  | OpenGL, Vulkan, DirectX, or Metal | Cross-platform        | 2D/3D GUI framework for games, AR/VR, and now cross-platform apps                                          |
 
 ## Windowing Systems(OS Layers)
 
@@ -115,7 +120,7 @@ It's very essential to apply the `native Windowing System` library for Cross-pla
  #endif
 ```
 
-## Visualizing the Relationships
+## Visualizing the Relationships Between Graphic Stacks
 
 Here’s how it all connects:
 
@@ -151,8 +156,6 @@ GPU renders pixels to screen
 [A Comparison of Modern Graphics APIs](https://alain.xyz/blog/comparison-of-modern-graphics-apis)
 
 ### Android graphics
-
-two core pieces:
 
 - SurfaceFlinger
 - Skia
