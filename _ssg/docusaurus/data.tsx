@@ -18,8 +18,8 @@ export const SKILLS: SkillItem[] = [
     ),
   },
   {
-    title: 'Microservices Architecture',
-    href: '/docs/tags/microservice',
+    title: 'Architecture & Design',
+    href: '/docs/tags/system-design',
     image: {
       src: 'img/github-tile.svg',
     },
@@ -45,8 +45,8 @@ export const SKILLS: SkillItem[] = [
     ),
   },
   {
-    title: 'Best Practices',
-    href: '/docs/tags/best-practice',
+    title: 'How To',
+    href: '/docs/tags/how-to',
     image: {
       src: 'img/github-tile.svg',
     },
@@ -66,9 +66,9 @@ export const PROFILE: ProfileItem = {
   link: '/doc',
   description: (
     <>
-      <p><b>Software engineer</b> to build infrastructure for machine learning products.</p>
-      <p>Passionate about JetBot currently. Experienced in <b>Python and C/C++</b>, (Java is past).</p>
-      <p>and I am also an <b>open-source</b> enthusiast.</p>
+      <p>Love clean code and simple solutions</p>
+      <p>Building scalable AI-powered microservices and desktop apps</p>
+      <p>Passionate about bridging research and solid engineering</p>
     </>
   ),
 };
