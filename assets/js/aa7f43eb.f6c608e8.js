@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[5472],{68302:i=>{i.exports=JSON.parse('{"tag":{"label":"gpu","permalink":"/docs/tags/gpu","allTagsPath":"/docs/tags","count":1,"items":[{"id":"wiki/wiki-cuda","title":"Wiki NVIDIA Driver and CUDA Library","description":"Learn CUDA","permalink":"/docs/wiki/wiki-cuda"}],"unlisted":false}}')}}]);
