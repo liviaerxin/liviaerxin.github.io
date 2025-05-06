@@ -89,7 +89,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/',
+            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/docs/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           remarkPlugins: [remarkMath, simplePlantUML],
@@ -98,15 +98,16 @@ const config: Config = {
         blog: false,
         // blog: {
         //   // routeBasePath: '/',
+        //   // path: '../../docs/practice', // './blog' for local test
         //   path: '../../journal', // './blog' for local test
-        //   blogTitle: 'Docusaurus blog!',
+        //   blogTitle: 'Frank blog!',
         //   blogDescription: 'A Docusaurus powered blog!',
         //   // postsPerPage: 'ALL',
         //   blogSidebarTitle: 'Recent posts',
         //   blogSidebarCount: 20, // "ALL",
         //   showReadingTime: true,
         //   editUrl:
-        //     'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/_ssg/docusaurus/', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
+        //     'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/docs/practice', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
         //   remarkPlugins: [remarkMath, simplePlantUML],
         //   rehypePlugins: [rehypeKatex],
         //   readingTime: ({content, frontMatter, defaultReadingTime}) =>
