@@ -1,0 +1,131 @@
+---
+sidebar_label: End-to-End ML Deployment with MLflow, Docker, and FastAPI
+description: Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker
+keywords:
+  - docs
+  - docusaurus
+image: https://i.imgur.com/mErPwqL.png
+tags:
+  - blog
+  - docusaurus
+last_update:
+  date: 2025-05-06
+  author: frank
+---
+
+# Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker
+
+Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:
+
+- **MLflow** for experiment tracking and model registry  
+- **FastAPI** for serving models via REST API  
+- **MinIO** for artifact storage (S3-compatible)  
+- **Docker Compose** for orchestration  
+
+👉 **Full source code:**  
+[🔗 github.com/liviaerxin/mlops-fastapi-mlflow-minio](https://github.com/liviaerxin/mlops-fastapi-mlflow-minio)
+
+---
+<!--truncate-->
+
+⸻
+
+## Project Overview
+
+This project provides:
+
+- A structured pipeline to **log, register, and serve ML models**
+- Docker-based setup with **MLflow, FastAPI, and MinIO**
+- Simple **training** and **inference** workflows
+
+📁 Project structure:
+
+```sh
+.
+├── docker-compose.yml
+├── inference-server/
+├── mlflow-local-train-remote-register/
+├── mlflow-server/
+├── train.py
+└── README.md
+```
+
+🗂️ For full instructions, check the [README](https://github.com/liviaerxin/mlops-fastapi-mlflow-minio/README.md)
+
+## Key Components
+
+### MLflow
+
+Handles:
+
+- Experiment tracking (`mlflow.log_param`, `mlflow.log_metric`)
+- Model registration and versioning
+- Stage promotion (`Staging`, `Production`)
+
+
+### MinIO
+
+S3-compatible artifact store used by MLflow to save models.
+
+### FastAPI
+
+Simple REST API to serve ML models loaded from the MLflow registry.
+
+Loads the remote model via:
+
+```py
+mlflow.set_tracking_uri(os.environ.get("MLFLOW_SERVER", "http://127.0.0.1:5000"))
+model = mlflow.pyfunc.load_model(f"models:/{MODEL_NAME}/{MODEL_STAGE}")
+```
+
+### Training and Registering a Model
+
+Remember: all these following operations are in local host and separate with the docker container environment!
+
+Run the training script:
+
+```sh
+python train.py
+```
+
+Then log and register it to a remote MLflow server:
+
+```sh
+python register-remote.py
+```
+
+Key code snippet:
+
+```sh
+os.environ["MLFLOW_S3_ENDPOINT_URL"] = "http://127.0.0.1:9000" # Expose the minio via host 9000 port
+mlflow.set_tracking_uri("http://127.0.0.1:5001") # Expose the mlflow server via host 5001 port
+mi = mlflow.pytorch.log_model(model, artifact_path="model", registered_model_name=MODEL_NAME)
+```
+
+
+### Updating Models and Rolling Deployment
+
+You can update models by:
+
+-	Logging a new version to MLflow
+-	Promoting it to "Production" stage
+-	Using FastAPI logic to reload the latest version without downtime
+
+You may also support blue-green deployments using Docker or Kubernetes.
+
+
+## Conclusion
+
+This setup gives you a scalable and reproducible ML deployment pipeline with clear separation of concerns:
+
+- MLflow handles tracking and registry
+- MinIO manages artifact storage
+- FastAPI exposes inference endpoints
+- Docker Compose glues it all together
+
+⸻
+
+🔗 GitHub Repo
+
+All code and instructions:
+[🔗 github.com/liviaerxin/mlops-fastapi-mlflow-minio](https://github.com/liviaerxin/mlops-fastapi-mlflow-minio)
