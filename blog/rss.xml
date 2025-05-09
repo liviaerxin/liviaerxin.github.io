@@ -4,7 +4,7 @@
         <title>Frank' Wiki Blog</title>
         <link>https://liviaerxin.github.io/blog</link>
         <description>Frank' Wiki Blog</description>
-        <lastBuildDate>Fri, 09 May 2025 03:48:24 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 09 May 2025 03:52:43 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></title>
             <link>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</link>
             <guid>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</guid>
-            <pubDate>Fri, 09 May 2025 03:48:24 GMT</pubDate>
+            <pubDate>Fri, 09 May 2025 03:52:43 GMT</pubDate>
             <description><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></description>
             <content:encoded><![CDATA[<p>Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:</p>
 <ul>
@@ -1426,7 +1426,7 @@ Ubuntu Desk Image does not ship the <code>mdadm</code> tool, so it is nearly imp
             <category>environment</category>
         </item>
         <item>
-            <title><![CDATA[How to prepare a dev environment in vscode]]></title>
+            <title><![CDATA[Setting up a containerized dev environment VSCode]]></title>
             <link>https://liviaerxin.github.io/blog/preparing-dev-environment-in-vscode</link>
             <guid>https://liviaerxin.github.io/blog/preparing-dev-environment-in-vscode</guid>
             <pubDate>Sun, 04 Dec 2022 00:00:00 GMT</pubDate>
@@ -1463,8 +1463,8 @@ Ubuntu Desk Image does not ship the <code>mdadm</code> tool, so it is nearly imp
 <li><a href="https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-from-docker" target="_blank" rel="noopener noreferrer">Docker-from-Docker</a></li>
 </ul>
 <p>For instance, I use the <strong>Docker-in-Docker</strong> method to always test/run Docker containers inside of Dev containers.</p>]]></content:encoded>
-            <category>how-to</category>
-            <category>environment</category>
+            <category>dev</category>
+            <category>docker</category>
         </item>
     </channel>
 </rss>
