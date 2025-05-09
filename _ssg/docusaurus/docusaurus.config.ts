@@ -95,26 +95,26 @@ const config: Config = {
           remarkPlugins: [remarkMath, simplePlantUML],
           rehypePlugins: [rehypeKatex],
         },
-        blog: false,
-        // blog: {
-        //   // routeBasePath: '/',
-        //   // path: '../../docs/practice', // './blog' for local test
-        //   path: '../../journal', // './blog' for local test
-        //   blogTitle: 'Frank blog!',
-        //   blogDescription: 'A Docusaurus powered blog!',
-        //   // postsPerPage: 'ALL',
-        //   blogSidebarTitle: 'Recent posts',
-        //   blogSidebarCount: 20, // "ALL",
-        //   showReadingTime: true,
-        //   editUrl:
-        //     'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/docs/practice', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
-        //   remarkPlugins: [remarkMath, simplePlantUML],
-        //   rehypePlugins: [rehypeKatex],
-        //   readingTime: ({content, frontMatter, defaultReadingTime}) =>
-        //     frontMatter.hide_reading_time
-        //       ? undefined
-        //       : defaultReadingTime({content}),
-        // },
+        // blog: false,
+        blog: {
+          // routeBasePath: '/',
+          path: '../../blog', // './blog' for local test
+          // path: '../../journal', // './blog' for local test
+          blogTitle: 'Frank blog!',
+          blogDescription: 'A Docusaurus powered blog!',
+          // postsPerPage: 'ALL',
+          blogSidebarTitle: 'Recent posts',
+          blogSidebarCount: 20, // "ALL",
+          showReadingTime: true,
+          editUrl:
+            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/docs/practice', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
+          remarkPlugins: [remarkMath, simplePlantUML],
+          rehypePlugins: [rehypeKatex],
+          readingTime: ({content, frontMatter, defaultReadingTime}) =>
+            frontMatter.hide_reading_time
+              ? undefined
+              : defaultReadingTime({content}),
+        },
         theme: {
           customCss: './src/css/custom.scss',
         },
@@ -191,8 +191,8 @@ const config: Config = {
           sidebarId: 'docs',
           label: 'Docs',
         },
-        // {to: '/blog', label: 'Blog', position: 'left'},
-        {to: '/docs/tags', label: 'Tags', position: 'right'},
+        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/blog/tags', label: 'Tags', position: 'right'},
         {to: '/portfolio', label: 'Portfolio', position: 'right'},
         {
           href: 'https://github.com/liviaerxin/liviaerxin.github.io',

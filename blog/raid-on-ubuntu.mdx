@@ -1,8 +1,4 @@
 ---
-foam_template:
-  name: Docs Docusaurus Template
-  description: Creates Docusaurus docs/slip
-  filepath: docs/wiki-ffmpeg.md
 authors:
   - frank
 description: Setup Intel VROC RAID on Ubuntu
@@ -10,26 +6,20 @@ keywords:
   - Setup Intel VROC RAID on Ubuntu
 image: https://i.imgur.com/mErPwqL.png
 tags:
-  - intel vroc
   - raid
   - ubuntu
-  - best practice
 date: 2023-08-29
 ---
 
-# RAID on Ubuntu
-
-[How To Create RAID Arrays with mdadm on Ubuntu 22.04  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-create-raid-arrays-with-mdadm-on-ubuntu-22-04)
-
-[SoftwareRAID](https://help.ubuntu.com/community/Installation/SoftwareRAID)
-
-[How to install Ubuntu with software RAID-1](https://www.servers.com/support/knowledge/linux-administration/how-to-install-ubuntu-with-software-raid-1)
+# Managing RAID on ubuntu
 
 What is RAID?
 
 The Redundant Array of Independent Disks, commonly known as RAID, is a technology used to combine multiple physical disk drives into a single logical unit for the purpose of data storage and performance improvement. 
 
 This blog will demonstrate to set up **software RAID** on Ubuntu(It should also work on other Linux).
+
+<!-- truncate -->
 
 To setup **Intel VROC RAID** on Ubuntu, go to see: [Intel VROC RAID on Ubuntu](./raid-intel-vroc.mdx).
 
@@ -369,3 +359,11 @@ sudo mkfs.ext4 -F /dev/sda
 ```sh
 sudo dd if=/dev/zero of=/dev/sda  bs=512  count=1
 ```
+
+## References
+
+[How To Create RAID Arrays with mdadm on Ubuntu 22.04  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-create-raid-arrays-with-mdadm-on-ubuntu-22-04)
+
+[SoftwareRAID](https://help.ubuntu.com/community/Installation/SoftwareRAID)
+
+[How to install Ubuntu with software RAID-1](https://www.servers.com/support/knowledge/linux-administration/how-to-install-ubuntu-with-software-raid-1)

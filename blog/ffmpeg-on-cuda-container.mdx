@@ -9,7 +9,6 @@ tags:
   - ffmpeg
   - docker
   - cuda
-  - nvidia
 description: FFmpeg on CUDA Container
 keywords:
   - FFmpeg on CUDA Container
@@ -19,16 +18,7 @@ draft: false
 enableComments: true # for Gisqus
 ---
 
-# Install FFmpeg on Nvidia CUDA Container
-
-[Using FFmpeg with NVIDIA GPU Hardware Acceleration - NVIDIA Docs](https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvidia-gpu/index.html)
-
-[NVIDIA FFmpeg Transcoding Guide | NVIDIA Technical Blog](https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/)
-
-[User Guide — container-toolkit 1.13.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
-
-
-[wiki cuda](../wiki/wiki-cuda.mdx)
+# Installing FFmpeg on Nvidia CUDA container
 
 This documentation describes to install `FFmpeg` on `nvidia/cuda` **container** to use the **Nvidia GPU** to accelerate encoding.
 
@@ -96,3 +86,14 @@ GRUB_CMDLINE_LINUX_DEFAULT="quiet splash systemd.unified_cgroup_hierarchy=0"
 ```
 
 Then run `update-grub` and reboot.
+
+## References
+
+[Using FFmpeg with NVIDIA GPU Hardware Acceleration - NVIDIA Docs](https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvidia-gpu/index.html)
+
+[NVIDIA FFmpeg Transcoding Guide | NVIDIA Technical Blog](https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/)
+
+[User Guide — container-toolkit 1.13.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html)
+
+
+[wiki cuda](../wiki/wiki-cuda.mdx)

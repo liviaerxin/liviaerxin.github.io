@@ -1,5 +1,4 @@
 ---
-sidebar_label: how to qemu
 description: Get started with qemu
 keywords:
   - qemu
@@ -9,10 +8,11 @@ tags:
   - vm
   - how-to
 date: 2023-09-19
-author: frank
+authors:
+  - frank
 ---
 
-# How to Get Started with QEMU
+# Discovering QEMU
 
 Learning and using the **QEMU** help me understand how the linux operating system works including fields:
 
@@ -106,7 +106,7 @@ qemu-system-x86_64 -monitor stdio -m 1G
 
 Then QEMU will show like this,
 
-![BIOS](../../attachments/images/bios.png)
+![BIOS](../attachments/images/bios.png)
 
 
 ## Kernel boot
@@ -135,7 +135,7 @@ qemu-system-x86_64 -monitor stdio -m 1G -net none -bios $efi
 
 Then QEMU will drop into the **UEFI** shell, like this following image show,
 
-![efi](../../attachments/images/efi.png)
+![efi](../attachments/images/efi.png)
 
 Options in detail:
 

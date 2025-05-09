@@ -29,6 +29,8 @@ Concepts:
 - Show shared libraries dependencies(detect what shared libraries an executable or a another shared libraries depend on)
 - Check/Test dependent shared libraries loaded successfully
 
+<!-- truncate -->
+
 ## Using `ldd` Command
 
 Available in Linux:

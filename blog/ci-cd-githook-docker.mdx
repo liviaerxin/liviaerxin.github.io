@@ -1,29 +1,27 @@
 ---
-id: zero-cost-ci-cd
-title: Zero-Cost CI/CD with Git Hooks and Docker Compose
-sidebar_label: Git Hooks + Docker CI/CD
 description: A lightweight CI/CD method using Git push and Docker, no third-party tools needed.
 keywords:
-  - ci cd
+  - ci/cd
   - docker
-  - git hook
+  - git
 image: https://i.imgur.com/mErPwqL.png
 tags:
-  - ci-cd
+  - ci/cd
   - docker
   - git
 last_update:
   date: 2025-04-14
-  author: frank
+date: 2025-04-13
+authors: [frank]
 ---
 
-# Zero-Cost CI/CD with Git Hooks and Docker Compose
+# Lightweight CI/CD with Git Hooks and Docker Compose
 
 For small projects or self-hosted apps, using a full-fledged CI/CD tool like GitHub Actions or Jenkins can be overkill. What if you could have automated deployments **without any third-party service**, and all you need is **Git and SSH**?
 
 In this post, we’ll walk through setting up a lightweight, no-cost CI/CD pipeline using **Git hooks** and **Docker Compose**, with deployments triggered by a simple `git push` to your production server.
 
----
+<!-- truncate -->
 
 ## Overview
 
@@ -50,6 +48,7 @@ sudo apt update && sudo apt install git docker docker-compose -y
 ```
 
 #### Create a bare Git repository:
+
 ```bash
 mkdir -p ~/repos/myapp.git
 cd ~/repos/myapp.git
@@ -57,6 +56,7 @@ git init --bare
 ```
 
 #### Set up SSH access:
+
 From your dev machine, copy your SSH key to the production server:
 ```bash
 ssh-copy-id user@yourserver
