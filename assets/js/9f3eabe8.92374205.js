@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[7936],{80438:e=>{e.exports=JSON.parse('{"tag":{"label":"tool","permalink":"/docs/tags/tool","allTagsPath":"/docs/tags","count":1,"items":[{"id":"practice/vcpkg-samples","title":"Vcpkg Samples","description":"Vcpkg Samples","permalink":"/docs/practice/vcpkg-samples"}],"unlisted":false}}')}}]);
