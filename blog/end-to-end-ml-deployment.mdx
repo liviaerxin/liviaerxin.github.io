@@ -56,16 +56,19 @@ This project provides:
 
 ### MLflow
 
-Handles:
+MLflow is a platform to manage the ML lifecycle, including experimentation, reproducibility, and deployment.
 
 - Experiment tracking (`mlflow.log_param`, `mlflow.log_metric`)
 - Model registration and versioning
 - Stage promotion (`Staging`, `Production`)
 
+> NOTE: **MLflow** is used `remotely` in docker container environment here.
 
 ### MinIO
 
-S3-compatible artifact store used by MLflow to save models.
+S3-compatible artifact store used by `MLflow` to save models. For production, you might migrate to use AWS S3 or GCS.
+
+> NOTE: **MinIO** is used `remotely` in docker container environment here.
 
 ### FastAPI
 
@@ -78,9 +81,11 @@ mlflow.set_tracking_uri(os.environ.get("MLFLOW_SERVER", "http://127.0.0.1:5000")
 model = mlflow.pyfunc.load_model(f"models:/{MODEL_NAME}/{MODEL_STAGE}")
 ```
 
+> NOTE: **FastAPI** is used `remotely` in docker container environment here.
+
 ### Training and Registering a Model
 
-Remember: all these following operations are in local host and separate with the docker container environment!
+> NOTE: **mlflow-local-train-remote-register** is used `locally` outside the docker container environment here.
 
 Run the training script:
 
@@ -102,17 +107,15 @@ mlflow.set_tracking_uri("http://127.0.0.1:5001") # Expose the mlflow server via 
 mi = mlflow.pytorch.log_model(model, artifact_path="model", registered_model_name=MODEL_NAME)
 ```
 
-
-### Updating Models and Rolling Deployment
+#### Bonus: Updating Models and Rolling Deployment
 
 You can update models by:
 
--	Logging a new version to MLflow
--	Promoting it to "Production" stage
--	Using FastAPI logic to reload the latest version without downtime
+- Logging a new version to MLflow
+- Promoting it to `Production` stage
+- Using **FastAPI** logic to reload the latest version without downtime
 
 You may also support blue-green deployments using Docker or Kubernetes.
-
 
 ## Conclusion
 
