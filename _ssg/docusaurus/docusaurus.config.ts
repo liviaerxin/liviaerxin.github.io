@@ -89,7 +89,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/docs/',
+            'https://github.com/liviaerxin/liviaerxin.github.io/edit/main/docs/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           remarkPlugins: [remarkMath, simplePlantUML],
@@ -107,7 +107,7 @@ const config: Config = {
           blogSidebarCount: 20, // "ALL",
           showReadingTime: true,
           editUrl:
-            'https://github.com/liviaerxin/liviaerxin.github.io/edit/master/docs/practice', // https://github.com/liviaerxin/liviaerxin.github.io/edit/master/blog/build-system-c++.md
+            'https://github.com/liviaerxin/liviaerxin.github.io/edit/main/blog', // https://github.com/liviaerxin/liviaerxin.github.io/edit/main/blog/end-to-end-ml-deployment.mdx
           remarkPlugins: [remarkMath, simplePlantUML],
           rehypePlugins: [rehypeKatex],
           readingTime: ({content, frontMatter, defaultReadingTime}) =>
