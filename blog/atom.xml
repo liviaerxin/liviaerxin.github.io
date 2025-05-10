@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/blog</id>
     <title>Frank' Wiki Blog</title>
-    <updated>2025-05-09T18:39:32.000Z</updated>
+    <updated>2025-05-10T04:18:01.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/blog"/>
     <subtitle>Frank' Wiki Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></title>
         <id>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</id>
         <link href="https://liviaerxin.github.io/blog/end-to-end-ml-deployment"/>
-        <updated>2025-05-09T18:39:32.000Z</updated>
+        <updated>2025-05-10T04:18:01.000Z</updated>
         <summary type="html"><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></summary>
         <content type="html"><![CDATA[<p>Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:</p>
 <ul>
