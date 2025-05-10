@@ -4,7 +4,7 @@
         <title>Frank' Wiki Blog</title>
         <link>https://liviaerxin.github.io/blog</link>
         <description>Frank' Wiki Blog</description>
-        <lastBuildDate>Sat, 10 May 2025 04:18:01 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 10 May 2025 19:12:26 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></title>
             <link>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</link>
             <guid>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</guid>
-            <pubDate>Sat, 10 May 2025 04:18:01 GMT</pubDate>
+            <pubDate>Sat, 10 May 2025 19:12:26 GMT</pubDate>
             <description><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></description>
             <content:encoded><![CDATA[<p>Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:</p>
 <ul>
@@ -840,7 +840,7 @@ Want async? Run the hook script in the background with <code>&amp;</code>.</p>
 <p><a href="https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvidia-gpu/index.html" target="_blank" rel="noopener noreferrer">Using FFmpeg with NVIDIA GPU Hardware Acceleration - NVIDIA Docs</a></p>
 <p><a href="https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/" target="_blank" rel="noopener noreferrer">NVIDIA FFmpeg Transcoding Guide | NVIDIA Technical Blog</a></p>
 <p><a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html" target="_blank" rel="noopener noreferrer">User Guide — container-toolkit 1.13.5 documentation</a></p>
-<p><a href="https://liviaerxin.github.io/wiki/wiki-cuda.mdx">wiki cuda</a></p>]]></content:encoded>
+<p><a href="https://liviaerxin.github.io/docs/wiki/wiki-cuda.mdx">wiki cuda</a></p>]]></content:encoded>
             <category>ffmpeg</category>
             <category>docker</category>
             <category>cuda</category>

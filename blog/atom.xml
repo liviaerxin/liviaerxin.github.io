@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/blog</id>
     <title>Frank' Wiki Blog</title>
-    <updated>2025-05-10T04:18:01.000Z</updated>
+    <updated>2025-05-10T19:12:26.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/blog"/>
     <subtitle>Frank' Wiki Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></title>
         <id>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</id>
         <link href="https://liviaerxin.github.io/blog/end-to-end-ml-deployment"/>
-        <updated>2025-05-10T04:18:01.000Z</updated>
+        <updated>2025-05-10T19:12:26.000Z</updated>
         <summary type="html"><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></summary>
         <content type="html"><![CDATA[<p>Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:</p>
 <ul>
@@ -833,7 +833,8 @@ Want async? Run the hook script in the background with <code>&amp;</code>.</p>
 <p><a href="https://crosstool-ng.github.io/docs/" target="_blank" rel="noopener noreferrer">crosstool-ng Documentation</a></p>
 <p><a href="https://github.com/messense/homebrew-macos-cross-toolchains/blob/main/.github/workflows/aarch64.yml" target="_blank" rel="noopener noreferrer">aarch64 workflows example</a></p>]]></content>
         <author>
-            <name>frank</name>
+            <name>Frank Chen</name>
+            <uri>https://github.com/liviaerxin</uri>
         </author>
         <category label="how-to" term="how-to"/>
         <category label="toolchain" term="toolchain"/>
@@ -874,7 +875,7 @@ Want async? Run the hook script in the background with <code>&amp;</code>.</p>
 <p><a href="https://docs.nvidia.com/video-technologies/video-codec-sdk/12.0/ffmpeg-with-nvidia-gpu/index.html" target="_blank" rel="noopener noreferrer">Using FFmpeg with NVIDIA GPU Hardware Acceleration - NVIDIA Docs</a></p>
 <p><a href="https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/" target="_blank" rel="noopener noreferrer">NVIDIA FFmpeg Transcoding Guide | NVIDIA Technical Blog</a></p>
 <p><a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/user-guide.html" target="_blank" rel="noopener noreferrer">User Guide — container-toolkit 1.13.5 documentation</a></p>
-<p><a href="https://liviaerxin.github.io/wiki/wiki-cuda.mdx">wiki cuda</a></p>]]></content>
+<p><a href="https://liviaerxin.github.io/docs/wiki/wiki-cuda.mdx">wiki cuda</a></p>]]></content>
         <author>
             <name>Frank Chen</name>
             <uri>https://github.com/liviaerxin</uri>
