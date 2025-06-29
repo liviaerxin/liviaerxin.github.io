@@ -1,0 +1,109 @@
+---
+authors:
+  - frank
+tags:
+  - Telnyx zoiper call setup
+description: Telnyx zoiper call setup
+keywords:
+  - Telnyx zoiper call setup
+image: https://i.imgur.com/mErPwqL.png
+date: 2025-06-29
+draft: false
+enableComments: true # for Gisqus
+---
+
+# 🌍 Using Telnyx + Zoiper for Canadian PSTN Calls Anywhere
+
+I am developing a voice agent outside Canada. Without my Canadian SIM, staying connected via PSTN means I rely on **VoIP softphones** and **Telnyx SIP trunking**. In this guide, I’ll walk through how I set up two Canadian Telnyx numbers and used **Zoiper** on macOS and iOS to call between them—without needing PSTN compliance.
+
+---
+
+## ⚙️ 1. Telnyx Configuration
+
+### 🔐 Credential-Based SIP Connections
+
+I created two separate **credential-based SIP Connections** in the Telnyx console, each bound to a Canadian DID:
+
+```json
+{
+  "sip_trunk_connections": [
+    {
+      "connection_name": "livekit-trunk",
+      "connection_type": "credential",
+      "domain": "sip.telnyx.com",
+      "username": "userfrankchen9081",
+      "password": "YJhY0pg0",
+      "numbers": ["+12495304098"]
+    },
+    {
+      "connection_name": "originmind-callee",
+      "connection_type": "credential",
+      "domain": "sip.telnyx.com",
+      "username": "userfrankchen8081",
+      "password": "YJhY0pg0",
+      "numbers": ["+12495304046"]
+    }
+  ],
+  "telnyx_test_center_number": "+18004377950"
+}
+```
+
+<!--truncate-->
+
+
+Each connection uses Credentials authentication which allows Zoiper to register and handle both inbound and outbound calls.
+📘 Telnyx docs note this is ideal for softphones needing registration and dialing ([Quickstart guide]) (developers.telnyx.com, telnyx.com).
+
+### 📞 Outbound Voice Profile
+
+To enable outbound PSTN calls, I created an Outbound Voice Profile and attached it to each connection—allowing both Zoiper clients to place calls.
+
+---
+
+## 🖥️ 2. Zoiper Softphone Setup
+
+macOS (Number A)
+  • Configured using `sip.telnyx.com` and the credentials above.
+  • Adjusted STUN and rport settings for stable connectivity.
+
+iOS (Number B)
+  • Similar config, but change the following if encountering connecting problems:
+  • Disabling STUN
+  • Toggling rport
+  • Proper codec selection
+  • Noted that background registration on mobile often fails unless these settings are correct.
+
+---
+
+## 🔁 3. Testing Call Flows
+
+• Outbound Call Testing: I called `+1-800-437-7950` (Telnyx test center) to confirm outbound was functioning.
+• Call Between Softphones: I made calls:
+• macOS ➜ iOS
+• iOS ➜ macOS
+All calls connected successfully.
+
+I used Telnyx’s SIP Call Flow debugging tool to inspect INVITEs, media negotiation, and responses—an invaluable resource for troubleshooting.
+
+---
+
+## 🌐 4. Hybrid Mode: FQDN + Credentials (Clarified)
+
+⚠️ Important Correction: With a single SIP Connection set to FQDN + Credentials, inbound PSTN calls go exclusively to your FQDN endpoint, not to registered devices. Registered credentials only serve SIP-URI and outbound calls.
+📘 Official docs confirm: FQDN handles inbound routing, credentials handle registration/outbound only (developers.telnyx.com, docs.livekit.io, support.telnyx.com).
+
+---
+
+## 💡 5. Lessons Learned
+
+• Use credential-based trunks when testing with softphones.
+• On iOS Zoiper, disable STUN and tweak rport for reliable registration.
+• Leverage Telnyx debugging tools (SIP Call Flow, PCAP export) for diagnostics.
+• Don’t expect DID calls to reach registered clients if the connection is FQDN+credentials only.
+For that, stick to credentials-only or add your own proxy/forking logic.
+
+---
+
+## 🎯 6. Conclusion
+
+With Telnyx + Zoiper, you can simulate two-way Canadian PSTN calling from anywhere in the world—even without a local SIM. Credential-based SIP trunks enable full bi-directional calling through Canadian DIDs. Adding hybrid FQDN setups is powerful, but only for directing DID calls to your infrastructure—not softphones.

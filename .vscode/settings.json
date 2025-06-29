@@ -8,11 +8,12 @@
   "files.defaultLanguage": "markdown",
   "files.exclude": {
     "**/node_modules": true,
-    "**/build": true
+    "**/build": true,
   },
   "files.watcherExclude": {
     "**/node_modules": true,
-    "**/build": true
+    "**/build": true,
+    "**/.venv": true,
   },
   "foam.edit.linkReferenceDefinitions": "off",
   "foam.openDailyNote.directory": "journal",
