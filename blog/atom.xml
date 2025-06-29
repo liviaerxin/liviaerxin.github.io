@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liviaerxin.github.io/blog</id>
     <title>Frank' Wiki Blog</title>
-    <updated>2025-05-10T19:12:26.000Z</updated>
+    <updated>2025-06-29T08:31:24.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liviaerxin.github.io/blog"/>
     <subtitle>Frank' Wiki Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></title>
         <id>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</id>
         <link href="https://liviaerxin.github.io/blog/end-to-end-ml-deployment"/>
-        <updated>2025-05-10T19:12:26.000Z</updated>
+        <updated>2025-06-29T08:31:24.000Z</updated>
         <summary type="html"><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></summary>
         <content type="html"><![CDATA[<p>Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:</p>
 <ul>
@@ -89,6 +89,61 @@
 <a href="https://github.com/liviaerxin/mlops-fastapi-mlflow-minio" target="_blank" rel="noopener noreferrer">🔗 github.com/liviaerxin/mlops-fastapi-mlflow-minio</a></p>]]></content>
         <category label="ml" term="ml"/>
         <category label="backend" term="backend"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🌍 Using Telnyx + Zoiper for Canadian PSTN Calls Anywhere]]></title>
+        <id>https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup</id>
+        <link href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup"/>
+        <updated>2025-06-29T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Telnyx zoiper call setup]]></summary>
+        <content type="html"><![CDATA[<p>I am developing a voice agent outside Canada. Without my Canadian SIM, staying connected via PSTN means I rely on <strong>VoIP softphones</strong> and <strong>Telnyx SIP trunking</strong>. In this guide, I’ll walk through how I set up two Canadian Telnyx numbers and used <strong>Zoiper</strong> on macOS and iOS to call between them—without needing PSTN compliance.</p>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="️-1-telnyx-configuration">⚙️ 1. Telnyx Configuration<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#%EF%B8%8F-1-telnyx-configuration" class="hash-link" aria-label="Direct link to �⚙️ 1. Telnyx Configuration" title="Direct link to ⚙️ 1. Telnyx Configuration">​</a></h2>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-credential-based-sip-connections">🔐 Credential-Based SIP Connections<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#-credential-based-sip-connections" class="hash-link" aria-label="Direct link to 🔐 Credential-Based SIP Connections" title="Direct link to 🔐 Credential-Based SIP Connections">​</a></h3>
+<p>I created two separate <strong>credential-based SIP Connections</strong> in the Telnyx console, each bound to a Canadian DID:</p>
+<div class="language-json codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-json codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  "sip_trunk_connections": [</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_name": "livekit-trunk",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_type": "credential",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "domain": "sip.telnyx.com",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "username": "userfrankchen9081",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "password": "YJhY0pg0",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "numbers": ["+12495304098"]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    },</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_name": "originmind-callee",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_type": "credential",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "domain": "sip.telnyx.com",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "username": "userfrankchen8081",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "password": "YJhY0pg0",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "numbers": ["+12495304046"]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  ],</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  "telnyx_test_center_number": "+18004377950"</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>Each connection uses Credentials authentication which allows Zoiper to register and handle both inbound and outbound calls.
+📘 Telnyx docs note this is ideal for softphones needing registration and dialing ([Quickstart guide]) (developers.telnyx.com, telnyx.com).</p>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-outbound-voice-profile">📞 Outbound Voice Profile<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#-outbound-voice-profile" class="hash-link" aria-label="Direct link to 📞 Outbound Voice Profile" title="Direct link to 📞 Outbound Voice Profile">​</a></h3>
+<p>To enable outbound PSTN calls, I created an Outbound Voice Profile and attached it to each connection—allowing both Zoiper clients to place calls.</p>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="️-2-zoiper-softphone-setup">🖥️ 2. Zoiper Softphone Setup<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#%EF%B8%8F-2-zoiper-softphone-setup" class="hash-link" aria-label="Direct link to 🖥️ 2. Zoiper Softphone Setup" title="Direct link to 🖥️ 2. Zoiper Softphone Setup">​</a></h2>
+<p>macOS (Number A)
+• Configured using <code>sip.telnyx.com</code> and the credentials above.
+• Adjusted STUN and rport settings for stable connectivity.</p>
+<p>iOS (Number B)
+• Similar config, but change the following if encountering connecting problems:
+• Disabling STUN
+• Toggling rport
+• Proper codec selection
+• Noted that background registration on mobile often fails unless these settings are correct.</p>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-3-testing-call-flows">🔁 3. Testing Call Flows<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#-3-testing-call-flows" class="hash-link" aria-label="Direct link to 🔁 3. Testing Call Flows" title="Direct link to 🔁 3. Testing Call Flows">​</a></h2>
+<p>• Outbound Call Testing: I called <code>+1-800-437-7950</code> (Telnyx test center) to confirm outbound was functioning.
+• Call Between Softphones: I made calls:
+• macOS ➜ iOS
+• iOS ➜ macOS
+All calls connected successfully.</p>
+<p>I used Telnyx’s SIP Call Flow debugging tool to inspect INVITEs, media negotiation, and responses—an invaluable resource for troubleshooting.</p>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-4-hybrid-mode-fqdn--credentials-clarified">🌐 4. Hybrid Mode: FQDN + Credentials (Clarified)<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#-4-hybrid-mode-fqdn--credentials-clarified" class="hash-link" aria-label="Direct link to 🌐 4. Hybrid Mode: FQDN + Credentials (Clarified)" title="Direct link to 🌐 4. Hybrid Mode: FQDN + Credentials (Clarified)">​</a></h2>
+<p>⚠️ Important Correction: With a single SIP Connection set to FQDN + Credentials, inbound PSTN calls go exclusively to your FQDN endpoint, not to registered devices. Registered credentials only serve SIP-URI and outbound calls.
+📘 Official docs confirm: FQDN handles inbound routing, credentials handle registration/outbound only (developers.telnyx.com, docs.livekit.io, support.telnyx.com).</p>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-5-lessons-learned">💡 5. Lessons Learned<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#-5-lessons-learned" class="hash-link" aria-label="Direct link to 💡 5. Lessons Learned" title="Direct link to 💡 5. Lessons Learned">​</a></h2>
+<p>• Use credential-based trunks when testing with softphones.
+• On iOS Zoiper, disable STUN and tweak rport for reliable registration.
+• Leverage Telnyx debugging tools (SIP Call Flow, PCAP export) for diagnostics.
+• Don’t expect DID calls to reach registered clients if the connection is FQDN+credentials only.
+For that, stick to credentials-only or add your own proxy/forking logic.</p>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-6-conclusion">🎯 6. Conclusion<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#-6-conclusion" class="hash-link" aria-label="Direct link to 🎯 6. Conclusion" title="Direct link to 🎯 6. Conclusion">​</a></h2>
+<p>With Telnyx + Zoiper, you can simulate two-way Canadian PSTN calling from anywhere in the world—even without a local SIM. Credential-based SIP trunks enable full bi-directional calling through Canadian DIDs. Adding hybrid FQDN setups is powerful, but only for directing DID calls to your infrastructure—not softphones.</p>]]></content>
+        <author>
+            <name>Frank Chen</name>
+            <uri>https://github.com/liviaerxin</uri>
+        </author>
+        <category label="Telnyx zoiper call setup" term="Telnyx zoiper call setup"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Orchestrating DAG-based task workflow in Celery]]></title>
@@ -1506,50 +1561,5 @@ Ubuntu Desk Image does not ship the <code>mdadm</code> tool, so it is nearly imp
         <category label="how-to" term="how-to"/>
         <category label="network" term="network"/>
         <category label="environment" term="environment"/>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Setting up a containerized dev environment VSCode]]></title>
-        <id>https://liviaerxin.github.io/blog/preparing-dev-environment-in-vscode</id>
-        <link href="https://liviaerxin.github.io/blog/preparing-dev-environment-in-vscode"/>
-        <updated>2022-12-04T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Wiki Dev Environment]]></summary>
-        <content type="html"><![CDATA[<p>Here are some experiences that I have gotten to prepare a best-practice development environment for projects. I would like to update to keep up with the latest tech stacks.</p>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="vs-code">VS Code<a href="https://liviaerxin.github.io/blog/preparing-dev-environment-in-vscode#vs-code" class="hash-link" aria-label="Direct link to VS Code" title="Direct link to VS Code">​</a></h2>
-<p>As of now, the <code>VS Code</code> is the most popular IDE among developers. Absolutely, for me, it's my first choice and favorite developing tool.</p>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="dev-container">Dev Container<a href="https://liviaerxin.github.io/blog/preparing-dev-environment-in-vscode#dev-container" class="hash-link" aria-label="Direct link to Dev Container" title="Direct link to Dev Container">​</a></h3>
-<p><a href="https://code.visualstudio.com/docs/devcontainers/containers" target="_blank" rel="noopener noreferrer">Developing inside a Container using Visual Studio Code Remote Development</a></p>
-<p>What is Dev Container?</p>
-<p>A "Dev Container" typically refers to a development environment that is containerized. Containers are lightweight, portable, and consistent environments that encapsulate an application and its dependencies. They provide a standardized way to package and run software across different environments, ensuring that the application behaves consistently regardless of where it is deployed.</p>
-<p>The benefits of using Dev Containers include:</p>
-<ol>
-<li>Consistency: Developers work in the same environment, reducing the chances of environment-related issues.</li>
-<li>Isolation: Dev Containers are isolated from the host system, preventing conflicts with other software installed on the developer's machine.</li>
-<li>Reproducibility: The development environment can be easily recreated by anyone using the container specifications.</li>
-<li>Portability: Dev Containers can be easily shared, allowing developers to work on the same project with minimal setup.</li>
-</ol>
-<p>Best ways to customize the environment in Dev containers?</p>
-<ul>
-<li><a href="https://containers.dev/guide/dockerfile" target="_blank" rel="noopener noreferrer">Using Images, Dockerfile, and Docker Compose</a>:love_you_gesture:</li>
-<li><a href="https://containers.dev/features" target="_blank" rel="noopener noreferrer">Using Features</a></li>
-<li><a href="https://containers.dev/implementors/json_reference/#lifecycle-scripts" target="_blank" rel="noopener noreferrer">Using lifecycle scripts</a></li>
-</ul>
-<p>How to Write Dockerfile for Dev containers?</p>
-<p>You can refer to this repo <a href="https://github.com/devcontainers/images" target="_blank" rel="noopener noreferrer">GitHub - devcontainers/images: Repository for pre-built dev container images published under mcr.microsoft.com/devcontainers</a></p>
-<p>What magics does the <code>Dev Containers</code> extension do when starting?</p>
-<ol>
-<li>Hook a default startup command <code>while sleep 1000; do :; done</code> to keep the container not exit. Disable this behavior by setting <code>overrideCommand: false</code>.</li>
-</ol>
-<p>How to run a container inside of Dev containers?</p>
-<ul>
-<li><a href="https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-in-docker" target="_blank" rel="noopener noreferrer">Docker-in-Docker</a></li>
-<li><a href="https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-from-docker" target="_blank" rel="noopener noreferrer">Docker-from-Docker</a></li>
-</ul>
-<p>For instance, I use the <strong>Docker-in-Docker</strong> method to always test/run Docker containers inside of Dev containers.</p>]]></content>
-        <author>
-            <name>Frank Chen</name>
-            <uri>https://github.com/liviaerxin</uri>
-        </author>
-        <category label="dev" term="dev"/>
-        <category label="docker" term="docker"/>
     </entry>
 </feed>
