@@ -4,7 +4,7 @@
         <title>Frank' Wiki Blog</title>
         <link>https://liviaerxin.github.io/blog</link>
         <description>Frank' Wiki Blog</description>
-        <lastBuildDate>Sun, 29 Jun 2025 08:31:24 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 05 Jul 2025 07:31:05 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></title>
             <link>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</link>
             <guid>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</guid>
-            <pubDate>Sun, 29 Jun 2025 08:31:24 GMT</pubDate>
+            <pubDate>Sat, 05 Jul 2025 07:31:05 GMT</pubDate>
             <description><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></description>
             <content:encoded><![CDATA[<p>Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:</p>
 <ul>
@@ -92,6 +92,110 @@
             <category>backend</category>
         </item>
         <item>
+            <title><![CDATA[🧭 How to Escape China’s Great Firewall (GFW): 3 Effective Methods Ranked]]></title>
+            <link>https://liviaerxin.github.io/blog/how-to-escape-gfw</link>
+            <guid>https://liviaerxin.github.io/blog/how-to-escape-gfw</guid>
+            <pubDate>Sat, 05 Jul 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[how to escape gfw]]></description>
+            <content:encoded><![CDATA[<p>The Great Firewall (GFW) is one of the world’s most sophisticated internet censorship systems  <a href="https://en.wikipedia.org/wiki/Great_Firewall?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:0‡en.wikipedia.org</a>. If you're heading to China, here are the top three methods to bypass it—ranked by effectiveness:</p>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="1--proxy-protocols--clients-v2ray-shadowsocks-trojan--shadowrocket--v2box">1. 🔐 Proxy Protocols + Clients (V2Ray, Shadowsocks, Trojan + Shadowrocket / V2Box)<a href="https://liviaerxin.github.io/blog/how-to-escape-gfw#1--proxy-protocols--clients-v2ray-shadowsocks-trojan--shadowrocket--v2box" class="hash-link" aria-label="Direct link to 1. 🔐 Proxy Protocols + Clients (V2Ray, Shadowsocks, Trojan + Shadowrocket / V2Box)" title="Direct link to 1. 🔐 Proxy Protocols + Clients (V2Ray, Shadowsocks, Trojan + Shadowrocket / V2Box)">​</a></h2>
+<ul>
+<li><strong>What</strong>: Encrypted application‑layer proxy protocols bundled with stealth clients (e.g., Shadowrocket on iOS or V2Box on Android).</li>
+<li><strong>How it works</strong>:<!-- -->
+<ul>
+<li>Uses <strong>TLS</strong>, <strong>WebSocket</strong>, <strong>CDN fronting</strong> (in V2Ray/Trojan) to mimic standard HTTPS traffic  <a href="https://chinaesim.com/internet-censorship/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:1‡chinaesim.com</a> <a href="https://bypass-gfw.com/posts/bypass-gfw-with-v2ray-xtls-xray-websocket/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:2‡bypass-gfw.com</a>.</li>
+<li>Highly stealthy and resistant to DPI (deep packet inspection).</li>
+</ul>
+</li>
+<li><strong>Pros</strong>:<!-- -->
+<ul>
+<li>Hard for GFW to detect and throttles.</li>
+<li>Offers customizable routing rules (per domain/app).</li>
+<li>Ideal for persistent, heavy usage.</li>
+</ul>
+</li>
+<li><strong>Cons</strong>:<!-- -->
+<ul>
+<li>Requires manual setup.</li>
+<li>Needs reliable proxy server access (self-hosted or paid).</li>
+</ul>
+</li>
+<li><strong>Verdict</strong>: 🥇 Top-tier for bypassing strong censorship.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="2--esim-roaming">2. 📡 eSIM Roaming<a href="https://liviaerxin.github.io/blog/how-to-escape-gfw#2--esim-roaming" class="hash-link" aria-label="Direct link to 2. 📡 eSIM Roaming" title="Direct link to 2. 📡 eSIM Roaming">​</a></h2>
+<ul>
+<li><strong>What</strong>: A foreign eSIM (Airalo, Nomad, Trip.com, ChillaxSim, etc.) that roams onto international/intrastate networks (e.g., Hong Kong, Singapore).</li>
+<li><strong>How it works</strong>:<!-- -->
+<ul>
+<li>Data is routed <strong>outside</strong> mainland China via international backhaul  <a href="https://vpncentral.com/bypass-china-firewall-without-vpn/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:3‡vpncentral.com</a> <a href="https://chillaxsim.com/blogs/travel-esim/can-the-esim-mainland-china-really-bypass-the-great-firewall-my-real-experience-using-facebook-and-google-in-china?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:4‡chillaxsim.com</a> <a href="https://travelchinawith.me/china-travel-blog/best-esim-for-china/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:5‡travelchinawith.me</a>.</li>
+<li>Transparent and doesn’t require additional software  <a href="https://chillaxsim.com/blogs/travel-esim/can-the-esim-mainland-china-really-bypass-the-great-firewall-my-real-experience-using-facebook-and-google-in-china?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:6‡chillaxsim.com</a>.</li>
+</ul>
+</li>
+<li><strong>Pros</strong>:<!-- -->
+<ul>
+<li>Set-up simplicity (scan QR, activate).</li>
+<li>Zero maintenance; works out of the box after activation.</li>
+<li>Reliable access to global services (YouTube, WhatsApp, Google).</li>
+</ul>
+</li>
+<li><strong>Cons</strong>:<!-- -->
+<ul>
+<li>Higher cost (~$10–50 for limited data)  <a href="https://travelchinawith.me/china-travel-blog/best-esim-for-china/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:7‡travelchinawith.me</a> <a href="https://chinaesim.com/internet-censorship/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:8‡chinaesim.com</a>.</li>
+<li>May not support Chinese-only services.</li>
+<li>Some providers’ data may still be filtered  <a href="https://support.alosim.com/hc/en-us/articles/24038452640781-Can-an-eSIM-get-around-the-Great-Firewall-of-China?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:9‡support.alosim.com</a>.</li>
+</ul>
+</li>
+<li><strong>Verdict</strong>: 🥈 Great for travelers who want plug-and-play convenience, with the caveat of cost and local app usage limitations.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="3-️-commercial-vpns-expressvpn-surfshark-openvpnikev2ipsec">3. 🛡️ Commercial VPNs (ExpressVPN, Surfshark, OpenVPN/IKEv2/IPSec)<a href="https://liviaerxin.github.io/blog/how-to-escape-gfw#3-%EF%B8%8F-commercial-vpns-expressvpn-surfshark-openvpnikev2ipsec" class="hash-link" aria-label="Direct link to 3. 🛡️ Commercial VPNs (ExpressVPN, Surfshark, OpenVPN/IKEv2/IPSec)" title="Direct link to 3. 🛡️ Commercial VPNs (ExpressVPN, Surfshark, OpenVPN/IKEv2/IPSec)">​</a></h2>
+<ul>
+<li><strong>What</strong>: Traditional VPN services using protocols like OpenVPN, IKEv2/IPSec, often with obfuscation.</li>
+<li><strong>How it works</strong>:<!-- -->
+<ul>
+<li>Creates an encrypted tunnel from your device to a VPN server outside China.</li>
+<li>Traffic may still look suspicious to GFW and gets frequently blocked or throttled  <a href="https://www.getnomad.app/blog/best-sim-card-with-vpn-china?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:10‡getnomad.app</a> <a href="https://bypass-gfw.com/posts/bypass-gfw-with-v2ray-xtls-xray-websocket/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:11‡bypass-gfw.com</a> <a href="https://www.roughguides.com/articles/china-firewall-travelsim/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:12‡roughguides.com</a> <a href="https://travelchinawith.me/china-travel-blog/best-esim-for-china/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:13‡travelchinawith.me</a> <a href="https://en.wikipedia.org/wiki/Great_Firewall?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">oai_citation:14‡en.wikipedia.org</a>.</li>
+</ul>
+</li>
+<li><strong>Pros</strong>:<!-- -->
+<ul>
+<li>User‑friendly—just install app and connect.</li>
+<li>Provides full‑device encryption.</li>
+</ul>
+</li>
+<li><strong>Cons</strong>:<!-- -->
+<ul>
+<li>Often unreliable on China’s major carriers (Mobile, Telecom, Unicom).</li>
+<li>Subject to frequent connection drops and slow speeds.</li>
+</ul>
+</li>
+<li><strong>Verdict</strong>: 🥉 Useful as a fallback, but <strong>least effective</strong> under strong censorship unless paired with eSIM.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-hybrid-strategy-best-of-both-worlds">🧩 Hybrid Strategy: Best of Both Worlds<a href="https://liviaerxin.github.io/blog/how-to-escape-gfw#-hybrid-strategy-best-of-both-worlds" class="hash-link" aria-label="Direct link to 🧩 Hybrid Strategy: Best of Both Worlds" title="Direct link to 🧩 Hybrid Strategy: Best of Both Worlds">​</a></h2>
+<p>Combine methods for optimal flexibility:</p>
+<ul>
+<li><strong>eSIM + VPN</strong>: eSIM provides basic global access, with VPN as backup for sensitive browsing or encrypted traffic.</li>
+<li><strong>DIY Proxy server + Shadowrocket/V2Box</strong>: Self-hosted V2Ray/Trojan server gives maximum reliability and stealth.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-decision-matrix">💡 Decision Matrix<a href="https://liviaerxin.github.io/blog/how-to-escape-gfw#-decision-matrix" class="hash-link" aria-label="Direct link to 💡 Decision Matrix" title="Direct link to 💡 Decision Matrix">​</a></h2>
+<table><thead><tr><th>Goal</th><th>Recommended Method</th></tr></thead><tbody><tr><td>Most reliable for heavy, constant use in China</td><td><strong>Proxy protocols (V2Ray/Trojan/Shadowsocks)</strong> + Shadowrocket/V2Box</td></tr><tr><td>Quick, easy setup with no hassle</td><td><strong>eSIM roaming</strong></td></tr><tr><td>On‑device full encryption backup</td><td><strong>Commercial VPN</strong> (preferably over eSIM)</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-tldr-summary">✅ TL;DR Summary<a href="https://liviaerxin.github.io/blog/how-to-escape-gfw#-tldr-summary" class="hash-link" aria-label="Direct link to ✅ TL;DR Summary" title="Direct link to ✅ TL;DR Summary">​</a></h2>
+<ol>
+<li>🥇 <strong>Proxy protocols</strong> = stealthiest, most reliable (best choice if you can manage setup).</li>
+<li>🥈 <strong>eSIM roaming</strong> = easy and seamless global data access.</li>
+<li>🥉 <strong>Commercial VPNs</strong> = convenient but often blocked unless used over eSIM.</li>
+</ol>
+<hr>
+<p>Want me to include server setup guides, eSIM provider comparisons, cost breakdowns, or config samples? Let me know!</p>]]></content:encoded>
+            <category>network</category>
+            <category>how-to</category>
+        </item>
+        <item>
             <title><![CDATA[🌍 Using Telnyx + Zoiper for Canadian PSTN Calls Anywhere]]></title>
             <link>https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup</link>
             <guid>https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup</guid>
@@ -99,7 +203,7 @@
             <description><![CDATA[Telnyx zoiper call setup]]></description>
             <content:encoded><![CDATA[<p>I am developing a voice agent outside Canada. Without my Canadian SIM, staying connected via PSTN means I rely on <strong>VoIP softphones</strong> and <strong>Telnyx SIP trunking</strong>. In this guide, I’ll walk through how I set up two Canadian Telnyx numbers and used <strong>Zoiper</strong> on macOS and iOS to call between them—without needing PSTN compliance.</p>
 <hr>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="️-1-telnyx-configuration">⚙️ 1. Telnyx Configuration<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#%EF%B8%8F-1-telnyx-configuration" class="hash-link" aria-label="Direct link to �⚙️ 1. Telnyx Configuration" title="Direct link to ⚙️ 1. Telnyx Configuration">​</a></h2>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="️-1-telnyx-configuration">⚙️ 1. Telnyx Configuration<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#%EF%B8%8F-1-telnyx-configuration" class="hash-link" aria-label="Direct link to ⚙️ 1. Telnyx Configuration" title="Direct link to ⚙️ 1. Telnyx Configuration">​</a></h2>
 <h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="-credential-based-sip-connections">🔐 Credential-Based SIP Connections<a href="https://liviaerxin.github.io/blog/telnyx-zoiper-call-setup#-credential-based-sip-connections" class="hash-link" aria-label="Direct link to 🔐 Credential-Based SIP Connections" title="Direct link to 🔐 Credential-Based SIP Connections">​</a></h3>
 <p>I created two separate <strong>credential-based SIP Connections</strong> in the Telnyx console, each bound to a Canadian DID:</p>
 <div class="language-json codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-json codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  "sip_trunk_connections": [</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_name": "livekit-trunk",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_type": "credential",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "domain": "sip.telnyx.com",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "username": "userfrankchen9081",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "password": "YJhY0pg0",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "numbers": ["+12495304098"]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    },</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_name": "originmind-callee",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "connection_type": "credential",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "domain": "sip.telnyx.com",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "username": "userfrankchen8081",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "password": "YJhY0pg0",</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      "numbers": ["+12495304046"]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  ],</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  "telnyx_test_center_number": "+18004377950"</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
@@ -1450,42 +1554,6 @@ Ubuntu Desk Image does not ship the <code>mdadm</code> tool, so it is nearly imp
             <category>how-to</category>
             <category>network</category>
             <category>windows</category>
-        </item>
-        <item>
-            <title><![CDATA[Setting up Coral dev board]]></title>
-            <link>https://liviaerxin.github.io/blog/setting-up-coral</link>
-            <guid>https://liviaerxin.github.io/blog/setting-up-coral</guid>
-            <pubDate>Thu, 01 Jun 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[Setting up coral dev board]]></description>
-            <content:encoded><![CDATA[<p>Set up Coral Dev Board for employing an Edge TPU coprocessor.</p>
-<p>Prototype new projects demanding fast on-device inference for the ML models.</p>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="background">Background<a href="https://liviaerxin.github.io/blog/setting-up-coral#background" class="hash-link" aria-label="Direct link to Background" title="Direct link to Background">​</a></h2>
-<p>The official documents <a href="https://coral.ai/docs/dev-board/get-started/" target="_blank" rel="noopener noreferrer">Get started with the Dev Board</a> contains comprehensive how-to contents and rich examples. Here are just some experiences from myself. You can always go back to the official website to review and get the details.</p>
-<p>The recommended method to access the Coral board is using <a href="https://coral.ai/docs/dev-board/mdt/" target="_blank" rel="noopener noreferrer">Mendel Development Tool (mdt)</a>, which is required to be installed on your host machine alongside the <code>Python</code>. Common steps to enter the shell terminal from <code>mdt</code> are in following:</p>
-<ol>
-<li><code>mdt</code> tool generate a pair of <code>SSH key</code>s, save the <code>private key</code> on the host and push the <code>public key</code> to the Coral using <code>http</code> via <code>41337</code> port.</li>
-<li>Coral board has a running a <code>mdt-keymaster</code> server that is listening <code>41337</code> port, and put the <code>public key</code> into <code>~/.ssh/authorized_keys</code>.</li>
-<li><code>mdt shell</code> now can login to the shell terminal of Coral board like <code>ssh mendel@192.168.100.2</code> when connecting over USB-C(OTG) or <code>ssh mendel@indigo-quill.local</code> over the same network where your host PC is.</li>
-</ol>
-<div class="theme-admonition theme-admonition-info admonition_xJq3 alert alert--info"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg></span>info</div><div class="admonitionContent_BuS1"><p>Coral board is set up by disabling password login in <code>OpenSSH</code> in default, so it must be provided with <code>SSH key</code> otherwise you change the setting to be like <code>PasswordAuthentication yes</code>.</p></div></div>
-<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>note</div><div class="admonitionContent_BuS1"><p>You can check the <code>key master</code> by,</p><div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">mendel@indigo-quill:~$ </span><span class="token function" style="color:#d73a49">lsof</span><span class="token plain"> </span><span class="token parameter variable" style="color:#36acaa">-i:41337</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">COMMAND    PID   </span><span class="token environment constant" style="color:#36acaa">USER</span><span class="token plain">   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">mdt-keyma </span><span class="token number" style="color:#36acaa">7846</span><span class="token plain"> mendel    5u  IPv4  </span><span class="token number" style="color:#36acaa">20302</span><span class="token plain">      0t0  TCP </span><span class="token number" style="color:#36acaa">192.168</span><span class="token plain">.100.2:41337 </span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">LISTEN</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">mdt-keyma </span><span class="token number" style="color:#36acaa">7847</span><span class="token plain"> mendel    6u  IPv4  </span><span class="token number" style="color:#36acaa">20619</span><span class="token plain">      0t0  TCP </span><span class="token number" style="color:#36acaa">192.168</span><span class="token plain">.101.2:41337 </span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">LISTEN</span><span class="token punctuation" style="color:#393A34">)</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div></div></div>
-<p>Although <code>mdt</code> maybe facilitate the access to the Coral board, some magics and additional steps are kept from sight.</p>
-<p>To do not use <code>mdt</code>, we need access the dev board through <code>serial console</code> instead of <code>mdt keymaster</code> server, to make configuration.</p>
-<p>There are general ways to access a just-setup Coral in brief steps:</p>
-<ol>
-<li>Connect to Coral board's <code>serial console</code> by the instructions <a href="https://coral.ai/docs/dev-board/serial-console/" target="_blank" rel="noopener noreferrer">Connect to the Dev Board's serial console</a></li>
-<li>Log into the Dev board by username: <code>mendel</code> and password: <code>mendel</code> in default.</li>
-<li>Enable SSH Password Authentication. Edit <code>/etc/ssh/sshd_config</code> to change <code>PasswordAuthentication no</code> to <code>PasswordAuthentication yes</code>, and <code>sudo service ssh restart</code> to restart the ssh service.</li>
-<li>Log into the shell using username: <code>mendel</code> and password: <code>mendel</code>.</li>
-<li>If you want to keep the secure shell, generate <code>private SSH key</code> stored in host and <code>public SSH key</code> saved into Coral.</li>
-</ol>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="references">References<a href="https://liviaerxin.github.io/blog/setting-up-coral#references" class="hash-link" aria-label="Direct link to References" title="Direct link to References">​</a></h2>
-<ul>
-<li><a href="https://coral.ai/docs/dev-board/get-started/" target="_blank" rel="noopener noreferrer">Get started with the Dev Board | CoralCoralClose</a></li>
-</ul>]]></content:encoded>
-            <category>how-to</category>
-            <category>network</category>
-            <category>environment</category>
         </item>
     </channel>
 </rss>
