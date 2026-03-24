@@ -1,0 +1,194 @@
+---
+authors:
+  - frank
+tags:
+  - Markdown Driven Development
+description: Markdown Driven Development
+keywords:
+  - Markdown Driven Development
+image: https://i.imgur.com/mErPwqL.png
+date: 2025-11-11
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Markdown Driven Development
+
+With the LLM being more and more powerful, it is now possible to write markdown spec files that describe the development process. Then these spec files are written in markdown can be used to generate the running code.
+
+<!--truncate-->
+
+spec + implementation + tests
+
+
+That's an excellent idea for a structure. Moving to Markdown-Driven Development (MDD) or Spec-Driven Development (SDD) with AI agents is a natural fit for decoupled microservices.
+
+
+## 🚀 Recommended MDD Folder Structure
+The core principle is to treat the Specifications as the primary source of truth, organizing them by the domain or service they describe, not just the technical layer.
+
+```sh
+my-project/
+├─ README.md                                 # 1. Project Overview & Quick Start
+├─ CONSTITUTION.md                           # 2. Project-wide architectural and coding rules (Crucial for AI)
+├─ ARCHITECTURE.md                           # 3. High-level system design (Flow, services, data stores)
+├─ specs/
+│  ├─ feature-key-extraction/               # 4. Specification by Feature/Domain
+│  │  ├─ 01_api_service.md                 # API Service Spec (Handles upload, request validation, queueing)
+│  │  ├─ 02_worker_service.md              # Worker Service Spec (Handles queue processing, LLM call, DB update)
+│  │  ├─ 03_db_schema.md                   # DB Project Spec (Data Model for extracted data)
+│  │  └─ plan.md                           # Implementation plan/task list for this feature (AI-generated tasks)
+│  ├─ feature-user-auth/                    # Another feature's specifications...
+│  └─ ...
+├─ .prompts/
+│  ├─ system_prompt.md                      # Global system instructions for the AI
+│  ├─ prompt_impl_endpoint.md               # Prompt template for generating a REST endpoint
+│  ├─ prompt_llm_call.md                    # Prompt template for generating the LLM call logic
+│  └─ prompt_unit_test.md                   # Prompt template for generating unit tests
+├─ src/
+│  ├─ api/                                  # API Service Code
+│  ├─ worker/                               # Worker Service Code
+│  └─ db/                                   # DB Migration/Schema Code
+└─ tests/
+   └─ e2e/
+```
+  
+### 📝 Example MDD Content for Your Task
+
+Here's how you'd structure the key files for your task: "Extract key information/data from input file."
+
+1. `CONSTITUTION.md` (Global Rules)
+This sets the ground rules the AI must follow across all services.
+
+```md
+# 🏛️ Project Constitution
+
+## Language & Frameworks
+- **Primary Language:** Python 3.11
+- **API Framework:** FastAPI
+- **Worker Framework:** Celery
+- **Database:** PostgreSQL with SQLAlchemy ORM
+- **Queue:** Redis/RabbitMQ
+
+## Architectural Principles
+1. **Decoupling:** Services must not directly call each other. Communication must be via the message queue (Celery) or DB.
+2. **Standard:** All API endpoints must use the `/v1/` prefix.
+3. **Error Handling:** All exceptions must be logged and return a standardized JSON error response.
+
+## Style Guide
+- **Code Style:** PEP 8 compliance is mandatory.
+- **Documentation:** Every class, method, and function must have a docstring following the **Sphinx** format.
+- **Testing:** Unit test coverage must be > 80% for all generated code.
+```
+
+2. `ARCHITECTURE.md` (Main Flow)
+
+This is a high-level visual and textual description of the overall system flow.
+
+```md
+# 🗺️ System Architecture
+
+## Core Flow: File Extraction Task
+The system uses an API-Worker pattern to handle asynchronous file processing.
+
+1. **Client -> API:** Client POSTs file to `/v1/upload`.
+2. **API -> Queue:** API validates the request, records a pending task in the DB, and enqueues a message (Task ID) to the Celery broker.
+3. **Queue -> Worker:** A Worker consumes the task, retrieves the file from storage, and executes the LLM logic.
+4. **Worker -> DB:** The Worker writes the extracted key data back to the DB and updates the task status (e.g., 'COMPLETED').
+5. **Client -> API:** Client polls a status endpoint `/v1/status/{task_id}` to retrieve the result.
+
+## Data Model (Simplified)
+
+### `ExtractionTask` Table (in DB)
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `task_id` | UUID | Primary Key |
+| `file_name` | TEXT | Original file name |
+| `status` | ENUM | PENDING, PROCESSING, COMPLETED, FAILED |
+| `extracted_data` | JSONB | The key information extracted by the LLM (nullable) |
+| `created_at` | TIMESTAMP | |
+```
+
+3. `specs/feature-key-extraction/01_api_service.md` (API Service Spec)
+Focus on the API contract and interaction with the queue/DB.
+
+```md
+# 🌐 API Service Specification: Key Extraction
+
+## Goal
+Provide a secure and asynchronous endpoint for file upload and status checking.
+
+## 1. Endpoint: File Upload
+- **HTTP Method:** `POST`
+- **Path:** `/v1/extract/file`
+- **Request Body:**
+    - `file`: (File) Required. Max size 10MB. Allowed types: PDF, DOCX, TXT.
+- **Functional Requirements:**
+    1. **Validation:** Reject requests that violate file size/type constraints.
+    2. **Persistence:** Create a new `ExtractionTask` record with `status: PENDING`.
+    3. **Queueing:** Enqueue a Celery task named `worker.tasks.process_file` with the new `task_id` as the argument.
+- **Success Response (202 Accepted):**
+    ```json
+    {
+      "task_id": "UUID_STRING",
+      "status": "PENDING",
+      "message": "File received and processing initiated."
+    }
+    ```
+
+## 2. Endpoint: Get Status & Results
+- **HTTP Method:** `GET`
+- **Path:** `/v1/extract/status/{task_id}`
+- **Path Parameters:**
+    - `task_id`: (UUID) Required.
+- **Success Response (200 OK - COMPLETED):**
+    ```json
+    {
+      "task_id": "UUID_STRING",
+      "status": "COMPLETED",
+      "result": {
+        "invoice_number": "INV-2024-1234",
+        "total_amount": 125.50,
+        "vendor_name": "Acme Corp"
+      }
+    }
+    ```
+- **Error Response (404 Not Found):** If `task_id` is not in the DB.
+```
+
+4. `specs/feature-key-extraction/02_worker_service.md` (Worker Service Spec)
+Focus on the business logic and LLM interaction.
+
+```md
+# ⚙️ Worker Service Specification: File Processing
+
+## Target Celery Task
+- **Name:** `worker.tasks.process_file`
+- **Arguments:** `task_id` (UUID)
+
+## Core Logic Requirements
+1. **Status Update:** Immediately update `ExtractionTask` status to `PROCESSING`.
+2. **LLM Extraction:**
+    - Use a dedicated **Prompt Template** (referencing `prompt_llm_call.md`).
+    - The LLM should extract **Invoice Number**, **Total Amount (float)**, and **Vendor Name (string)** from the file content.
+    - **Note:** The LLM client/API key must be loaded from environment variables.
+3. **Data Handling:**
+    - If extraction is **successful**, update the DB record: set `status: COMPLETED` and populate the `extracted_data` JSONB field with the key-value pairs.
+    - If extraction **fails** (e.g., LLM error, invalid response format), update the DB record: set `status: FAILED` and log the error details in a separate `error_log` field (if available).
+    - 
+```
+
+## Tools
+
+
+## Challenges
+
+### Spec Markdown File Organization and Format
+
+
+### Consistency and Synchronization
+
+When comparing Markdown-Driven Development or Spec-Driven Development (SDD) in a microservices project, the biggest challenge is arguably **keeping the specifications & documentation in sync with the rapidly evolving services and ensuring the specs remain the single source of truth for all teams.**
+
+
+## Resources

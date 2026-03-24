@@ -1,0 +1,94 @@
+---
+authors:
+  - frank
+tags:
+  - distributed-systems
+  - celery
+  - temporal
+  - workflow-orchestration
+  - architecture
+description: Why Celery is no longer the recommended orchestrator for stateful, multi-step business workflows in 2026 and how to transition to durable execution.
+keywords:
+  - celery
+  - temporal
+  - hatchet
+  - fastapi
+  - distributed-saga
+  - workflow-orchestration
+image: https://i.imgur.com/mErPwqL.png
+date: 2026-03-23
+draft: false
+enableComments: true
+---
+
+# Modern Distributed Workflow Orchestration in 2026
+
+> Celery is a phenomenal Task Queue (executing atomic background jobs), but it is a poor Workflow Orchestrator (managing state, pauses, external signals, and retries across disparate services).
+
+<!--truncate-->
+
+## Context
+A review of a production-grade stack using FastAPI, LiveKit, Celery, and RabbitMQ. While robust, the use of Celery to chain stateful, multi-step business workflows is identified as an anti-pattern in the 2026 landscape.
+
+## Key Insights
+- **Distributed Sagas:** Managing long-running workflows (calls, summaries, payments) requires formalizing the problem as a "Distributed Saga."
+- **Durable Execution:** Tools like Temporal.io and Hatchet allow "Code-as-workflow," where the engine handles state persistence natively.
+- **State Machine Separation:** If sticking with Celery, the database (PostgreSQL) should be the single source of truth for state transitions via webhooks, rather than linking tasks together.
+- **Transactional Outbox:** For purely event-driven approaches, the Transactional Outbox Pattern is critical to ensure reliability between DB updates and message publishing.
+
+## Architectural Review: Distributed Workflows in 2026
+
+As a senior distributed systems engineer reviewing your stack, I must say you have built a highly robust, enterprise-grade foundation. FastAPI, LiveKit, Celery, RabbitMQ, PostgreSQL, and a proper Promtail/Loki/Grafana observability stack is exactly what a production AI-voice system should look like.
+
+However, as we look at the landscape in 2026, **using Celery to chain stateful, multi-step business workflows is widely considered an anti-pattern.** Celery is a phenomenal *Task Queue* (executing atomic background jobs), but it is a poor *Workflow Orchestrator* (managing state, pauses, external signals, and retries across disparate services).
+
+### 1. Formalize the Problem
+You are trying to manage a **Long-Running Distributed Saga**. The workflow involves:
+1. Triggering a real-time component (LiveKit Agent).
+2. Waiting for an unpredictable duration (the duration of the phone call).
+3. Executing intensive post-processing (LLM transcript summary via Celery).
+4. Waiting for days/weeks for external asynchronous human action (debt payment).
+5. Branching logic based on those outcomes (escalation, retries).
+
+### 2 & 3. Possible Approaches in 2026
+
+#### Approach A: Durable Execution (The 2026 Industry Standard)
+* **Tools:** Temporal.io, Restate, or Hatchet (a modern, Python-first alternative to Celery).
+* **Execution Flow:** The orchestrator manages the entire debt collection journey as a single synchronous-looking function, suspending state natively during waits.
+* **Why it's modern:** You delete complex adapter chains and polling logic.
+
+#### Approach B: Database-Backed State Machine + Webhooks
+* **Tools:** FastAPI + SQLModel (PostgreSQL) + Celery.
+* **Execution Flow:** PostgreSQL acts as the source of truth. FastAPI handles state transitions via Webhooks and triggers atomic Celery tasks.
+* **Why it's modern:** Clean decoupling. Workers don't know about each other; they only update the database.
+
+#### Approach C: Pure Event-Driven Choreography
+* **Tools:** RabbitMQ using Pub/Sub + Transactional Outbox Pattern.
+* **Execution Flow:** Microservices react to events on RabbitMQ exchanges.
+* **Why it's modern:** Maximum decoupling, but tracing failing journeys is significantly more difficult.
+
+### 4. Trade-offs Comparison
+
+| Criteria | Approach A: Durable Execution | Approach B: DB State Machine | Approach C: Event Choreography |
+| :--- | :--- | :--- | :--- |
+| **Scalability** | **High.** Millions of sleeping workflows. | **Medium.** DB row contention risks. | **Very High.** Independent worker scaling. |
+| **Complexity** | **Medium.** New infrastructure (Temporal). | **Low.** Existing stack usage. | **High.** Decentralized "Event Spaghetti." |
+| **Robustness** | **Very High.** Native retries/timeouts. | **High.** ACID-compliant persistence. | **Medium.** Prone to edge-case failures. |
+
+### 5. Verdict & Best Practices
+**Immediate Action: Adopt Approach B (Database State Machine)**
+Break your Celery chains. Implement a state machine in SQLModel and use FastAPI Webhook endpoints to trigger the next standalone Celery task.
+
+**Target Architecture: Adopt Approach A (Durable Execution)**
+If voice agents are core to your business, move orchestration to a dedicated engine like **Hatchet** or **Temporal** for visual observability and native state management.
+
+## Related Concepts
+- [[agentic-vs-deterministic-orchestration]]
+- [[distributed-saga]]
+- [[durable-execution]]
+- [[transactional-outbox-pattern]]
+- [[state-machines]]
+- [[celery-anti-patterns]]
+
+## Source
+Chat session — 2026-03-23

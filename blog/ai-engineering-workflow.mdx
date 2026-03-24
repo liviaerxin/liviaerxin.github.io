@@ -1,0 +1,177 @@
+---
+authors:
+  - frank
+tags:
+  - ai engineering workflow
+description: ai engineering workflow
+keywords:
+  - ai engineering workflow
+image: https://i.imgur.com/mErPwqL.png
+date: 2026-03-20
+draft: false
+enableComments: true # for Gisqus
+---
+
+# The 2026 AI Engineering Workflow: You Don't Write Code Anymore — You Govern Agents That Do
+
+> *A practical note for developers making the shift from writing code to harnessing AI agents effectively.*
+
+---
+
+## The Shift Nobody Warned You About
+
+In 2022, being a good engineer meant writing good code.
+
+In 2026, being a good engineer means **governing agents that write good code** — and keeping them effective across sessions, phases, and time.
+
+That's a fundamentally different skill. And most developers are still using 2022 habits with 2026 tools, wondering why their AI keeps making mistakes, forgetting context, and re-litigating decisions they already made three sessions ago.
+
+The problem isn't the agent. The problem is the layer above it.
+
+---
+<!--truncate-->
+## The Four-Layer Model
+
+Modern AI-assisted development isn't flat. It's a stack:
+
+```
+┌─────────────────────────────────┐
+│         You  (AI Engineer)      │  ← Governs intent, quality, direction
+├─────────────────────────────────┤
+│        PromptOps Layer          │  ← Skills, memory, context, handoffs
+├─────────────────────────────────┤
+│          Agent Layer            │  ← Claude, Cursor, Copilot, etc.
+├─────────────────────────────────┤
+│           Code Layer            │  ← The actual source code
+├─────────────────────────────────┤
+│            App Layer            │  ← The running product
+└─────────────────────────────────┘
+```
+
+Most developers today are focused on the **Agent Layer** — which model is smartest, which IDE plugin is fastest. That's the wrong layer to optimize.
+
+The highest leverage is in the **PromptOps Layer**: the structured practices that keep your agent operating at full intelligence across a long project.
+
+---
+
+## What Is the PromptOps Layer?
+
+PromptOps is not prompt engineering. Prompt engineering is about *what you say to the model*. PromptOps is about *how you manage the model's memory, context, and continuity over time*.
+
+Three things decay in every long AI project:
+
+1. **Context** — the agent's working memory fills with irrelevant history
+2. **Decisions** — choices made in session 1 get re-litigated in session 7
+3. **Intent** — what you actually wanted gets diluted through multiple agent handoffs
+
+PromptOps is the discipline of preventing that decay.
+
+---
+
+## The Practical Skill Library
+
+A mature PromptOps workflow in 2026 runs on five skills. Not tools — disciplines:
+
+### `recap` — Compress Before You Break
+**When:** Every 30 minutes, or before ending a session.
+
+Context rot is real. After 2–3 hours, an agent's context window is full of dead ends, abandoned approaches, and stale chat. It starts making mistakes not because it's dumb — but because its "brain" is full of junk.
+
+The fix: run a recap, start a fresh session, paste the compressed state. The agent is back to 100%.
+
+*Trigger: "save progress", "status"*
+
+---
+
+### `handoff` — Transfer Intent, Not Transcripts
+**When:** Moving between phases (planning → building) or agents (Architect → Coder).
+
+The most common multi-agent failure isn't a technical one — it's an intent failure. The second agent doesn't know what the first agent decided, or *why*. So it re-explores the same dead ends.
+
+A handoff brief isn't a summary of the conversation. It's a clean mission brief: decisions made, things not to re-litigate, and a single unambiguous first action.
+
+*Trigger: "wrap up phase", "pass to next agent"*
+
+---
+
+### `adr` — Make Decisions Permanent
+**When:** After any significant technical decision — framework, schema, auth pattern, API design.
+
+ADRs (Architecture Decision Records) are the project's permanent memory. They live in your repo, not in a chat session. A future agent — or a future you — reads them and knows *why* you chose Postgres over MongoDB, without reopening the debate.
+
+The key discipline: every ADR must name a tradeoff. If you can't articulate what you gave up, you haven't actually made a decision — you've just made an assumption.
+
+*Trigger: "log this decision", "why did we choose"*
+
+---
+
+### `technical-review` — Critique Before You Build
+**When:** Any time a new idea surfaces before implementation begins.
+
+The default LLM behavior is to agree with you. It will validate a flawed approach with polite enthusiasm, and you'll spend three weeks building the wrong thing.
+
+A technical review breaks that pattern by running four lenses against your idea: what problem you're actually solving, specific failure modes, the real tradeoffs, and a concrete alternative. It ends with an opinionated verdict — not "it depends."
+
+*Trigger: "how about my idea", "how about this schema"*
+
+---
+
+### `capture` — Preserve Ideas Without Losing Momentum
+**When:** A good idea surfaces mid-session that you don't want to implement right now.
+
+Not every idea should be acted on immediately. But undocumented ideas evaporate. The capture skill turns a raw idea into a structured task card — priority, effort estimate, concrete subtasks, dependencies — and appends it to `BACKLOG.md` in your project root.
+
+The difference from a plain todo list: each card has *enough context* that a future agent can pick it up cold and know exactly what to do.
+
+*Trigger: "capture this idea", "log this idea"*
+
+---
+
+## The Natural Workflow
+
+These five skills form a coherent engineering loop:
+
+```
+New idea surfaces
+  → technical-review    "how about my idea?"
+  → capture             "capture this for later"
+
+Work begins
+  → adr                 "log this decision"
+  → recap               every 30 min
+
+Phase ends
+  → handoff             "wrap up this phase"
+```
+
+Nothing overlaps. Each skill solves one problem in the agent lifecycle.
+
+---
+
+## The Senior Framing
+
+Here is how a Senior AI Engineer in 2026 thinks about their role:
+
+> *"I don't write code. I govern agents that write code. My job is to maintain intent fidelity across time, sessions, and agent boundaries — so that what gets built matches what I actually meant."*
+
+That's a meaningful shift. The skills that make you effective as an AI engineer are not the same skills that made you effective as a traditional developer. Writing clean code is still valuable. But the highest-leverage skill is now **knowing how to keep an agent effective across a long, complex project** — and that requires deliberate memory management, structured handoffs, and permanent decision records.
+
+That's PromptOps. And in 2026, it's not optional.
+
+---
+
+## Summary
+
+| Layer | Who/What | Primary Concern |
+|-------|----------|-----------------|
+| You | AI Engineer | Intent, quality, direction |
+| PromptOps | Skills & disciplines | Memory, context, continuity |
+| Agent | Claude, Cursor, etc. | Code generation |
+| Code | Source files | Correctness, architecture |
+| App | Running product | User value |
+
+The engineers winning in 2026 are not the ones with the best prompts. They're the ones who built a disciplined layer between themselves and their agents — and kept that layer clean.
+
+---
+
+*Written as a practical field note for developers navigating the shift to AI-assisted engineering.*

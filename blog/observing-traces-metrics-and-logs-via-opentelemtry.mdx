@@ -1,0 +1,149 @@
+---
+authors:
+  - frank
+tags:
+  - observe traces, metrics and logs via opentelemtry
+description: observe traces, metrics and logs via opentelemtry
+keywords:
+  - opentelemtry
+image: https://i.imgur.com/mErPwqL.png
+date: 2025-08-07
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Observing traces, metrics and logs via OpenTelemetry
+
+As I remember **OpenTelemetry** is the second largest project in CNCF (cloud native computing foundation) after kubernate. When developing a good application, it is very useful to apply it to observe the application performance by analyzing telemetry data: trace, metric and log.
+
+<!--truncate-->
+OpenTelemetry is currently made up of several main components:
+
+- OpenTelemetry API/SDK in application
+  - [Zero-code Instrumentation](https://opentelemetry.io/docs/zero-code/python/)
+    - target library should expose lifecycle hooks
+    - opentelemetry implement a plugin that leverage those hooks
+  - [Manual-code Instrumentation](https://opentelemetry.io/docs/languages/python/instrumentation/)
+  - [Export Telemetry Data](https://opentelemetry.io/docs/languages/python/exporters/)
+    - gRPC
+    - HTTP/protobuf
+- [Opentelemetry Collector](https://opentelemetry.io/docs/collector/)
+- Opentelemetry Backend
+  - Exports traces → Grafana Tempo
+  - Exports metrics → Prometheus
+  - Exports logs → Loki / Fluentd / Elastic
+- Telemetry Data Visualization
+
+The OpenTelemetry Collector is designed to be a central hub that can:
+  - Receive traces, metrics, and logs (often via OTLP),
+  - Process or enrich them,
+  - Then export each type to the appropriate backend:
+
+```plaintext
+Your App (with OpenTelemetry SDKs)
+  └── Exports all telemetry via OTLP (Traces, Metrics, Logs)
+        └── OpenTelemetry Collector
+              ├── Exports traces → Grafana Tempo / Jaeger / Elastic APM, etc.
+              ├── Exports metrics → Prometheus (remote write) / Graphite / Google Cloud Monitoring, etc.
+              └── Exports logs → Loki / Fluentd / Elastic, etc.
+```
+
+## OpenTelemetry + Grafana Observability Stack (Best Practice for Small-Medium Apps)
+
+### ✅ What You Can Do
+
+You can use **OpenTelemetry SDKs** in your app to collect:
+- **Traces**
+- **Metrics**
+- **Logs**
+
+And export them to the **OpenTelemetry Collector**, which routes each to the appropriate backend:
+- Traces → Tempo
+- Metrics → Prometheus
+- Logs → Loki
+
+Everything can be visualized in **Grafana**.
+
+---
+
+### 🔁 Replacement Summary
+
+| Replace This                       | With This                          |
+| ---------------------------------- | ---------------------------------- |
+| Prometheus Client API              | OpenTelemetry Metrics API          |
+| Promtail (log scraper)             | OpenTelemetry Logs SDK or Exporter |
+| Hardcoded backend exporters in app | OTLP exporter to OTel Collector    |
+
+---
+
+### 📦 Collector Pipeline Example (YAML)
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+exporters:
+  tempo:
+    endpoint: "tempo:4317"
+    tls:
+      insecure: true
+  prometheusremotewrite:
+    endpoint: "http://prometheus:9090/api/v1/write"
+  loki:
+    endpoint: "http://loki:3100/loki/api/v1/push"
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [tempo]
+    metrics:
+      receivers: [otlp]
+      exporters: [prometheusremotewrite]
+    logs:
+      receivers: [otlp]
+      exporters: [loki]
+```
+
+---
+
+### 🏆 Best Practice Stack
+
+| Signal Type | OTel SDK in App  | OTel Collector Backend | Grafana Visualization |
+| ----------- | ---------------- | ---------------------- | --------------------- |
+| Traces      | OTel Tracing API | Tempo                  | Traces tab            |
+| Metrics     | OTel Metrics API | Prometheus             | Dashboards            |
+| Logs        | OTel Logs API    | Loki                   | Explore tab           |
+
+---
+
+### ✅ Benefits
+
+- **Unified instrumentation** for all telemetry signals.
+- **Vendor-neutral**, backend-agnostic design.
+- **Centralized routing and processing** in OTel Collector.
+- **Grafana-native support** for Tempo, Prometheus, and Loki.
+- **Easy backend switching** with no app code changes.
+
+---
+
+### ⚠️ Considerations
+
+| Concern                  | Detail                                                                                              |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| Prometheus is pull-based | Use Remote Write exporter if you're pushing metrics.                                                |
+| Promtail features        | OTel logs don't automatically add Kubernetes metadata like Promtail. You must enrich logs manually. |
+| Sampling & performance   | Enable sampling, batching, retry processors in production.                                          |
+| OTel logs SDK maturity   | Logs support varies by language, but improving rapidly.                                             |
+
+---
+
+### ✅ Final Verdict
+
+This modern observability stack is **production-worthy** for small and medium applications:
+- ✅ One SDK for all telemetry
+- ✅ Grafana-native ecosystem
+- ✅ Flexible, scalable, backend-agnostic

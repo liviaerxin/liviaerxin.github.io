@@ -1,0 +1,102 @@
+---
+foam_template:
+  name: Blog Docusaurus Template
+  description: Creates Docusaurus blog/slip
+  filepath: blog/vscode-code-error-hunting.mdx
+authors:
+  - frank
+tags:
+  - VSCode
+  - Python
+  - AI
+  - Debugging
+description: A guide to catching syntax, type, and logical errors in Python using VS Code linters and AI tools.
+keywords:
+  - VSCode
+  - Python
+  - Pylance
+  - Qodo
+  - Windsurf
+image: https://i.imgur.com/mErPwqL.png
+date: 2025-11-19
+draft: false
+enableComments: true
+---
+
+# VS Code Code Error Hunting: Linters vs AI
+
+In Python code development, not all errors are created equal. While VS Code is great at catching typos, it often stays silent on the bugs that actually crash production code.
+
+This note explores the hierarchy of Python errors and the specific tools—from traditional linters to modern AI agents—needed to catch them proactively.
+
+## The Hierarchy of Errors
+
+To fix bugs, we first need to classify them. Different tools specialize in different layers of this hierarchy:
+
+### 1. Syntax Errors (The "Grammar" Police)
+* **Definition:** The code violates the rules of the language. It cannot run at all.
+* **Example:** Missing a colon (`:`) after `if`, unmatched parentheses.
+* **Detection:** **Instant.** Standard VS Code support catches this immediately.
+
+### 2. Type Errors (The "Shape" Mismatch)
+* **Definition:** The code runs, but you are trying to combine incompatible data types.
+* **Example:** `result = "Total: " + 10` (Cannot add string and integer).
+* **Detection:** **Static Analysis.** Tools like **Pylance** (set to 'Basic' or 'Strict') excel here.
+
+### 3. Logical Errors (The "Silent" Killers)
+* **Definition:** The code runs without crashing, but it produces the wrong result or doesn't do what you intended.
+* **Example:** Calling an `async` function without `await` (the function is skipped, but no error is raised).
+* **Detection:** **Difficult.** Standard linters often miss these unless explicitly configured. Requires **AI Logic Analysis**.
+
+### 4. Semantic Errors (The "Meaning" Failure)
+* **Definition:** The code is valid and runs, but it makes no sense in the real-world context.
+* **Example:** Calculating `discount = price + tax` (logic is valid math, but semantically wrong for a discount).
+* **Detection:** **Very Difficult.** Requires an AI that "understands" the intent of your feature (e.g., **Windsurf**, **Copilot**).
+
+---
+
+## Level 1: The Foundation (Linters)
+
+These tools are deterministic. If rule X is broken, they flag it 100% of the time.
+
+* **Pylance (Microsoft):** The default Python Language Server.
+    * *Config Tip:* Set `"python.analysis.typeCheckingMode": "basic"` in settings to catch un-awaited coroutines and unused variables.
+* **Pylint / Flake8:** Dedicated linters that enforce style and catch "code smells" (like functions that are too complex).
+
+## Level 2: The AI Validator (LLM Linters)
+
+When static rules aren't enough, we need probabilistic models to check our logic.
+
+* **Qodo Gen (formerly CodiumAI):**
+    * **Best for:** Proactive Logic Checking.
+    * **How it works:** It analyzes your code and attempts to generate **tests** to break it. If it can write a test that fails, you have a logic bug.
+* **SonarLint:**
+    * **Best for:** Deep Code Quality.
+    * **How it works:** Uses advanced static analysis (symbolic execution) to find complex bugs like infinite loops or null pointer dereferences before execution.
+
+## Level 3: The AI Agent (Context Aware)
+
+Sometimes you need a tool that understands the *whole* project.
+
+* **Windsurf (Cascade):**
+    * **Best for:** End-to-end error fixing.
+    * **How it works:** Unlike a passive linter, Windsurf watches your **Terminal**. If you run a script and get a `RuntimeWarning`, Windsurf sees it and can proactively offer a fix. It connects the *result* of the code back to the *source*.
+
+---
+
+## Recommended "Proactive" Setup
+
+To turn VS Code into a fortress against bugs, use this stack:
+
+1.  **Immediate Feedback:** **Pylance** (Mode: Basic) + **SonarLint**.
+    * *Catches syntax, types, and known code smells instantly.*
+2.  **Logic Verification:** **Qodo Gen**.
+    * *Click "Review" on complex functions to catch edge cases.*
+3.  **The Fixer:** **Windsurf** or **Copilot**.
+    * *Use chat to explain **why** the logic failed and rewrite the block.*
+
+## Resources
+- [Pylance Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
+- [Qodo Gen (CodiumAI)](https://marketplace.visualstudio.com/items?itemName=Codium.codium)
+- [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode)
+- [Windsurf IDE](https://windsurf.com/)

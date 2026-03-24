@@ -1,0 +1,165 @@
+---
+authors:
+  - frank
+tags:
+  - distributed-systems
+  - architecture
+  - ai-agents
+  - celery
+  - temporal
+  - langgraph
+description: A deep dive into the architectural shift between deterministic orchestration (Temporal/Hatchet) and agentic orchestration (LangGraph) in 2026.
+keywords:
+  - temporal
+  - hatchet
+  - langgraph
+  - celery
+  - workflow-orchestration
+  - agentic-workflows
+  - distributed-systems
+image: https://i.imgur.com/mErPwqL.png
+date: 2026-03-23
+draft: false
+enableComments: true
+---
+
+# Agentic vs. Deterministic Orchestration: The 2026 Perspective
+
+In modern distributed systems, the boundary between "doing the work" and "managing the work" is where most engineering teams trip up. To understand this, let's return to the restaurant analogy.
+
+- **Celery is a Line Cook.** It is incredibly fast and efficient at doing exactly one atomic job (*"Fry this burger"*, *"Summarize this transcript"*).
+- **Temporal or Hatchet is the Restaurant Manager (Orchestrator).** It holds the master blueprint of the customer's entire journey, tells the line cooks what to do, goes to sleep when waiting for the customer, and wakes up exactly when needed.
+
+If you find yourself hacking Celery to act as a manager—using complex `wait_for_agent` logic or passing sticky notes between tasks—you are fighting the framework.
+
+<!--truncate-->
+
+## Part 1: Moving to Durable Execution (Temporal/Hatchet)
+
+In 2026, the industry practice for multi-step workflows is to **replace Celery entirely** for orchestration. Tools like Temporal and Hatchet provide their own robust worker processes, rendering the Celery/RabbitMQ/Redis stack redundant for these specific flows.
+
+### From Celery to Orchestrator Activities
+
+Your atomic tasks (the "Line Cooks") stay the same, but the decorators change. No more complex adapter logic is needed to chain them.
+
+```python
+# Before: @celery_app.task(...)
+@workflow.activity # Temporal/Hatchet decorator
+async def dispatch_agent(agent_name: str, room_name: str):
+    return await create_livekit_dispatch(...)
+
+@workflow.activity
+async def summarize_transcript(transcript: str):
+    return await llm_call(transcript)
+```
+
+### The Orchestrator Workflow
+
+The "Manager" is a single Python function that looks like a normal script. The engine automatically saves every step, allowing it to pause for days without consuming RAM or CPU.
+
+```python
+@workflow.run
+async def process_debtor(self, debtor_id: str, room_name: str):
+    # 1. Start the LiveKit Agent
+    await workflow.execute_activity(dispatch_agent, "agent_1", room_name)
+
+    # 2. PAUSE: Wait for LiveKit Webhook (0 memory consumed)
+    await workflow.wait_condition(lambda: self.call_completed)
+
+    # 3. Summarize the call
+    summary = await workflow.execute_activity(summarize_transcript, self.transcript)
+
+    # 4. PAUSE: Wait for Payment Webhook (up to 7 days)
+    paid = await workflow.wait_condition(lambda: self.bill_paid, timeout=timedelta(days=7))
+
+    # 5. Branching logic
+    if not paid:
+        await workflow.execute_activity(dispatch_agent, "escalation_agent", room_name)
+```
+
+---
+
+## Part 2: Agentic Orchestration (LLM as Router)
+
+A newer pattern in 2026 is **Agentic Orchestration**. Instead of a hardcoded workflow, you give an LLM a goal and access to your Celery tasks as **Tools**.
+
+### How it Works
+1. **The State/Memory:** A database (PostgreSQL) holds the context.
+2. **The AI Orchestrator:** A framework like LangGraph or a custom ReAct loop.
+3. **The Workers (Celery):** Remain as the "dumb," reliable execution layer.
+
+### The Trade-offs
+
+| Criteria | Deterministic (Temporal/Hatchet) | AI Agent Orchestrator + Celery |
+| :--- | :--- | :--- |
+| **Flexibility** | **Low.** Hardcoded paths. | **Infinite.** Adapts to human behavior. |
+| **Reliability** | **100% Guaranteed.** | **Risky.** Potential hallucinations. |
+| **Cost** | **Dirt Cheap.** | **Expensive.** High token usage. |
+| **Observability** | **Perfect.** Clear code state. | **Murky.** Requires reading LLM "thoughts." |
+
+---
+
+## Part 3: The 2026 Industry Standard: Hybrid Orchestration
+
+For high-stakes workflows like debt collection, pure AI orchestration is too risky. The standard is **Hybrid Orchestration (State-Machine Guided Agents)**.
+
+- **The Skeleton is Deterministic:** Hardcoded rules (e.g., "Never call more than once a day").
+- **The Brain is AI:** Within those bounds, the AI decides the tactics.
+
+### Implementing "Pause and Wake Up" with LangGraph
+
+In LangGraph, you don't "sleep" the agent; you **checkpoint** it to a database and shut down. When a webhook arrives, you wake it up.
+
+#### 1. Define the Graph State
+```python
+class DebtorState(TypedDict):
+    room_name: str
+    status: str # "pending", "calling", "completed"
+    transcript: str | None
+```
+
+#### 2. The Graph Nodes & Routing
+The graph executes a step and then hits an `END` node to save state and exit memory.
+
+```python
+def route_next_step(state: DebtorState):
+    if state["status"] == "pending":
+        return "dispatch_call_node"
+    elif state["status"] == "calling":
+        return END # STOP THE GRAPH and save to Postgres
+    elif state["status"] == "webhook_received":
+        return "summarize_node"
+    return END
+```
+
+#### 3. The "Wake Up" Call (FastAPI)
+When the webhook hits, you update the state and resume the graph.
+
+```python
+@app.post("/webhooks/livekit")
+async def livekit_webhook(request: Request):
+    # 1. Identify the thread
+    config = {"configurable": {"thread_id": payload["room"]}}
+    
+    # 2. Inject data and update status
+    await graph.aupdate_state(config, {
+        "status": "webhook_received", 
+        "transcript": payload["transcript"]
+    })
+    
+    # 3. Resume the Graph
+    async for event in graph.astream(None, config):
+        pass
+```
+
+## Summary
+
+In 2026, the choice is no longer just "Celery vs. Temporal." It's about where you place the intelligence:
+1. **Durable Execution (Temporal/Hatchet):** For rigid, mission-critical business logic.
+2. **Agentic Orchestration (LangGraph):** For adaptive, human-centric processes.
+3. **Hybrid (Standard):** Deterministic guardrails with an AI brain, backed by atomic Celery workers.
+
+Related Concepts:
+- [[durable-execution]]
+- [[langgraph-checkpointing]]
+- [[modern-distributed-workflow-orchestration]]

@@ -1,0 +1,314 @@
+---
+title: "Multi-agent and sub-agent patterns in Codex — a practical guide"
+sidebar_label: "Multi-agent patterns"
+authors: [frank]
+tags:
+  - codex
+  - agents
+  - AGENTS.md
+  - skills
+  - multi-agent
+  - sub-agent
+  - tutorial
+description: "How to structure a project with AGENTS.md, skills, multiple agents, and sub-agents. Includes project layout, config.toml, and when to use each pattern."
+keywords:
+  - codex
+  - AGENTS.md
+  - multi-agent
+  - sub-agent
+  - config.toml
+  - agent orchestration
+image: https://i.imgur.com/mErPwqL.png
+date: 2026-03-22
+draft: false
+enableComments: true # for Gisqus
+---
+
+# Multi-agent and sub-agent patterns in Codex
+
+> A practical overview of how Skills, `AGENTS.md`, multiple agents, and sub-agents fit together, and how to trigger each one.
+
+<!--truncate-->
+
+## The three layers every project needs
+
+Before running any agent, understand that there are three distinct concepts that are often confused:
+
+| Layer | What it is | Lives in | Read by |
+| --- | --- | --- | --- |
+| **Skill** | Reusable behavior, style rules, workflows, conventions | `.agents/skills/` or skill library | Agent, on keyword trigger |
+| **AGENTS.md** | Instructions for a specific agent, including scope, env, and done criteria | Project filesystem (hierarchical) | Any agent entering that directory |
+| **Agent / Sub-agent** | A running Codex instance doing actual work | Runtime (spawned by CLI or orchestrator) | N/A, it is the worker |
+
+Think of it this way: **Skills shape how an agent thinks. `AGENTS.md` tells it where it is and what its job is. The agent is the thing actually doing the work.**
+
+## Project structure
+
+A well-structured project separates these three layers cleanly:
+
+```text
+project/
+├── AGENTS.md                          ← project-wide: env, commands, structure
+├── .agents/
+│   └── skills/
+│       ├── python-conventions/
+│       │   └── SKILL.md               ← reusable style rules (portable)
+│       └── code-reviewer/
+│           └── SKILL.md               ← reusable review workflow
+└── agents/
+    ├── AGENTS.md                      ← shared rules for all sub-agents
+    ├── test-data-collector/
+    │   └── AGENTS.md                  ← scope, output format, done criteria
+    ├── code-reviewer/
+    │   └── AGENTS.md                  ← what to review, where to write output
+    └── doc-writer/
+        └── AGENTS.md                  ← what to document, output location
+```
+
+### Root `AGENTS.md` — always loaded
+
+The root `AGENTS.md` is loaded by every agent, every time. It contains facts about the project that are always true:
+
+```markdown
+## Environment
+- Python 3.11 via venv
+  - Activate: `source .venv/bin/activate`
+  - Install:  `pip install -r requirements.txt`
+
+## Commands
+- Tests:   `pytest -v`
+- Lint:    `ruff check .`
+- Format:  `ruff format .`
+
+## Structure
+- Source: `/src`
+- Tests:  `/tests`
+- Config: `.env` (copy from `.env.example`, never commit)
+
+## Rules
+- Never commit directly to main
+- Never modify files outside your designated scope
+```
+
+### Per-agent `AGENTS.md` — scoped instructions
+
+Each agent's folder gets its own `AGENTS.md` with three essential sections:
+
+```markdown
+## Job
+[One sentence: what this agent does and nothing else]
+
+## Scope
+- Read from:  [directories this agent may read]
+- Write to:   [directories this agent may write]
+- Never touch: [explicit exclusions]
+
+## Done when
+- [Specific, verifiable completion criteria, not "when finished"]
+```
+
+Example for `test-data-collector/AGENTS.md`:
+
+```markdown
+## Job
+Generate and validate fixture files for all models in /src/models.
+
+## Scope
+- Read from:  /src/models
+- Write to:   /tests/fixtures, /tests/data
+- Never touch: production code, config files, .env
+
+## Output format
+- One JSON file per model entity (e.g. user.json, product.json)
+- Minimum 5 examples per file, including at least 1 edge case (null, empty, unicode)
+
+## Done when
+- Every file in /src/models has a corresponding fixture in /tests/fixtures
+- Each fixture passes JSON schema validation
+```
+
+## Skills vs agent `AGENTS.md` — the boundary
+
+This is where most confusion happens. The rule is simple:
+
+**Skills carry your standards. `AGENTS.md` carries the project's reality.**
+
+| Belongs in a **Skill** | Belongs in **`AGENTS.md`** |
+| --- | --- |
+| "Always use type hints on public functions" | `source .venv/bin/activate` |
+| "Prefer `pathlib` over `os.path`" | `pytest` is the test runner |
+| "No mutable default arguments" | Output goes to `/tests/fixtures` |
+| "Use `ruff` for linting" | This project uses Django 4.2 |
+| "Prefer dataclasses over plain dicts" | `.env.example` has the required keys |
+
+A `python-conventions` skill lives in `.agents/skills/` and applies to every Python project you work on. A venv activation path lives in `AGENTS.md` because it's specific to this repo.
+
+## Multiple agents vs sub-agents
+
+These are two different runtime patterns, not two names for the same thing.
+
+### Multiple agents — flat, you coordinate
+
+Each agent is independent and equal. You spawn them, they report back to you, and you combine the results.
+
+```text
+You
+├── Agent A → reviews /src/auth  → report A
+├── Agent B → reviews /src/api   → report B
+└── Agent C → reviews /src/db    → report C
+
+You read all three reports and combine them yourself.
+```
+
+How to run in Codex CLI:
+
+```bash
+# Run each in parallel from your terminal (3 separate calls)
+codex exec --cd agents/code-reviewer \
+  "Review /src/auth and write findings to /tmp/review-auth.md" &
+
+codex exec --cd agents/code-reviewer \
+  "Review /src/api and write findings to /tmp/review-api.md" &
+
+codex exec --cd agents/code-reviewer \
+  "Review /src/db and write findings to /tmp/review-db.md" &
+
+wait
+# Now combine /tmp/review-*.md yourself
+```
+
+### Sub-agents — hierarchy, orchestrator coordinates
+
+One orchestrator agent receives your instruction, breaks it up, spawns child agents, collects their results, and returns one synthesized answer to you.
+
+```text
+You
+ └── Orchestrator
+      ├── spawns: test-data-collector → results
+      ├── spawns: code-reviewer       → results
+      └── spawns: doc-writer          → results
+           all results → Orchestrator → one final answer → You
+```
+
+How to trigger in plain English:
+
+```bash
+codex "Review the entire codebase.
+Spawn separate agents for auth, api, and db modules.
+Return a single consolidated report."
+```
+
+The orchestrator decides how to delegate. You do not manage the child agents yourself.
+
+## `config.toml` — named profiles
+
+Defining named profiles in `~/.codex/config.toml` is the cleanest way to reuse agent configs without remembering folder paths:
+
+```toml
+[[agents]]
+name = "test-data-collector"
+instructions = "agents/test-data-collector/AGENTS.md"
+sandbox_mode = "workspace-write"
+model = "gpt-5.1"
+
+[[agents]]
+name = "code-reviewer"
+instructions = "agents/code-reviewer/AGENTS.md"
+sandbox_mode = "read-only"          # reviewers should never write!
+
+[[agents]]
+name = "doc-writer"
+instructions = "agents/doc-writer/AGENTS.md"
+sandbox_mode = "workspace-write"
+```
+
+Then trigger by profile name:
+
+```bash
+codex exec --profile test-data-collector \
+  "Generate fixtures for all models in /src/models"
+```
+
+## How `AGENTS.md` loads — the hierarchy rule
+
+Codex walks up from the working directory and loads every `AGENTS.md` it finds, from root to current. The nearest file wins on conflicts:
+
+```text
+project/AGENTS.md                              ← loaded first (lowest priority)
+project/agents/AGENTS.md                       ← loaded second
+project/agents/test-data-collector/AGENTS.md  ← loaded last (highest priority)
+```
+
+This means per-agent instructions can override shared rules, which can override project-wide defaults, deliberately and cleanly.
+
+Use `--cd` to control which directory Codex treats as the working directory:
+
+```bash
+# Loads all three AGENTS.md files in the hierarchy above
+codex --cd agents/test-data-collector "Run your job"
+```
+
+## When to use which pattern
+
+```text
+Use a Skill when:                     Use agents/xxx/AGENTS.md when:
+──────────────────────────────────    ──────────────────────────────────
+Coding conventions (style, types)     Scoping what an agent can touch
+Reusable workflows (review, research) Defining the output contract
+Rules that apply across all projects  Env setup specific to this repo
+Triggered implicitly by keywords      Loaded explicitly via --cd / profile
+
+
+Use multiple agents when:             Use sub-agents when:
+──────────────────────────────────    ──────────────────────────────────
+Tasks are truly independent           Tasks depend on each other's output
+You want to control each step         You want fully automated delegation
+Simple parallel workloads             Complex reasoning chains
+Low trust in orchestrator logic       Orchestrator has good judgment
+```
+
+## Putting it all together
+
+A full session for a Python project might look like this:
+
+```bash
+# 1. Generate test fixtures (sub-agent, scoped to fixtures folder)
+codex exec --profile test-data-collector \
+  "Generate fixtures for all models in /src/models"
+
+# 2. Run parallel code review (multiple agents, you coordinate)
+codex exec --profile code-reviewer "Review /src/auth" > /tmp/auth.md &
+codex exec --profile code-reviewer "Review /src/api"  > /tmp/api.md &
+wait
+
+# 3. Write docs from review output (sub-agent, reads /tmp/*.md)
+codex exec --profile doc-writer \
+  "Write API documentation from /tmp/auth.md and /tmp/api.md"
+```
+
+Three distinct patterns, each using the right tool: a scoped sub-agent, parallel independent agents, and a scoped sub-agent again, all driven by named profiles pointing at the appropriate `AGENTS.md`.
+
+## Quick reference
+
+```text
+~/.codex/config.toml           — named profiles (portable, reusable)
+project/AGENTS.md              — always loaded, project-wide facts
+project/agents/AGENTS.md       — shared sub-agent rules
+project/agents/xxx/AGENTS.md   — scoped: job, scope, done criteria
+project/.agents/skills/        — reusable Skills (triggered by keyword)
+
+codex --cd agents/xxx "..."         — load agent by directory
+codex exec --profile xxx "..."      — load agent by named profile
+codex "Spawn agents for X and Y"    — natural language orchestration
+```
+
+## Related Concepts
+
+- [[AGENTS]]
+- [[skills]]
+- [[agent-orchestration]]
+- [[promptops]]
+
+## Source
+
+Captured from user-provided markdown on 2026-03-22.

@@ -1,0 +1,245 @@
+---
+authors:
+  - frank
+tags:
+  - promptops
+  - ai architect
+  - prompt engineering
+description: PromptOps mastery roadmap — from AI engineer to architect
+keywords:
+  - promptops
+  - ai architect
+  - skills
+image: https://i.imgur.com/mErPwqL.png
+date: 2026-03-20
+draft: false
+enableComments: true # for Gisqus
+---
+
+# PromptOps Mastery Roadmap: AI Engineer to Architect Guide
+
+> Captured from a public Claude artifact: https://claude.ai/public/artifacts/88e0a8b7-1dee-4401-b3a3-54475d959538
+
+> Personal note — the path from AI Engineer to AI Architect
+
+* * *
+
+## The Three Areas of Mastery
+
+```
+Area 1: Skill Design        → How to build reliable PromptOps skills
+Area 2: Workflow Architecture → How to connect skills across a project
+Area 3: Agent Behavior      → How to understand and prevent agent failure
+```
+
+Master all three. Most people stop at Area 1.
+
+<!--truncate-->
+
+* * *
+
+## Area 1 — Skill Design
+
+_"Can I write a skill that works reliably, every time, without babysitting?"_
+
+### What You're Learning
+
+How to write skills that trigger correctly, output consistently, and don't overlap or conflict with each other.
+
+### The Progression
+
+**Level 1 — Copy and understand**
+
+*   Study existing skills line by line
+*   Understand why each section exists (frontmatter, description, rules)
+*   Ask: _"what would break if I removed this line?"_
+
+**Level 2 — Write from scratch**
+
+*   Build a skill for something you do repeatedly
+*   Test it with 5 different trigger phrases — does it fire correctly?
+*   Test the output — does it always follow the format, or does it drift?
+
+**Level 3 — Refine against failure**
+
+*   Find where the skill produces bad output
+*   Diagnose: is it the description (triggering wrong) or the body (outputting wrong)?
+*   Fix one thing at a time, re-test
+
+**Level 4 — Skill architecture**
+
+*   Design a set of skills that work together without overlapping
+*   Define clear boundaries: where does `recap` end and `handoff` begin?
+*   Build a skill index so you can reason about the whole library
+
+### Key Concepts to Master
+
+*   **Trigger design** — the description IS the trigger mechanism
+*   **Persona vs. rules** — persona shapes tone, rules enforce structure
+*   **Output contracts** — every skill should have a predictable, testable output format
+*   **Boundary definition** — skills fail when their scope overlaps
+
+### Practice Exercise
+
+Take any skill you've built. Delete the Rules section. Run it 10 times. Notice what degrades. Now you know what Rules actually do.
+
+* * *
+
+## Area 2 — Workflow Architecture
+
+_"Do I know which skill to use, when, and in what sequence?"_
+
+### What You're Learning
+
+How to design a complete project workflow where skills connect cleanly across the full lifecycle — from idea to shipping.
+
+### The Progression
+
+**Level 1 — Single skill fluency**
+
+*   Run each skill manually until the trigger feels natural
+*   Know without thinking: _"this moment calls for capture, not recap"_
+
+**Level 2 — Phase mapping**
+
+*   Map your project into phases (Explore → Design → Build → Review → Ship)
+*   Assign skills to phase transitions, not just ad-hoc moments
+*   Build your personal workflow loop (you started this today)
+
+**Level 3 — Multi-agent orchestration**
+
+*   Design a project where 2+ agents hand off to each other
+*   Practice writing handoff briefs that a cold agent can pick up without questions
+*   Measure: how many clarifying questions does the new agent ask? (Target: zero)
+
+**Level 4 — Workflow resilience**
+
+*   What happens when you skip a skill? Which failures follow?
+*   Build recovery paths: _"if I forgot to ADR a decision, here's how I reconstruct it"_
+*   Design for interruption: any session should be resumable in under 2 minutes
+
+### Key Concepts to Master
+
+*   **Phase transitions** — the highest-risk moments for intent loss
+*   **Backward vs. forward facing** — recap looks back, handoff/capture look forward
+*   **Permanent vs. ephemeral memory** — ADR lives forever, recap lives one session
+*   **The workflow loop** — a cycle, not a checklist
+
+### Your Current Workflow Loop (keep refining this)
+
+```
+Idea surfaces
+  → technical-review   (before building)
+  → capture            (if not building now)
+
+Building
+  → adr                (after each major decision)
+  → recap              (every 30 min)
+
+Phase ends
+  → handoff            (before switching agent/phase)
+```
+
+### Practice Exercise
+
+Run a real feature from idea to working code using only your skill library. Log every moment you reached for a skill but it didn't exist yet. Those gaps are your next skills to build.
+
+* * *
+
+## Area 3 — Agent Behavior
+
+_"Do I understand WHY agents fail, so I can prevent it — not just react to it?"_
+
+### What You're Learning
+
+The underlying failure modes of LLMs in long projects, so your PromptOps layer is designed to prevent them, not just paper over them.
+
+### The Four Failure Modes
+
+**1. Context Rot** The context window fills with irrelevant history. The agent starts referencing abandoned ideas, old filenames, dead approaches. _Prevented by:_`recap` → fresh session
+
+**2. Sycophancy** The agent agrees with your ideas by default. It validates bad decisions because you sound confident. _Prevented by:_`technical-review` with explicit anti-compliment rules
+
+**3. Intent Drift** Over many sessions and agents, what gets built slowly diverges from what you actually wanted. No single mistake — just gradual drift. _Prevented by:_`adr` as permanent intent anchors + `handoff` to preserve decisions across agents
+
+**4. Decision Amnesia** The agent re-opens decisions you already made and closed. It suggests Redux when you've already committed to Zustand. _Prevented by:_`adr` "Do NOT Re-litigate" section + `handoff` "Decisions Already Made" section
+
+### The Progression
+
+**Level 1 — Recognize failure modes in the wild**
+
+*   Learn to identify which failure mode is happening in real time
+*   Context rot looks like: agent referencing old filenames or abandoned approaches
+*   Sycophancy looks like: "Great idea! Here are some minor considerations..."
+*   Intent drift looks like: the last 200 lines of code don't match the original plan
+*   Decision amnesia looks like: agent suggesting an option you already rejected
+
+**Level 2 — Trace failures to root cause**
+
+*   When something goes wrong, don't just fix the output — diagnose the layer
+*   Was it a bad skill? (Area 1) A missing workflow step? (Area 2) Or a fundamental agent failure mode? (Area 3)
+
+**Level 3 — Design preventatively**
+
+*   Build your PromptOps layer to prevent failures before they happen
+*   Every rule in every skill should map to a specific failure mode it prevents
+*   If you can't explain why a rule exists, it probably shouldn't be there
+
+**Level 4 — Model the agent's "mental state"**
+
+*   Develop intuition for how full the context window is at any moment
+*   Know when to flush and restart before quality degrades
+*   Understand what information the agent is and isn't carrying into each response
+
+### Key Concepts to Master
+
+*   **Context window as a resource** — it's finite, manage it deliberately
+*   **Sycophancy as a design problem** — you must explicitly instruct the agent to push back
+*   **Intent fidelity** — the north star metric: does what got built match what you meant?
+*   **The cost of not preventing** — 3 weeks of wrong code is a failure of Area 3, not Area 1
+
+### Practice Exercise
+
+Let a session run for 2 hours without any recap or skill use. Then start a fresh session and compare output quality. That delta is context rot — now you know what you're preventing.
+
+* * *
+
+## The Mastery Arc
+
+```
+Month 1    Build and test skills            (Area 1)
+Month 2    Run real projects through skills  (Area 2)
+Month 3    Diagnose and prevent failures     (Area 3)
+Month 4+   Design new skills from failure    (All three)
+```
+
+The loop never ends. Every project teaches you a failure mode you hadn't seen. Every failure mode becomes a new skill or rule.
+
+* * *
+
+## The Architect Mindset Shift
+
+| Junior AI Engineer | Senior AI Architect |
+| --- | --- |
+| Fixes bad output | Prevents bad output |
+| Uses skills reactively | Designs workflows proactively |
+| Blames the model | Diagnoses the layer |
+| Manages one session | Manages a project lifecycle |
+| Knows what skills do | Knows why they exist |
+
+* * *
+
+## One Sentence Per Area
+
+> **Area 1:** A skill is a contract — it must trigger predictably and output consistently, every time.
+
+> **Area 2:** A workflow is a lifecycle — every phase transition is a moment of intent loss you must design for.
+
+> **Area 3:** An agent is a system with known failure modes — your job is to build a layer that prevents them.
+
+* * *
+
+## Resources
+
+- Source artifact: https://claude.ai/public/artifacts/88e0a8b7-1dee-4401-b3a3-54475d959538
+

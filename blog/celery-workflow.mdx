@@ -14,6 +14,8 @@ enableComments: true # for Gisqus
 
 # Orchestrating DAG-based task workflow in Celery
 
+> **Note (2026):** While this post covers Celery's native workflow tools, for complex, long-running, or AI-agentic business processes, see [[modern-distributed-workflow-orchestration]] and [[agentic-vs-deterministic-orchestration]].
+
 What's **workflow** in Celery?
 
 In **Celery**, **workflow** is composed of multiple **tasks**, and a **task** is deemed to be a universal unit of the **workflow**, as a function in the program. In **Celery**, it's recommended to divide a long-running task into multiple short-running tasks. **workflow** comes out to help ease the orchestrations of the work, such as `chain()` three tasks.
