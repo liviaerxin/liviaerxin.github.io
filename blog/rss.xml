@@ -4,7 +4,7 @@
         <title>Frank' Wiki Blog</title>
         <link>https://liviaerxin.github.io/blog</link>
         <description>Frank' Wiki Blog</description>
-        <lastBuildDate>Wed, 25 Mar 2026 02:47:26 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 25 Mar 2026 02:58:44 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></title>
             <link>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</link>
             <guid>https://liviaerxin.github.io/blog/end-to-end-ml-deployment</guid>
-            <pubDate>Wed, 25 Mar 2026 02:47:26 GMT</pubDate>
+            <pubDate>Wed, 25 Mar 2026 02:58:44 GMT</pubDate>
             <description><![CDATA[Building an End-to-End ML Deployment Pipeline with MLflow, FastAPI, and Docker]]></description>
             <content:encoded><![CDATA[<p>Deploying machine learning models is more than just training — it’s about tracking, versioning, serving, and monitoring. In this post, I’ll walk you through how I built a production-ready ML pipeline using:</p>
 <ul>
@@ -92,6 +92,69 @@
             <category>backend</category>
         </item>
         <item>
+            <title><![CDATA[Engineering LLM-Assisted Web Scraping: From Agentic Discovery to Deterministic Extraction]]></title>
+            <link>https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture</link>
+            <guid>https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture</guid>
+            <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[A comparative analysis of three architectural approaches for automated web scraping using LLM agents and MCP tools, with specific best practice recommendations.]]></description>
+            <content:encoded><![CDATA[<blockquote>
+<p>The most robust scraping architecture uses an LLM Agent for the "Discovery Phase" to map endpoints, but relies on deterministic scripts for the actual data extraction.</p>
+</blockquote>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="the-problem">The Problem<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#the-problem" class="hash-link" aria-label="Direct link to The Problem" title="Direct link to The Problem">​</a></h2>
+<p><strong>User's Messy Thought:</strong> Use an LLM agent (via MCP tools) to either reverse engineer a web page to write a scraping script, or agentically control a browser to scroll, intercept network endpoints, and save data iteratively.</p>
+<p><strong>Standard Industry Terminology:</strong></p>
+<ul>
+<li><strong>Problem:</strong> Automated Extraction of Dynamically Loaded Web Content (Infinite Scroll/Pagination).</li>
+<li><strong>Core Technologies:</strong> LLM-Assisted Browser Automation, API Reverse Engineering, Network Interception (XHR/Fetch logging), Model Context Protocol (MCP), Autonomous Agents.</li>
+<li><strong>System Objectives:</strong> To design an architecture where an AI agent dynamically discovers data sources (Hidden APIs) and extracts target data (e.g., comments) from web applications that require user interaction (scrolling).</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="possible-approaches">Possible Approaches<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#possible-approaches" class="hash-link" aria-label="Direct link to Possible Approaches" title="Direct link to Possible Approaches">​</a></h2>
+<p>Based on industry standards, there are three primary architectural approaches to solve this.</p>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="approach-1-agent-assisted-reverse-engineering--code-generation-the-script-builder">Approach 1: Agent-Assisted Reverse Engineering &amp; Code Generation (The "Script Builder")<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#approach-1-agent-assisted-reverse-engineering--code-generation-the-script-builder" class="hash-link" aria-label="Direct link to Approach 1: Agent-Assisted Reverse Engineering &amp; Code Generation (The &quot;Script Builder&quot;)" title="Direct link to Approach 1: Agent-Assisted Reverse Engineering &amp; Code Generation (The &quot;Script Builder&quot;)">​</a></h3>
+<ul>
+<li><strong>How it works:</strong> The LLM agent acts as a developer. Using an MCP tool hooked into Playwright/Puppeteer, it navigates to the page and dumps the network logs (HAR file or XHR requests) after an initial scroll. The agent analyzes the network traffic, identifies the backend GraphQL/REST API returning the comments (in JSON format), and figures out the pagination mechanism (e.g., cursor tokens, page offsets). The agent then writes a standalone, deterministic Python or Node.js script that queries the API directly, bypassing the browser entirely.</li>
+<li><strong>Execution Phase:</strong> You run the generated script directly. The LLM is out of the loop.</li>
+</ul>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="approach-2-interactive-browser-automation-with-network-interception-the-scrolling-listener">Approach 2: Interactive Browser Automation with Network Interception (The "Scrolling Listener")<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#approach-2-interactive-browser-automation-with-network-interception-the-scrolling-listener" class="hash-link" aria-label="Direct link to Approach 2: Interactive Browser Automation with Network Interception (The &quot;Scrolling Listener&quot;)" title="Direct link to Approach 2: Interactive Browser Automation with Network Interception (The &quot;Scrolling Listener&quot;)">​</a></h3>
+<ul>
+<li><strong>How it works:</strong> The LLM agent actively controls a headless browser session. An MCP tool exposes browser actions (<code>scroll_down()</code>, <code>wait()</code>) and a network listener (<code>get_intercepted_json()</code>). The browser is configured to intercept and capture all responses matching a specific pattern (e.g., <code>*api/v1/comments*</code>).</li>
+<li><strong>Execution Phase:</strong> The agent operates in a continuous loop: command a scroll <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em"></span><span class="mrel">→</span></span></span></span> the website's JS triggers the API <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em"></span><span class="mrel">→</span></span></span></span> the MCP tool captures the raw JSON response <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em"></span><span class="mrel">→</span></span></span></span> the agent saves the data <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em"></span><span class="mrel">→</span></span></span></span> repeat until no more comments load.</li>
+</ul>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="approach-3-dom-parsing-autonomous-agent-the-human-like-browser">Approach 3: DOM-Parsing Autonomous Agent (The "Human-Like Browser")<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#approach-3-dom-parsing-autonomous-agent-the-human-like-browser" class="hash-link" aria-label="Direct link to Approach 3: DOM-Parsing Autonomous Agent (The &quot;Human-Like Browser&quot;)" title="Direct link to Approach 3: DOM-Parsing Autonomous Agent (The &quot;Human-Like Browser&quot;)">​</a></h3>
+<ul>
+<li><strong>How it works:</strong> The agent does not look at network traffic at all. Instead, it relies on an Accessibility Tree (A11y), DOM snapshots, or Vision (screenshots) via MCP.</li>
+<li><strong>Execution Phase:</strong> The agent looks at the page, reads the text of the loaded comments, parses them into a JSON structure via prompt extraction, commands the browser to scroll down, waits for rendering, looks at the new DOM, deduplicates against old comments, and repeats.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="compare-trade-offs">Compare Trade-offs<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#compare-trade-offs" class="hash-link" aria-label="Direct link to Compare Trade-offs" title="Direct link to Compare Trade-offs">​</a></h2>
+<table><thead><tr><th style="text-align:left">Metric</th><th style="text-align:left">Approach 1: Script Builder</th><th style="text-align:left">Approach 2: Scrolling Listener</th><th style="text-align:left">Approach 3: Human-like Browser</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Scalability</strong></td><td style="text-align:left"><strong>High:</strong> Lightweight HTTP requests.</td><td style="text-align:left"><strong>Low:</strong> Heavy headless browser.</td><td style="text-align:left"><strong>Very Low:</strong> Massive token context.</td></tr><tr><td style="text-align:left"><strong>Latency</strong></td><td style="text-align:left"><strong>Low:</strong> Bypasses UI rendering.</td><td style="text-align:left"><strong>Medium:</strong> Must wait for DOM rendering.</td><td style="text-align:left"><strong>High:</strong> Wait for rendering + LLM inference.</td></tr><tr><td style="text-align:left"><strong>Complexity</strong></td><td style="text-align:left"><strong>High:</strong> Must decode auth/signatures.</td><td style="text-align:left"><strong>Medium:</strong> Native frontend handles auth.</td><td style="text-align:left"><strong>Low (Setup) / High (Maintain)</strong></td></tr><tr><td style="text-align:left"><strong>Robustness</strong></td><td style="text-align:left"><strong>Medium:</strong> Deterministic but schema-sensitive.</td><td style="text-align:left"><strong>High:</strong> Resilient to UI changes.</td><td style="text-align:left"><strong>Low:</strong> Susceptible to layout shifts.</td></tr><tr><td style="text-align:left"><strong>Cost</strong></td><td style="text-align:left"><strong>Low:</strong> LLM used once for discovery.</td><td style="text-align:left"><strong>High:</strong> LLM in the execution loop.</td><td style="text-align:left"><strong>Very High:</strong> Continuous parsing.</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="industry-best-practices--recommendations">Industry Best Practices &amp; Recommendations<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#industry-best-practices--recommendations" class="hash-link" aria-label="Direct link to Industry Best Practices &amp; Recommendations" title="Direct link to Industry Best Practices &amp; Recommendations">​</a></h2>
+<p>As a senior systems engineer, I recommend implementing <strong>a hybrid architecture utilizing Approach 1 for production, and falling back to Approach 2 for highly-secured targets.</strong></p>
+<ol>
+<li><strong>Decouple Discovery from Extraction:</strong> Do not use an LLM Agent to perform the <em>actual</em> scraping job on a continuous basis. Use the MCP-powered Agent exclusively for the <strong>Discovery Phase</strong> to map the endpoints and generate deterministic scraping code.</li>
+<li><strong>Rely on Structured APIs over DOM:</strong> Always prioritize intercepting network traffic (JSON) over parsing the DOM/HTML. Fetching raw JSON from an intercepted API call ensures structured, clean data without needing complex regex or LLM parsing.</li>
+<li><strong>The "Puppeteer/Playwright Route" for Anti-Bot (Approach 2 implementation):</strong> If the target site uses heavy protection (Cloudflare, Datadome), use Approach 2, but <strong>remove the LLM from the execution loop.</strong> Have the LLM write a Playwright script that sets up <code>page.route()</code>, scrolls the page using a simple <code>while</code> loop, and writes intercepted JSON to disk. This leverages the browser for auth while keeping execution fast and cheap.</li>
+<li><strong>Handling Infinite Scroll in Code:</strong> Avoid arbitrary timeouts (<code>sleep(2)</code>). Instead, hook into network idle states or wait for DOM mutations (e.g., a "loading..." spinner disappearing) to minimize race conditions.</li>
+</ol>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="related-concepts">Related Concepts<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#related-concepts" class="hash-link" aria-label="Direct link to Related Concepts" title="Direct link to Related Concepts">​</a></h2>
+<ul>
+<li>[[mcp-model-context-protocol]]</li>
+<li>[[browser-automation]]</li>
+<li>[[reverse-engineering]]</li>
+<li>[[deterministic-vs-agentic-execution]]</li>
+<li>[[anti-bot-evasion]]</li>
+</ul>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="source">Source<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#source" class="hash-link" aria-label="Direct link to Source" title="Direct link to Source">​</a></h2>
+<p>Chat session — 2026-03-24</p>]]></content:encoded>
+            <category>web-scraping</category>
+            <category>llm-agents</category>
+            <category>mcp</category>
+            <category>browser-automation</category>
+            <category>systems-architecture</category>
+        </item>
+        <item>
             <title><![CDATA[Agentic vs. Deterministic Orchestration: The 2026 Perspective]]></title>
             <link>https://liviaerxin.github.io/blog/agentic-vs-deterministic-orchestration</link>
             <guid>https://liviaerxin.github.io/blog/agentic-vs-deterministic-orchestration</guid>
@@ -158,83 +221,6 @@
             <category>celery</category>
             <category>temporal</category>
             <category>langgraph</category>
-        </item>
-        <item>
-            <title><![CDATA[Engineering LLM-Assisted Web Scraping: From Agentic Discovery to Deterministic Extraction]]></title>
-            <link>https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture</link>
-            <guid>https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture</guid>
-            <pubDate>Mon, 23 Mar 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[An architectural evaluation of using LLM agents and MCP tools for automated data extraction from dynamic web applications.]]></description>
-            <content:encoded><![CDATA[<blockquote>
-<p>The most robust scraping architecture uses an LLM Agent for the "Discovery Phase" to map endpoints, but relies on deterministic scripts for the actual data extraction.</p>
-</blockquote>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="context">Context<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#context" class="hash-link" aria-label="Direct link to Context" title="Direct link to Context">​</a></h2>
-<p>A deep dive into the solution space for automated data extraction using LLM agents (via MCP tools). The goal is to move beyond "messy thoughts" about browser control into a formal systems architecture evaluation for handling infinite-scroll, dynamically loaded web content.</p>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="key-insights">Key Insights<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#key-insights" class="hash-link" aria-label="Direct link to Key Insights" title="Direct link to Key Insights">​</a></h2>
-<ul>
-<li><strong>Discovery vs. Extraction:</strong> Decoupling these phases is critical. Use agents to find the "how," but use code to do the "what."</li>
-<li><strong>Network Interception &gt; DOM Parsing:</strong> Intercepting raw JSON from backend APIs is significantly more robust than parsing obfuscated CSS or HTML structures.</li>
-<li><strong>The "Scrolling Listener" Pattern:</strong> Using a browser to handle authentication and bot protection while an interceptor captures data is a creative way to bypass complex API signatures.</li>
-<li><strong>Deterministic Fallback:</strong> Always aim to move the LLM out of the execution loop once the pattern is identified to reduce cost and latency.</li>
-</ul>
-<hr>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="1-formalizing-the-problem">1. Formalizing the Problem<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#1-formalizing-the-problem" class="hash-link" aria-label="Direct link to 1. Formalizing the Problem" title="Direct link to 1. Formalizing the Problem">​</a></h2>
-<p>When we talk about using an LLM to "scrape a site," we are often looking at a spectrum of complexity. We can formalize the objective as:</p>
-<p><strong>Automated Extraction of Dynamically Loaded Web Content.</strong>
-This involves LLM-Assisted Browser Automation, API Reverse Engineering, and Network Interception (XHR/Fetch logging) via the <strong>Model Context Protocol (MCP)</strong>.</p>
-<hr>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="2-architectural-approaches">2. Architectural Approaches<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#2-architectural-approaches" class="hash-link" aria-label="Direct link to 2. Architectural Approaches" title="Direct link to 2. Architectural Approaches">​</a></h2>
-<p>There are three primary ways to architect an agentic scraper in 2026:</p>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="approach-1-agent-assisted-reverse-engineering-the-script-builder">Approach 1: Agent-Assisted Reverse Engineering (The "Script Builder")<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#approach-1-agent-assisted-reverse-engineering-the-script-builder" class="hash-link" aria-label="Direct link to Approach 1: Agent-Assisted Reverse Engineering (The &quot;Script Builder&quot;)" title="Direct link to Approach 1: Agent-Assisted Reverse Engineering (The &quot;Script Builder&quot;)">​</a></h3>
-<p>The LLM agent acts as a developer. It uses an MCP tool to navigate a page, dumps the network logs (HAR), identifies the backend GraphQL/REST API, and figures out the pagination (cursor tokens, offsets).</p>
-<ul>
-<li><strong>Outcome:</strong> The agent writes a standalone, deterministic Python/Node.js script that queries the API directly.</li>
-<li><strong>Best for:</strong> High-volume, high-frequency extraction.</li>
-</ul>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="approach-2-interactive-browser-automation-the-scrolling-listener">Approach 2: Interactive Browser Automation (The "Scrolling Listener")<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#approach-2-interactive-browser-automation-the-scrolling-listener" class="hash-link" aria-label="Direct link to Approach 2: Interactive Browser Automation (The &quot;Scrolling Listener&quot;)" title="Direct link to Approach 2: Interactive Browser Automation (The &quot;Scrolling Listener&quot;)">​</a></h3>
-<p>The agent actively controls a headless browser. An MCP tool exposes actions like <code>scroll_down()</code> and a network listener like <code>get_intercepted_json()</code>. The browser is configured to intercept specific API patterns (e.g., <code>*api/v1/comments*</code>).</p>
-<ul>
-<li><strong>Outcome:</strong> The agent commands a scroll <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em"></span><span class="mrel">→</span></span></span></span> JS triggers API <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em"></span><span class="mrel">→</span></span></span></span> MCP captures JSON <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em"></span><span class="mrel">→</span></span></span></span> repeat.</li>
-<li><strong>Best for:</strong> Sites with complex bot protection where API signatures are hard to reverse-engineer.</li>
-</ul>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="approach-3-dom-parsing-autonomous-agent-the-human-like-browser">Approach 3: DOM-Parsing Autonomous Agent (The "Human-Like Browser")<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#approach-3-dom-parsing-autonomous-agent-the-human-like-browser" class="hash-link" aria-label="Direct link to Approach 3: DOM-Parsing Autonomous Agent (The &quot;Human-Like Browser&quot;)" title="Direct link to Approach 3: DOM-Parsing Autonomous Agent (The &quot;Human-Like Browser&quot;)">​</a></h3>
-<p>The agent relies on Accessibility Trees (A11y), DOM snapshots, or Vision (screenshots). It reads the text, parses it into JSON via prompts, scrolls, and deduplicates.</p>
-<ul>
-<li><strong>Outcome:</strong> Extremely high token usage and high fragility.</li>
-<li><strong>Best for:</strong> Extremely simple, one-off tasks where API access is blocked or non-existent.</li>
-</ul>
-<hr>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="3-trade-off-comparison">3. Trade-off Comparison<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#3-trade-off-comparison" class="hash-link" aria-label="Direct link to 3. Trade-off Comparison" title="Direct link to 3. Trade-off Comparison">​</a></h2>
-<table><thead><tr><th style="text-align:left">Metric</th><th style="text-align:left">Approach 1: Script Builder</th><th style="text-align:left">Approach 2: Scrolling Listener</th><th style="text-align:left">Approach 3: Human-like Browser</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Scalability</strong></td><td style="text-align:left"><strong>High:</strong> Lightweight HTTP requests.</td><td style="text-align:left"><strong>Low:</strong> Heavy headless browser.</td><td style="text-align:left"><strong>Very Low:</strong> Massive token context.</td></tr><tr><td style="text-align:left"><strong>Complexity</strong></td><td style="text-align:left"><strong>High:</strong> Must decode auth/signatures.</td><td style="text-align:left"><strong>Medium:</strong> Native frontend handles auth.</td><td style="text-align:left"><strong>Low (Setup) / High (Maintain)</strong></td></tr><tr><td style="text-align:left"><strong>Robustness</strong></td><td style="text-align:left"><strong>Medium:</strong> Deterministic but schema-sensitive.</td><td style="text-align:left"><strong>High:</strong> Resilient to UI changes.</td><td style="text-align:left"><strong>Low:</strong> Susceptible to layout shifts.</td></tr><tr><td style="text-align:left"><strong>Cost</strong></td><td style="text-align:left"><strong>Low:</strong> LLM used once for discovery.</td><td style="text-align:left"><strong>High:</strong> LLM in the execution loop.</td><td style="text-align:left"><strong>Very High:</strong> Continuous parsing.</td></tr></tbody></table>
-<hr>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="4-industry-best-practices--recommendations">4. Industry Best Practices &amp; Recommendations<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#4-industry-best-practices--recommendations" class="hash-link" aria-label="Direct link to 4. Industry Best Practices &amp; Recommendations" title="Direct link to 4. Industry Best Practices &amp; Recommendations">​</a></h2>
-<p>As a senior systems engineer, I recommend a hybrid architecture: <strong>Use Approach 1 for production, and fall back to Approach 2 for highly-secured targets.</strong></p>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="1-decouple-discovery-from-extraction">1. Decouple Discovery from Extraction<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#1-decouple-discovery-from-extraction" class="hash-link" aria-label="Direct link to 1. Decouple Discovery from Extraction" title="Direct link to 1. Decouple Discovery from Extraction">​</a></h3>
-<p>Do not use an LLM Agent to perform the <em>actual</em> scraping job on a continuous basis. Use the MCP-powered Agent exclusively for the <strong>Discovery Phase</strong> to map the endpoints and generate deterministic scraping code.</p>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="2-rely-on-structured-apis-over-dom">2. Rely on Structured APIs over DOM<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#2-rely-on-structured-apis-over-dom" class="hash-link" aria-label="Direct link to 2. Rely on Structured APIs over DOM" title="Direct link to 2. Rely on Structured APIs over DOM">​</a></h3>
-<p>Always prioritize intercepting network traffic (JSON) over parsing the DOM/HTML. Fetching raw JSON from an intercepted API call ensures structured, clean data without needing complex regex or LLM parsing.</p>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="3-the-puppeteerplaywright-route-for-anti-bot">3. The "Puppeteer/Playwright Route" for Anti-Bot<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#3-the-puppeteerplaywright-route-for-anti-bot" class="hash-link" aria-label="Direct link to 3. The &quot;Puppeteer/Playwright Route&quot; for Anti-Bot" title="Direct link to 3. The &quot;Puppeteer/Playwright Route&quot; for Anti-Bot">​</a></h3>
-<p>If a site uses heavy protection (Cloudflare, Datadome), use Approach 2 but <strong>remove the LLM from the execution loop.</strong> Have the LLM write a Playwright script that sets up <code>page.route()</code> to capture JSON and scrolls via a simple <code>while</code> loop. This leverages the browser for auth while keeping execution fast and cheap.</p>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="4-handling-infinite-scroll-in-code">4. Handling Infinite Scroll in Code<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#4-handling-infinite-scroll-in-code" class="hash-link" aria-label="Direct link to 4. Handling Infinite Scroll in Code" title="Direct link to 4. Handling Infinite Scroll in Code">​</a></h3>
-<p>Avoid arbitrary timeouts like <code>sleep(2)</code>. Instead, hook into network idle states or wait for DOM mutations (e.g., a "loading..." spinner disappearing) to minimize race conditions.</p>
-<hr>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="decisions--conclusions">Decisions / Conclusions<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#decisions--conclusions" class="hash-link" aria-label="Direct link to Decisions / Conclusions" title="Direct link to Decisions / Conclusions">​</a></h2>
-<p>Your idea of using an MCP tool to intercept endpoints while the agent triggers scrolls is highly effective for bypassing complex authentication. However, for an enterprise-grade system, the agent should use this method <em>once</em> to learn the behavior and then output a permanent Playwright script for repetitive gathering.</p>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="related-concepts">Related Concepts<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#related-concepts" class="hash-link" aria-label="Direct link to Related Concepts" title="Direct link to Related Concepts">​</a></h2>
-<ul>
-<li>[[mcp-model-context-protocol]]</li>
-<li>[[browser-automation]]</li>
-<li>[[reverse-engineering]]</li>
-<li>[[deterministic-vs-agentic-execution]]</li>
-<li>[[anti-bot-evasion]]</li>
-</ul>
-<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="source">Source<a href="https://liviaerxin.github.io/blog/llm-assisted-web-scraping-architecture#source" class="hash-link" aria-label="Direct link to Source" title="Direct link to Source">​</a></h2>
-<p>Chat session — 2026-03-23</p>]]></content:encoded>
-            <category>web-scraping</category>
-            <category>llm-agents</category>
-            <category>mcp</category>
-            <category>browser-automation</category>
-            <category>systems-architecture</category>
         </item>
         <item>
             <title><![CDATA[Modern Distributed Workflow Orchestration in 2026]]></title>
