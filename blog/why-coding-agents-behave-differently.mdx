@@ -1,0 +1,129 @@
+---
+authors:
+  - frank
+tags:
+  - coding-agents
+  - llm
+  - software-engineering
+  - architecture
+  - orchestration
+description: An analysis of why coding agents vary in performance and how structured "skills" act as a behavioral equalizer across different LLMs.
+keywords:
+  - coding agents
+  - agentic workflows
+  - llm tools
+  - software architecture
+  - skills
+image: https://i.imgur.com/mErPwqL.png
+date: 2026-03-23
+draft: false
+enableComments: true
+---
+
+# Why Coding Agents Behave Differently — And How “Skills” Quietly Standardize Them
+
+> Performance in agentic systems is co-defined by the model and the framework around it. Without structure, even a senior-level model behaves like an inconsistent junior engineer.
+
+<!--truncate-->
+
+## Context
+A reflection on the inconsistent behavior of LLM-based coding agents. When given the same task, different agents produce wildly different results—until they are forced to follow the same structured workflow. This post explores whether performance variance stems from the models themselves or the "skills" we impose on them.
+
+## Key Insights
+- **The Agent Formula:** `Agent = LLM (Reasoning) + Tools (Execution) + Skills (Workflow) + Runtime (Control Loop)`.
+- **Skills as Equalizers:** Standardizing workflows reduces behavioral variance between models, acting as a "behavioral equalizer."
+- **Layered Mental Model:** Treat the Model as the CPU, the Agent as the OS, and Skills as the Programs.
+- **Trade-offs of Rigidity:** Structured workflows improve reliability but can block creative shortcuts and increase maintenance overhead.
+
+---
+
+## The Real Problem: We’re Comparing the Wrong Thing
+
+Most assume that a "better model" automatically equals "better coding performance." However, in practice, you are interacting with an **agent system**, not just a raw model. 
+
+When two agents behave differently, it is rarely just because one model is "smarter." It's usually because:
+1. One agent has **superior tools**.
+2. One agent follows a **stricter workflow**.
+3. One agent has a **more disciplined execution loop**.
+
+---
+
+## Where the Variation Actually Comes From
+
+### 1. Tooling (The "I/O")
+The gap between an agent that can only output text and one that can run tests, inspect logs, and grep a codebase is massive. Tooling defines the "physics" of what the agent can interact with.
+
+### 2. Execution Strategy (The "Reasoning Loop")
+Different agents use different loops to process information:
+*   **ReAct-style:** Think $\rightarrow$ Act $\rightarrow$ Observe $\rightarrow$ Repeat.
+*   **Planner-based:** Decompose $\rightarrow$ Execute step-by-step.
+*   **Search-based:** Explore multiple paths and select the winner.
+
+### 3. “Skills” (The Hidden Workflow)
+What we often perceive as "intelligence" is often just a **reusable workflow**. For example, a "Debugging Skill" isn't just a prompt; it's a policy:
+1. Reproduce the issue with a test.
+2. Inspect logs.
+3. Form a hypothesis.
+4. Apply a fix.
+5. Validate.
+
+---
+
+## Observation: Skills as a Behavioral Equalizer
+
+When you enforce the same tools, workflows, and loops across different agents, the **behavioral variance drops significantly**. Outcomes become more consistent.
+
+However, skills are an **equalizer, not a replacement**. Even with identical skills, differences emerge in "high-horizon" tasks:
+*   Deep codebase understanding.
+*   Subtle bug detection in complex logic.
+*   Architecture-level algorithm design.
+
+In these cases, the **intrinsic reasoning capability of the model** still sets the ceiling.
+
+---
+
+## The Hidden Trade-offs
+
+Standardizing skills is powerful, but it comes with engineering costs:
+
+| Trade-off | The Benefit | The Cost |
+| :--- | :--- | :--- |
+| **Consistency vs. Flexibility** | Improved reliability and predictable outcomes. | Can block creative solutions or efficient shortcuts. |
+| **Control vs. Exploration** | Enforces correctness and reduces "hallucination" paths. | May miss better solution paths that fall outside the loop. |
+| **Reuse vs. Maintenance** | Modular, swappable skill libraries. | High overhead: prompt drift, versioning, and evaluation. |
+
+---
+
+## A New Mental Model for Engineers
+
+Instead of asking "Which model is better?", think in layers:
+
+*   **Model = CPU** (The raw processing power)
+*   **Agent = Operating System** (The environment and resource management)
+*   **Skills = Programs** (The specific logic applied to tasks)
+*   **Tools = I/O** (The interface to the outside world)
+
+Different OSs lead to different behaviors, but the **same programs lead to similar results.**
+
+---
+
+## Practical Implications
+
+If you are building or evaluating coding agents, focus your engineering leverage here:
+
+1.  **Build a Skill Layer:** Move beyond simple prompts into structured loops (e.g., a dedicated "Refactoring Pattern" or "Test-Fix Loop").
+2.  **Standardize the Runtime:** A simple `Plan → Execute → Validate → Reflect` cycle is often more effective than a "smarter" model with no structure.
+3.  **Treat Models as Swappable:** Keep tools and skills constant so you can measure the real delta when swapping a model (e.g., GPT-4o vs. Claude 3.7).
+
+## Decisions / Conclusions
+The next wave of engineering gains in AI isn't just about model scaling; it's about the **agent layer**. Orchestration and skill-standardization are where we turn inconsistent "junior" AI behavior into reliable, enterprise-grade engineering assistants.
+
+## Related Concepts
+- [[agentic-workflows]]
+- [[mcp-model-context-protocol]]
+- [[llm-reasoning-loops]]
+- [[software-architecture-for-ai]]
+- [[coding-agents]]
+
+## Source
+Chat session — 2026-03-23

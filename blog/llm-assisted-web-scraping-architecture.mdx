@@ -1,0 +1,110 @@
+---
+authors:
+  - frank
+tags:
+  - web-scraping
+  - llm-agents
+  - mcp
+  - browser-automation
+  - systems-architecture
+description: An architectural evaluation of using LLM agents and MCP tools for automated data extraction from dynamic web applications.
+keywords:
+  - model-context-protocol
+  - playwright
+  - puppeteer
+  - reverse-engineering
+  - web-scraping
+image: https://i.imgur.com/mErPwqL.png
+date: 2026-03-23
+draft: false
+enableComments: true
+---
+
+# Engineering LLM-Assisted Web Scraping: From Agentic Discovery to Deterministic Extraction
+
+> The most robust scraping architecture uses an LLM Agent for the "Discovery Phase" to map endpoints, but relies on deterministic scripts for the actual data extraction.
+
+<!--truncate-->
+
+## Context
+A deep dive into the solution space for automated data extraction using LLM agents (via MCP tools). The goal is to move beyond "messy thoughts" about browser control into a formal systems architecture evaluation for handling infinite-scroll, dynamically loaded web content.
+
+## Key Insights
+- **Discovery vs. Extraction:** Decoupling these phases is critical. Use agents to find the "how," but use code to do the "what."
+- **Network Interception > DOM Parsing:** Intercepting raw JSON from backend APIs is significantly more robust than parsing obfuscated CSS or HTML structures.
+- **The "Scrolling Listener" Pattern:** Using a browser to handle authentication and bot protection while an interceptor captures data is a creative way to bypass complex API signatures.
+- **Deterministic Fallback:** Always aim to move the LLM out of the execution loop once the pattern is identified to reduce cost and latency.
+
+---
+
+## 1. Formalizing the Problem
+
+When we talk about using an LLM to "scrape a site," we are often looking at a spectrum of complexity. We can formalize the objective as:
+
+**Automated Extraction of Dynamically Loaded Web Content.**
+This involves LLM-Assisted Browser Automation, API Reverse Engineering, and Network Interception (XHR/Fetch logging) via the **Model Context Protocol (MCP)**.
+
+---
+
+## 2. Architectural Approaches
+
+There are three primary ways to architect an agentic scraper in 2026:
+
+### Approach 1: Agent-Assisted Reverse Engineering (The "Script Builder")
+The LLM agent acts as a developer. It uses an MCP tool to navigate a page, dumps the network logs (HAR), identifies the backend GraphQL/REST API, and figures out the pagination (cursor tokens, offsets).
+*   **Outcome:** The agent writes a standalone, deterministic Python/Node.js script that queries the API directly.
+*   **Best for:** High-volume, high-frequency extraction.
+
+### Approach 2: Interactive Browser Automation (The "Scrolling Listener")
+The agent actively controls a headless browser. An MCP tool exposes actions like `scroll_down()` and a network listener like `get_intercepted_json()`. The browser is configured to intercept specific API patterns (e.g., `*api/v1/comments*`).
+*   **Outcome:** The agent commands a scroll $\rightarrow$ JS triggers API $\rightarrow$ MCP captures JSON $\rightarrow$ repeat.
+*   **Best for:** Sites with complex bot protection where API signatures are hard to reverse-engineer.
+
+### Approach 3: DOM-Parsing Autonomous Agent (The "Human-Like Browser")
+The agent relies on Accessibility Trees (A11y), DOM snapshots, or Vision (screenshots). It reads the text, parses it into JSON via prompts, scrolls, and deduplicates.
+*   **Outcome:** Extremely high token usage and high fragility.
+*   **Best for:** Extremely simple, one-off tasks where API access is blocked or non-existent.
+
+---
+
+## 3. Trade-off Comparison
+
+| Metric | Approach 1: Script Builder | Approach 2: Scrolling Listener | Approach 3: Human-like Browser |
+| :--- | :--- | :--- | :--- |
+| **Scalability** | **High:** Lightweight HTTP requests. | **Low:** Heavy headless browser. | **Very Low:** Massive token context. |
+| **Complexity** | **High:** Must decode auth/signatures. | **Medium:** Native frontend handles auth. | **Low (Setup) / High (Maintain)** |
+| **Robustness** | **Medium:** Deterministic but schema-sensitive. | **High:** Resilient to UI changes. | **Low:** Susceptible to layout shifts. |
+| **Cost** | **Low:** LLM used once for discovery. | **High:** LLM in the execution loop. | **Very High:** Continuous parsing. |
+
+---
+
+## 4. Industry Best Practices & Recommendations
+
+As a senior systems engineer, I recommend a hybrid architecture: **Use Approach 1 for production, and fall back to Approach 2 for highly-secured targets.**
+
+### 1. Decouple Discovery from Extraction
+Do not use an LLM Agent to perform the *actual* scraping job on a continuous basis. Use the MCP-powered Agent exclusively for the **Discovery Phase** to map the endpoints and generate deterministic scraping code.
+
+### 2. Rely on Structured APIs over DOM
+Always prioritize intercepting network traffic (JSON) over parsing the DOM/HTML. Fetching raw JSON from an intercepted API call ensures structured, clean data without needing complex regex or LLM parsing.
+
+### 3. The "Puppeteer/Playwright Route" for Anti-Bot
+If a site uses heavy protection (Cloudflare, Datadome), use Approach 2 but **remove the LLM from the execution loop.** Have the LLM write a Playwright script that sets up `page.route()` to capture JSON and scrolls via a simple `while` loop. This leverages the browser for auth while keeping execution fast and cheap.
+
+### 4. Handling Infinite Scroll in Code
+Avoid arbitrary timeouts like `sleep(2)`. Instead, hook into network idle states or wait for DOM mutations (e.g., a "loading..." spinner disappearing) to minimize race conditions.
+
+---
+
+## Decisions / Conclusions
+Your idea of using an MCP tool to intercept endpoints while the agent triggers scrolls is highly effective for bypassing complex authentication. However, for an enterprise-grade system, the agent should use this method *once* to learn the behavior and then output a permanent Playwright script for repetitive gathering.
+
+## Related Concepts
+- [[mcp-model-context-protocol]]
+- [[browser-automation]]
+- [[reverse-engineering]]
+- [[deterministic-vs-agentic-execution]]
+- [[anti-bot-evasion]]
+
+## Source
+Chat session — 2026-03-23
